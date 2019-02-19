@@ -1,6 +1,5 @@
 .header {
   display: flex;
-  padding: 0 10px;
   justify-content: space-between;
   align-items: center;
   height: 80px;
@@ -10,6 +9,7 @@
 
 .header__wrap-logo {
   height: 70%;
+  margin-left: 10px
 }
 
 .header__wrap-logo__logo {
@@ -23,6 +23,6 @@
 .header__wrap-nav__nav__ul {
   display: flex;
   justify-content: space-between;
-  padding: 0 15px;
+  margin-right: 10px;
   list-style: none;
 }
