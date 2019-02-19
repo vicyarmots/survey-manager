@@ -1,10 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './components/App/App.jsx';
+import App from './components/App/index.jsx';
 
-const root = <div id="root">1</div>;
-
-ReactDOM.render(root, document.body);
-
+const rootElement = document.createElement('div');
+rootElement.setAttribute('id', 'root');
+document.body.appendChild(rootElement);
 ReactDOM.render(<App />, document.getElementById('root'));
-
