@@ -1,0 +1,28 @@
+.header {
+  display: flex;
+  padding: 0 10px;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
+  width: 100vw;
+  background: hsl(0, 100%, 50%);
+}
+
+.header__wrap-logo {
+  height: 70%;
+}
+
+.header__wrap-logo__logo {
+  height: 100%;
+}
+
+.header__wrap-nav {
+  width: 300px;
+}
+
+.header__wrap-nav__nav__ul {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 15px;
+  list-style: none;
+}
