@@ -2,25 +2,23 @@ import React, { Component } from 'react';
 
 import './index.css';
 
-const headerLogo = {
-  src: 'src/components/header/images/header-logo.png',
-  alt: 'header logo'
-};
-
-const navItems = [
-  {
-    link: '#',
-    label: 'О компании'
-  },
-  {
-    link: '#',
-    label: 'Вход'
-  }
-];
-
 class Header extends Component {
   render() {
-    console.log();
+    const headerLogo = {
+      src: 'src/components/header/images/header-logo.png',
+      alt: 'header logo'
+    };
+    
+    const navItems = [
+      {
+        link: '#',
+        label: 'О компании'
+      },
+      {
+        link: '#',
+        label: 'Вход'
+      }
+    ];
     return (
       <header className="header">
         <div className="header__wrap-logo">
