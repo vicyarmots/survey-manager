@@ -8,15 +8,15 @@ class Header extends Component {
       src: 'src/components/header/images/header-logo.png',
       alt: 'header logo'
     };
-    
+
     const navItems = [
       {
         link: '#',
-        label: 'О компании'
+        label: 'About us'
       },
       {
         link: '#',
-        label: 'Вход'
+        label: 'Log In'
       }
     ];
     return (
@@ -31,11 +31,12 @@ class Header extends Component {
         <div className="header__wrap-nav">
           <nav className="header__wrap-nav__nav">
             <ul className="header__wrap-nav__nav__ul">
-              { !!navItems && navItems.map((item, index) => (
-                <li key={index}>
-                  <a href={item.link}>{item.label}</a>
-                </li>
-              ))}
+              {!!navItems &&
+                navItems.map((item, index) => (
+                  <li key={index}>
+                    <a href={item.link}>{item.label}</a>
+                  </li>
+                ))}
             </ul>
           </nav>
         </div>

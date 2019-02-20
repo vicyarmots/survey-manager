@@ -5,25 +5,37 @@
   justify-content: space-around;
   height: 250px;
   width: 400px;
-  position: fixed; top: 50%; left: 50%;
+  position: fixed;
+  top: 50%;
+  left: 50%;
   -webkit-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
-  outline: 2px solid rgba(0, 0, 0, 0.521);
+  box-shadow: 0 4px 6px 0 hsla(0, 0%, 0%, 0.2);
 }
 
-.form__link {
+.login-form__link {
   width: inherit;
   display: flex;
-  justify-content:space-evenly;
+  justify-content: space-between;
 }
 
-.form__input_login,
-.form__input_pass {
+.login-form__input_login,
+.login-form__input_pass {
   width: 250px;
   height: 20px;
 }
 
-.form__button {
+.login-form__button {
   width: 80px;
+}
+
+.login-form__wrap-button {
+  width: 250px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.login-form__button_sign-in {
+  margin-left: 30px;
 }
