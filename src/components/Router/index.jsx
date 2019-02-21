@@ -7,14 +7,12 @@ import './index.css';
 
 const SiteRouter = props => {
   return (
-    <main>
-      <Router>
-        <Switch>
-          <Route exact path="/" component={LoginForm} />
-          <Route path="/sign-up" component={RegistrForm} />
-        </Switch>
-      </Router>
-    </main>
+    <Router>
+      <Switch>
+        <Route exact path="/" component={LoginForm} />
+        <Route path="/sign-up" component={RegistrForm} />
+      </Switch>
+    </Router>
   );
 };
 
