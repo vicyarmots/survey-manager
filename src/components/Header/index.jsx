@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 import './index.css';
 
@@ -12,7 +12,7 @@ const Header = props => {
 
   const navItems = [
     {
-      link: '/',
+      link: '/about-us',
       label: 'About Us'
     },
     {
