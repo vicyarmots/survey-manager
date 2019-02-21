@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { NavLink } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import './index.css';
 
@@ -11,16 +13,16 @@ class Header extends Component {
 
     const navItems = [
       {
-        link: '#',
-        label: 'About us'
+        link: '/',
+        label: 'About Us'
       },
       {
-        link: '#',
+        link: '/',
         label: 'Log In'
       }
     ];
     return (
-      <header className="header">
+      <header>
         <div className="header__wrap-logo">
           <img
             className="header__wrap-logo__logo"
@@ -32,10 +34,12 @@ class Header extends Component {
           <nav className="header__wrap-nav__nav">
             <ul className="header__wrap-nav__nav__ul">
               {!!navItems &&
-                navItems.map((item, index) => (
-                  <li key={index}>
-                    <a href={item.link}>{item.label}</a>
-                  </li>
+                navItems.map((item) => (
+                  <Router>
+                    <li>
+                      <NavLink to={item.link}>{item.label}</NavLink>
+                    </li>
+                  </Router>
                 ))}
             </ul>
           </nav>

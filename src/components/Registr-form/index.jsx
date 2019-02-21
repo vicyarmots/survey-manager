@@ -8,37 +8,29 @@ class RegistrForm extends Component {
   }
   render() {
     return (
-      <form className="registr-form" action="#">
-        <p>
-          <input
-            className="registr-form__input_first-name"
-            type="text"
-            placeholder="First Name"
-          />
-        </p>
-        <p>
-          <input
-            className="registr-form__input_login"
-            type="text"
-            placeholder="Login(email)"
-          />
-        </p>
-        <p>
-          <input
-            className="registr-form__input_pass"
-            type="password"
-            placeholder="Password"
-          />
-        </p>
-        <p>
-          <input
-            className="registr-form__input_pass repeat"
-            type="password"
-            placeholder="Password repeat"
-          />
-        </p>
+      <div className="registr-form" action="#">
+        <input
+          className="registr-form__input_first-name"
+          type="text"
+          placeholder="First Name"
+        />
+        <input
+          className="registr-form__input_login"
+          type="text"
+          placeholder="Login(email)"
+        />
+        <input
+          className="registr-form__input_pass"
+          type="password"
+          placeholder="Password"
+        />
+        <input
+          className="registr-form__input_pass repeat"
+          type="password"
+          placeholder="Password repeat"
+        />
         <button className="registr-for__button_sign-up">Sign Up</button>
-      </form>
+      </div>
     );
   }
 }

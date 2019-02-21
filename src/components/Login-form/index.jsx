@@ -9,26 +9,22 @@ class LoginForm extends Component {
   }
   render() {
     return (
-      <form className="login-form" action="#">
-        <p>
-          <input
-            className="login-form__input_login"
-            type="text"
-            placeholder="Login(email)"
-          />
-        </p>
-        <p>
-          <input
-            className="login-form__input_pass"
-            type="password"
-            placeholder="Password"
-          />
-        </p>
+      <div className="login-form" action="#">
+        <input
+          className="login-form__input_login"
+          type="text"
+          placeholder="Login(email)"
+        />
+        <input
+          className="login-form__input_pass"
+          type="password"
+          placeholder="Password"
+        />
         <div className="login-form__wrap-button">
           <Link to="/sign-up">Sign Up</Link>
           <button className="login-form__button_sign-in">Log In</button>
         </div>
-      </form>
+      </div>
     );
   }
 }

@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
-import LoginForm from '../Login-form/index.jsx';
-import RegistrForm from '../Registr-form/index.jsx';
+import SiteRouter from '../Router/index.jsx';
 
 import './index.css';
 
@@ -13,15 +11,7 @@ class Main extends Component {
   render() {
     return (
       <main>
-        <Router>
-          <div>
-        
-            <Switch>
-              <Route exact path="/" component={LoginForm} />
-              <Route path="/sign-up" component={RegistrForm} />
-            </Switch>
-          </div>
-        </Router>
+        <SiteRouter/>
       </main>
     );
   }
