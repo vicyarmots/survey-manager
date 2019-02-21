@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/App/index.jsx';
 
+import './index.css';
+
 const rootElement = document.createElement('div');
 rootElement.setAttribute('id', 'root');
 document.body.appendChild(rootElement);
