@@ -4,7 +4,6 @@ import './index.css';
 
 class LoginForm extends React.Component {
   constructor(props) {
-    console.log(props.changeUser);
     super(props);
 
     this.state = { login: '', password: '' };
@@ -16,6 +15,7 @@ class LoginForm extends React.Component {
 
     this.onSubmit = event => {
       this.props.changeUser({isLogin:true});
+      console.log(this.state);
       event.preventDefault();
     };
   }

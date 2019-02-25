@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 const mapStateToProps = store => {
   return {
-    user: store.user
+    IsLogin: store.userIsLogin
   };
 };
 
