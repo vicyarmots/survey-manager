@@ -1,5 +1,5 @@
 import React from 'react';
-import SiteRouter from '../Router/index.jsx';
+import SiteRouter from '../../Router/index.jsx';
 
 import './index.css';
 
