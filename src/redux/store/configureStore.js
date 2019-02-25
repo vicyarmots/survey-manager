@@ -1,8 +1,8 @@
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import { rootReducer, initialState } from '../reducers/rootReducer.js';
-import setUser from '../actions/setUser';
+import thunk from 'redux-thunk';
 
-const store = createStore(rootReducer, initialState);
+const store = createStore(rootReducer, applyMiddleware(thunk));
 
 store.subscribe(() => {
   console.log('subscribe', store.getState());

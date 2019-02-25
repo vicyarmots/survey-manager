@@ -1,8 +1,15 @@
-function setUser(user) {
-  return {
-    type: 'SET_USER',
-    payload: user
-  }
-}
+export const GET_USER_SUCCESS = 'GET_USER_SUCCESS';
 
-export default setUser;
+export function setUser(user) {
+  return dispatch => {
+    setTimeout(() => {
+      dispatch(
+        {
+          type: GET_USER_SUCCESS,
+          payload: user
+        },
+        2000
+      );
+    });
+  };
+}
