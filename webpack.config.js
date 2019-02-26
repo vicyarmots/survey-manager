@@ -20,5 +20,16 @@ module.exports = {
       }
     ]
   },
+  resolve: {
+    alias: {
+      main: path.resolve(__dirname, 'src/components/Main/index.jsx'),
+      footer: path.resolve(__dirname, 'src/components/Footer/index.jsx'),
+      header: path.resolve(__dirname, 'src/components/Header/index.jsx'),
+      configureStore: path.resolve(
+        __dirname,
+        'src/redux/store/configureStore.js'
+      )
+    }
+  },
   plugins: [new HtmlWebpackPlugin()]
 };

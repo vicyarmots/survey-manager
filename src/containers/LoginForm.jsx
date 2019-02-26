@@ -10,7 +10,7 @@ const mapStateToProps = store => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ changeUser: setUserAsync }, dispatch);
+  return bindActionCreators({ setUser: setUserAsync }, dispatch);
 };
 
 export default connect(

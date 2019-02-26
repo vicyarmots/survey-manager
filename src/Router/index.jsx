@@ -4,7 +4,7 @@ import RegistrForm from '../containers/RegistrForm.jsx';
 import LoginForm from '../containers/LoginForm.jsx';
 import './index.css';
 
-const SiteRouter = props => {
+const SiteRouter = () => {
   return (
     <Router>
       <Switch>
