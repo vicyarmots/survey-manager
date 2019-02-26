@@ -28,7 +28,9 @@ module.exports = {
       configureStore: path.resolve(
         __dirname,
         'src/redux/store/configureStore.js'
-      )
+      ),
+      registrForm:path.resolve(__dirname, 'src/containers/RegistrForm.jsx'),
+      loginForm:path.resolve(__dirname, 'src/containers/LoginForm.jsx')
     }
   },
   plugins: [new HtmlWebpackPlugin()]
