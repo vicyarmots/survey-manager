@@ -18,7 +18,6 @@ class LoginForm extends React.Component {
     const onSubmit = event => {
       this.props.changeUser({ isLoggedIn: true });
       event.preventDefault();
-      console.log(this.props);
     };
 
     return (

@@ -5,7 +5,6 @@ import './index.css';
 class RegistrForm extends React.Component {
   constructor(props) {
     super(props);
-    console.log(this.props);
     this.state = { firstName: '', login: '', password: '' };
   }
 
