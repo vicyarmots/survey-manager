@@ -7,20 +7,20 @@ class LoginForm extends React.Component {
     super(props);
 
     this.state = { login: '', password: '' };
-
-    this.onLoginChange = event => this.setState({ login: event.target.value });
-
-    this.onPasswordChange = event =>
-      this.setState({ password: event.target.value });
-
-    this.onSubmit = event => {
-      this.props.changeUser({isLogin:true});
-      console.log(this.state);
-      event.preventDefault();
-    };
   }
 
   render() {
+    const onLoginChange = event => this.setState({ login: event.target.value });
+
+    const onPasswordChange = event =>
+      this.setState({ password: event.target.value });
+
+    const onSubmit = event => {
+      this.props.changeUser({ isLoggedIn: true });
+      event.preventDefault();
+      console.log(this.props);
+    };
+
     return (
       <div className="login-form" action="#">
         <input
@@ -28,21 +28,18 @@ class LoginForm extends React.Component {
           type="text"
           placeholder="Login(email)"
           value={this.state.login}
-          onChange={this.onLoginChange}
+          onChange={onLoginChange}
         />
         <input
           className="login-form__input_pass"
           type="password"
           placeholder="Password"
           value={this.state.password}
-          onChange={this.onPasswordChange}
+          onChange={onPasswordChange}
         />
         <div className="login-form__wrap-button">
           <Link to="/sign-up">Sign Up</Link>
-          <button
-            onClick={this.onSubmit}
-            className="login-form__button_sign-in"
-          >
+          <button onClick={onSubmit} className="login-form__button_sign-in">
             Log In
           </button>
         </div>

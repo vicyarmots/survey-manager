@@ -1,24 +1,17 @@
 import RegistrForm from '../components/RegistrForm/index.jsx';
-import { setUser } from '../redux/actions/setUser.js';
+import { setUserAsync } from '../redux/user/middleware.js';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 const mapStateToProps = store => {
   return {
-    IsLogin: store.userIsLogin
+    isLoggedIn: store.isLoggedIn
   };
 };
 
-function setUserAsync(user) {
-  return dispatch => {
-    setTimeout(() => {
-      dispatch(setUser(user));
-    }, 2000);
-  };
-}
-
-const mapDispatchToProps = dispatch => ({
-  changeUser: user => dispatch(setUserAsync(user))
-});
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({ changeUser: setUserAsync }, dispatch);
+};
 
 export default connect(
   mapStateToProps,

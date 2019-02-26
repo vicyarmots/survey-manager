@@ -1,11 +1,14 @@
 export const initialState = {
-    userIsLogin: false
+  isLoggedIn: false
 };
 
 export function rootReducer(state = initialState, action) {
   switch (action.type) {
     case 'SET_USER':
-      return action.userIsLogin;
+      return {
+        ...state,
+        isLoggedIn: action.isLoggedIn
+      };
 
     default:
       return state;
