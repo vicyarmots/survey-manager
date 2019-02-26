@@ -9,8 +9,6 @@ class RegistrForm extends React.Component {
   }
 
   render() {
-    
-
     const onLoginChange = event => this.setState({ login: event.target.value });
 
     const onFirstNameChange = event =>
@@ -20,7 +18,7 @@ class RegistrForm extends React.Component {
       this.setState({ password: event.target.value });
 
     const onSubmit = event => {
-      this.props.changeUser({ isLoggedIn: true });
+      this.props.changeUser(true);
       event.preventDefault();
     };
     return (
