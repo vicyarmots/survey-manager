@@ -20,11 +20,11 @@
   justify-content: space-between;
 }
 
-.login-form__input_login,
+/* .login-form__input_login,
 .login-form__input_pass {
   width: 250px;
   height: 20px;
-}
+} */
 
 .login-form__button {
   width: 80px;

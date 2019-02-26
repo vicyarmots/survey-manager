@@ -20,26 +20,36 @@ class LoginForm extends React.Component {
 
   render() {
     return (
-      <div className="login-form" action="#">
-        <input
-          className="login-form__input_login"
-          type="text"
-          placeholder="Login(email)"
-          value={this.state.login}
-          onChange={this.onLoginChange}
-        />
-        <input
-          className="login-form__input_pass"
-          type="password"
-          placeholder="Password"
-          value={this.state.password}
-          onChange={this.onPasswordChange}
-        />
-        <div className="login-form__wrap-button">
-          <Link to="/sign-up">Sign Up</Link>
+      <div className="login-form field" action="#">
+        <div className="control">
+          <input
+            className="login-form__input_login input"
+            type="text"
+            placeholder="Login(email)"
+            value={this.state.login}
+            onChange={this.onLoginChange}
+          />
+          <span className="icon is-small is-left">
+            <i className="fas fa-envelope" />
+          </span>
+        </div>
+        <div className="control">
+          <input
+            className="login-form__input_pass input"
+            type="password"
+            placeholder="Password"
+            value={this.state.password}
+            onChange={this.onPasswordChange}
+          />
+        </div>
+
+        <div className="login-form__wrap-button control">
+          <Link className="" to="/sign-up">
+            Sign Up
+          </Link>
           <button
             onClick={this.onSubmit}
-            className="login-form__button_sign-in"
+            className="button login-form__button_sign-in is-link"
           >
             Log In
           </button>
