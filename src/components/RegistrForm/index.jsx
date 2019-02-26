@@ -5,29 +5,20 @@ import './index.css';
 class RegistrForm extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = { firstName: '', login: '', password: '' };
-    this.onLoginChange = this.onLoginChange.bind(this);
-    this.onPasswordChange = this.onPasswordChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
-    this.onFirstNameChange = this.onFirstNameChange.bind(this);
   }
 
-  onSubmit(event) {
+  onSubmit = event => {
     event.preventDefault();
     this.props.setUser(true);
-  }
+  };
 
-  onPasswordChange(event) {
-    this.setState({ password: event.target.value });
-  }
+  onPasswordChange = event => this.setState({ password: event.target.value });
 
-  onLoginChange(event) {
-    this.setState({ login: event.target.value });
-  }
+  onLoginChange = event => this.setState({ login: event.target.value });
 
-  onFirstNameChange(event) {
-    this.setState({ password: event.target.value });
-  }
+  onFirstNameChange = event => this.setState({ password: event.target.value });
 
   render() {
     return (

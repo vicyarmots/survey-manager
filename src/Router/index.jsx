@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import RegistrForm from 'registrForm';
-import LoginForm from 'loginForm';
+import RegistrForm from 'containers/RegistrForm.jsx';
+import LoginForm from 'containers/LoginForm.jsx';
 import './index.css';
 
 const SiteRouter = () => {

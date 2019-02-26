@@ -1,9 +1,9 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import store from 'configureStore';
-import Header from 'header';
-import Footer from 'footer';
-import Main from 'main';
+import store from 'store/configureStore.js';
+import Header from 'components/Header/index.jsx';
+import Footer from 'components/Footer/index.jsx';
+import Main from 'components/Main/index.jsx';
 
 import './index.css';
 
