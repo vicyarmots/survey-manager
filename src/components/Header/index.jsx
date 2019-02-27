@@ -22,27 +22,25 @@ const Header = props => {
   ];
   return (
     <header>
-      <div className="header__wrap-logo">
-        <img
-          className="header__wrap-logo__logo"
-          src={headerLogo.src}
-          alt={headerLogo.alt}
-        />
-      </div>
-      <div className="header__wrap-nav">
-        <nav className="header__wrap-nav__nav">
-          <ul className="header__wrap-nav__nav__ul">
+      <nav className="navbar is-light">
+        <div className="navbar-brand">
+          <div className="navbar-item header__wrap-logo__logo">
+            <img className="" src={headerLogo.src} alt={headerLogo.alt} />
+          </div>
+        </div>
+        <div className="navbar-end">
+          <ul className="header__wrap-nav__nav__ul navbar-item ">
             {!!navItems &&
               navItems.map(item => (
                 <Router>
-                  <li>
+                  <li className="navbar-item">
                     <NavLink to={item.link}>{item.label}</NavLink>
                   </li>
                 </Router>
               ))}
           </ul>
-        </nav>
-      </div>
+        </div>
+      </nav>
     </header>
   );
 };

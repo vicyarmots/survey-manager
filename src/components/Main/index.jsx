@@ -5,7 +5,7 @@ import './index.css';
 
 const Main = props => {
   return (
-      <main>
+      <main className="columns is-centered is-vcentered">
         <SiteRouter />
       </main>
   );

@@ -4,8 +4,10 @@ import './index.css';
 
 const Footer = props => {
   return (
-    <footer>
-      <p className="footer__p">Copyright &#169; iTechArt</p>
+    <footer className="footer columns is-centered">
+      <div class="content has-text-centered">
+        <p>Copyright &#169; iTechArt</p>
+      </div>
     </footer>
   );
 };

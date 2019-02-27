@@ -22,36 +22,53 @@ class RegistrForm extends React.Component {
 
   render() {
     return (
-      <div className="registr-form" action="#">
-        <input
-          className="registr-form__input_first-name"
-          type="text"
-          placeholder="First Name"
-          value={this.state.firstName}
-          onChange={this.onFirstNameChange}
-        />
-        <input
-          className="registr-form__input_login"
-          type="text"
-          placeholder="Login(email)"
-          value={this.state.login}
-          onChange={this.onLoginChange}
-        />
-        <input
-          className="registr-form__input_pass"
-          type="password"
-          placeholder="Password"
-          value={this.state.password}
-          onChange={this.onPasswordChange}
-        />
-        <input
-          className="registr-form__input_pass repeat"
-          type="password"
-          placeholder="Password repeat"
-        />
-        <button onClick={this.onSubmit} className="registr-for__button_sign-up">
-          Sign Up
-        </button>
+      <div className="registr-form columns is-multiline is-centered is-vcentered box">
+        <div className="control">
+          <input
+            className="registr-form__input_first-name input is-medium"
+            type="text"
+            placeholder="First Name"
+            value={this.state.firstName}
+            onChange={this.onFirstNameChange}
+          />
+        </div>
+
+        <div className="control">
+          <input
+            className="registr-form__input_login input is-medium"
+            type="text"
+            placeholder="Login(email)"
+            value={this.state.login}
+            onChange={this.onLoginChange}
+          />
+        </div>
+
+        <div className="control">
+          <input
+            className="registr-form__input_pass input is-medium"
+            type="password"
+            placeholder="Password"
+            value={this.state.password}
+            onChange={this.onPasswordChange}
+          />
+        </div>
+
+        <div className="control">
+          <input
+            className="registr-form__input_pass repeat input is-medium"
+            type="password"
+            placeholder="Password repeat"
+          />
+        </div>
+
+        <div className="control column is-4">
+          <button
+            onClick={this.onSubmit}
+            className="registr-for__button_sign-up button is-link"
+          >
+            Sign Up
+          </button>
+        </div>
       </div>
     );
   }

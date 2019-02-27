@@ -20,30 +20,31 @@ class LoginForm extends React.Component {
 
   render() {
     return (
-      <div className="login-form field" action="#">
-        <div className="control">
-          <input
-            className="login-form__input_login input"
-            type="text"
-            placeholder="Login(email)"
-            value={this.state.login}
-            onChange={this.onLoginChange}
-          />
-          <span className="icon is-small is-left">
-            <i className="fas fa-envelope" />
-          </span>
+      <div className="login-form columns is-multiline is-centered is-vcentered box">
+        <div className="field">
+          <div className="control">
+            <input
+              className="login-form__input_login input is-medium"
+              type="text"
+              placeholder="Login(email)"
+              value={this.state.login}
+              onChange={this.onLoginChange}
+            />
+          </div>
         </div>
-        <div className="control">
-          <input
-            className="login-form__input_pass input"
-            type="password"
-            placeholder="Password"
-            value={this.state.password}
-            onChange={this.onPasswordChange}
-          />
+        <div className="field">
+          <div className="control">
+            <input
+              className="login-form__input_pass input is-medium"
+              type="password"
+              placeholder="Password"
+              value={this.state.password}
+              onChange={this.onPasswordChange}
+            />
+          </div>
         </div>
 
-        <div className="login-form__wrap-button control">
+        <div className="login-form__wrap-button column is-10">
           <Link className="" to="/sign-up">
             Sign Up
           </Link>
