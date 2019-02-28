@@ -49,7 +49,7 @@ class LoginForm extends React.Component {
             Sign Up
           </Link>
           <Link
-            to="/survey-page"
+            to="/home"
             className="button login-form__button_sign-in is-link"
           >
             Log In
