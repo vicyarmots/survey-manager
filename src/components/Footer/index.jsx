@@ -4,8 +4,8 @@ import './index.css';
 
 const Footer = props => {
   return (
-    <footer className="footer columns is-centered">
-      <div class="content has-text-centered">
+    <footer className="footer hero-foot columns is-centered">
+      <div className="content has-text-centered">
         <p>Copyright &#169; iTechArt</p>
       </div>
     </footer>

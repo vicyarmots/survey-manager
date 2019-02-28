@@ -48,12 +48,12 @@ class LoginForm extends React.Component {
           <Link className="" to="/sign-up">
             Sign Up
           </Link>
-          <button
-            onClick={this.onSubmit}
+          <Link
+            to="/survey-page"
             className="button login-form__button_sign-in is-link"
           >
             Log In
-          </button>
+          </Link>
         </div>
       </div>
     );

@@ -61,13 +61,15 @@ class RegistrForm extends React.Component {
           />
         </div>
 
-        <div className="control column is-4">
-          <button
-            onClick={this.onSubmit}
-            className="registr-for__button_sign-up button is-link"
-          >
-            Sign Up
-          </button>
+        <div className="temp column is-full">
+          <div className="is-centered columns">
+            <button
+              onClick={this.onSubmit}
+              className="registr-for__button_sign-up button is-link"
+            >
+              Sign Up
+            </button>
+          </div>
         </div>
       </div>
     );

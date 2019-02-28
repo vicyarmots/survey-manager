@@ -5,9 +5,9 @@ import './index.css';
 
 const Main = props => {
   return (
-      <main className="columns is-centered is-vcentered">
-        <SiteRouter />
-      </main>
+    <main>
+      <SiteRouter />
+    </main>
   );
 };
 

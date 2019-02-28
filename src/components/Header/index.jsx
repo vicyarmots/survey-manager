@@ -4,7 +4,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 
 import './index.css';
 
-const Header = props => {
+const Header = () => {
   const headerLogo = {
     src: 'src/components/header/images/header-logo.png',
     alt: 'header logo'
@@ -16,7 +16,7 @@ const Header = props => {
       label: 'About Us'
     },
     {
-      link: '/',
+      link: '/sign-up',
       label: 'Log In'
     }
   ];

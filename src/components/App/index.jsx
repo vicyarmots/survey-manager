@@ -10,9 +10,11 @@ import './index.css';
 const App = () => {
   return (
     <Provider store={store}>
-      <Header />
-      <Main />
-      <Footer />
+      <div className="">
+        <Header />
+        <Main />
+        <Footer />
+      </div>
     </Provider>
   );
 };

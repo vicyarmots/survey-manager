@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: './src/index.jsx',
@@ -35,5 +36,19 @@ module.exports = {
       containers: path.resolve(__dirname, 'src/containers')
     }
   },
-  plugins: [new HtmlWebpackPlugin(), new ExtractTextPlugin('./src/index.css')]
+  devServer: {
+    historyApiFallback: true,
+    hot: true,
+    publicPath: "/"
+},
+  plugins: [
+    new HtmlWebpackPlugin(),
+    new ExtractTextPlugin('./src/index.css'),
+    new CopyWebpackPlugin([
+      {
+        from: './node_modules/@fortawesome/fontawesome-free/webfonts',
+        to: './webfonts'
+      }
+    ])
+  ]
 };
