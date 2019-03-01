@@ -4,6 +4,6 @@ export function setUserAsync(user) {
   return dispatch => {
     setTimeout(() => {
       dispatch(setUser(user));
-    }, 2000);
+    }, 0);
   };
 }

@@ -5,7 +5,6 @@ import './index.css';
 class LoginForm extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = { login: '', password: '' };
   }
 
@@ -48,12 +47,11 @@ class LoginForm extends React.Component {
           <Link className="" to="/sign-up">
             Sign Up
           </Link>
-          <Link
+          {/* <Link
             to="/home"
             className="button login-form__button_sign-in is-link"
-          >
-            Log In
-          </Link>
+          /> */}
+          <button className="button is-info login-form__button_sign-in" onClick={this.onSubmit}>Log In</button>
         </div>
       </div>
     );

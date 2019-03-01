@@ -39,8 +39,12 @@ module.exports = {
   devServer: {
     historyApiFallback: true,
     hot: true,
-    publicPath: "/"
-},
+    publicPath: '/',
+    overlay: {
+      warnings: true,
+      errors: true
+    }
+  },
   plugins: [
     new HtmlWebpackPlugin(),
     new ExtractTextPlugin('./src/index.css'),

@@ -9,35 +9,35 @@ class RightPad extends React.Component {
 
   render() {
     return (
-      <nav className="right-pad panel box has-text-weight-semibold">
-        <p class="panel-heading">Question Type</p>
+      <nav className="right-pad panel box has-text-weight-semibold column is-2">
+        <p className="panel-heading">Question Type</p>
         <a className="panel-block ">
-          <span class="panel-icon ">
-            <i class="fas fa-book" aria-hidden="true" />
+          <span className="panel-icon ">
+            <i className="fas fa-book" aria-hidden="true" />
           </span>
           Answer options (one)
         </a>
         <a className="panel-block">
-          <span class="panel-icon">
-            <i class="fas fa-book" aria-hidden="true" />
+          <span className="panel-icon">
+            <i className="fas fa-book" aria-hidden="true" />
           </span>
           Answer options (several)
         </a>
         <a className="panel-block">
-          <span class="panel-icon">
-            <i class="fas fa-book" aria-hidden="true" />
+          <span className="panel-icon">
+            <i className="fas fa-book" aria-hidden="true" />
           </span>
           Text
         </a>
         <a className="panel-block">
-          <span class="panel-icon">
-            <i class="fas fa-book" aria-hidden="true" />
+          <span className="panel-icon">
+            <i className="fas fa-book" aria-hidden="true" />
           </span>
           Star ratings
         </a>
         <a className="panel-block">
-          <span class="panel-icon">
-            <i class="fas fa-book" aria-hidden="true" />
+          <span className="panel-icon">
+            <i className="fas fa-book" aria-hidden="true" />
           </span>
           Scale
         </a>

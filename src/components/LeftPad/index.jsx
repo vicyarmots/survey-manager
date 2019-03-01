@@ -9,11 +9,15 @@ class LeftPad extends React.Component {
 
   render() {
     return (
-      <nav className="left-pad panel box has-text-weight-semibold">
-        <a className="panel-block">New survey</a>
-        <a className="panel-block">My surveys</a>
-        <a className="panel-block">Survey templates</a>
-      </nav>
+      <div className="column is-2">
+        <nav className="left-pad panel box has-text-weight-semibold">
+          <Link className="panel-block" to="/survey-page">
+            New survey
+          </Link>
+          <a className="panel-block">My surveys</a>
+          <a className="panel-block">Survey templates</a>
+        </nav>
+      </div>
     );
   }
 }

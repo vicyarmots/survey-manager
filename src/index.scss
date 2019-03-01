@@ -19,4 +19,12 @@ code {
 #root {
   display: flex;
   justify-content: center;
+  flex-direction: column;
+}
+
+.flex {
+  display: flex;
+}
+.main-wrap {
+  width: 100vw;
 }

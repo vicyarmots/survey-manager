@@ -61,7 +61,7 @@ class RegistrForm extends React.Component {
           />
         </div>
 
-        <div className="temp column is-full">
+        <div className="column is-full">
           <div className="is-centered columns">
             <button
               onClick={this.onSubmit}
