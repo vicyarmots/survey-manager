@@ -31,8 +31,8 @@ const Header = () => {
         <div className="navbar-end">
           <ul className="header__wrap-nav__nav__ul navbar-item ">
             {!!navItems &&
-              navItems.map(item => (
-                <Router>
+              navItems.map((item,index) => (
+                <Router key={index}>
                   <li className="navbar-item">
                     <NavLink to={item.link}>{item.label}</NavLink>
                   </li>

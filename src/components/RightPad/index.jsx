@@ -1,6 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import './index.css';
+import React from "react";
+import "./index.css";
 
 class RightPad extends React.Component {
   constructor(props) {
@@ -8,11 +7,13 @@ class RightPad extends React.Component {
   }
 
   render() {
+    const { showModal } = this.props;
+
     return (
-      <nav className="right-pad panel box has-text-weight-semibold column is-2">
+      <nav className="right-pad panel box has-text-weight-semibold">
         <p className="panel-heading">Question Type</p>
-        <a className="panel-block ">
-          <span className="panel-icon ">
+        <a onClick={showModal} className="panel-block">
+          <span className="panel-icon">
             <i className="fas fa-book" aria-hidden="true" />
           </span>
           Answer options (one)
