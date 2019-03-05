@@ -8,7 +8,11 @@ const customStyles = {
     right: 'auto',
     bottom: 'auto',
     marginRight: '-50%',
-    transform: 'translate(-50%, -50%)'
+    transform: 'translate(-50%, -50%)',
+    height: '60%',
+    width: '60%',
+    display: 'flex',
+    justifyContent: 'center'
   }
 };
 
@@ -17,27 +21,53 @@ class ModalQuestion extends React.Component {
     super(props);
     this.state = {
       title: '',
-      variant: ''
+      variants: [],
+      countInputAnswer: 1
     };
   }
 
   addNewAsk = () => {
-    this.props.addAsk('page_1', this.state);
+    
+    this.props.addAsk(this.state);
+    this.setState({ title: '', variants: [], countInputAnswer: 1 });
   };
 
   addVariant = e => {
-    this.setState({ variant: e.target.value });
+    this.setState({ variants: [...this.state.variants, e.target.value] });
   };
 
   addQuestion = e => {
     this.setState({ title: e.target.value });
   };
 
-  showState = () => {
-    console.log(this.state);
+  addAnswerInput = () => {
+    this.setState({ countInputAnswer: ++this.state.countInputAnswer });
+  };
+
+  collectInputsValue = () => {
+    console.log(answerInputs);
   };
 
   render() {
+    const { type } = this.props;
+    const { countInputAnswer } = this.state;
+
+    const answerInputs = [];
+
+    for (let index = 0; index < countInputAnswer; index++) {
+      answerInputs.push(
+        <React.Fragment>
+          <label className="label">Answer</label>
+          <input
+            onChange={this.addVariant}
+            className="input is-small"
+            type="text"
+            placeholder="enter answer"
+          />
+        </React.Fragment>
+      );
+    }
+
     return (
       <Modal
         ariaHideApp={false}
@@ -53,6 +83,7 @@ class ModalQuestion extends React.Component {
           >
             Close Modal
           </button>
+
           <label className="label">Question</label>
           <input
             onChange={this.addQuestion}
@@ -60,16 +91,17 @@ class ModalQuestion extends React.Component {
             type="text"
             placeholder="enter question"
           />
-          <label className="label">Answer</label>
-          <input
-            onChange={this.addVariant}
-            className="input is-small"
-            type="text"
-            placeholder="enter answer"
-          />
-          <button className="button" onClick={this.addNewAsk}>
-            add
-          </button>
+
+          {answerInputs}
+
+          <div className="modal-panel-button">
+            <button onClick={this.addAnswerInput} className="button is-primary">
+              +
+            </button>
+            <button className="button" onClick={this.addNewAsk}>
+              add on page
+            </button>
+          </div>
         </div>
       </Modal>
     );

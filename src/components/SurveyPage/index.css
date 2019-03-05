@@ -29,3 +29,8 @@
   height: 17px;
   width: 17px;
 }
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}

@@ -4,6 +4,7 @@ import 'react-tabs/style/react-tabs.css';
 import './index.css';
 import RightPad from '../RightPad/index.jsx';
 import ModalQuestion from '../ModalQuestion/index.jsx';
+const shortid = require('shortid');
 
 class SurveyPage extends React.Component {
   constructor(props) {
@@ -11,18 +12,19 @@ class SurveyPage extends React.Component {
     this.state = {
       pages: {
         page_1: {
-          id: 0,
-          asks: [
-            { title: 'Ask1', variant: 'Да' },
-            { title: 'Ask2', variant: 'Да' }
-          ]
+          asks: [{ title: 'A u norm', variants: ['yes', 'no', 'кто знает'] }]
         }
       },
       countPages: 1,
       showModal: false,
-      tabIndex: 1
+      tabIndex: 0,
+      choosen: ''
     };
   }
+
+  setTypeAsk = ({ target }) => {
+    this.setState({ choosen: target.name });
+  };
 
   handleOpenModal = () => {
     this.setState({ showModal: true });
@@ -36,8 +38,7 @@ class SurveyPage extends React.Component {
     this.setState(({ countPages, pages }) => ({
       pages: {
         ...pages,
-        [`pages_${countPages + 1}`]: {
-          id: countPages,
+        [`page_${countPages + 1}`]: {
           asks: []
         }
       },
@@ -45,9 +46,11 @@ class SurveyPage extends React.Component {
     }));
   };
 
-  addAsk = (page, value) => {
+  addAsk = value => {
+    const page = `page_${this.state.tabIndex + 1}`;
     this.setState({
       pages: {
+        ...this.state.pages,
         [page]: {
           asks: [...this.state.pages[page].asks, value]
         }
@@ -56,30 +59,37 @@ class SurveyPage extends React.Component {
   };
 
   render() {
-    const { pages } = this.state;
+    const { pages, choosen, showModal } = this.state;
+    const tabContent = [];
 
-    let tabTitles = [];
-    let tabContent = [];
-
-    for (let key in pages) {
-      tabTitles.push(
-        <Tab key={pages[key].id}>
-          <h1>Page {pages[key].id + 1}</h1>
+    const tabTitles = Object.keys(pages).map(item => {
+      return (
+        <Tab key={shortid.generate()}>
+          <h1>
+            Page {item.length > 6 ? item.substring(6) : item.substring(5)}
+          </h1>
         </Tab>
       );
-    }
+    });
 
     for (let item in pages) {
       tabContent.push(
-        <TabPanel key={item}>
+        <TabPanel key={shortid.generate()}>
           {pages[item].asks.map(item => (
             <div className="notification">
               <h1 className="subtitle">{item.title}</h1>
-              <div>
-                <label className="checkbox ">
-                  <input className="margin-10 ask-checkbox" type="checkbox" />
-                  {item.variant}
-                </label>
+              <div className="variants flex-column">
+                {item.variants.map(item => {
+                  return (
+                    <label className="checkbox ">
+                      <input
+                        className="margin-10 ask-checkbox"
+                        type="checkbox"
+                      />
+                      {item}
+                    </label>
+                  );
+                })}
               </div>
             </div>
           ))}
@@ -116,7 +126,7 @@ class SurveyPage extends React.Component {
               </div>
               <div className="column is-full">
                 <Tabs
-                  defaultIndex={1}
+                  defaultIndex={0}
                   onSelect={tabIndex => {
                     this.setState({ tabIndex });
                   }}
@@ -128,11 +138,15 @@ class SurveyPage extends React.Component {
             </div>
           </div>
           <div className="column is-3">
-            <RightPad showModal={this.handleOpenModal} />
+            <RightPad
+              showModal={this.handleOpenModal}
+              setTypeAsk={this.setTypeAsk}
+            />
             <ModalQuestion
-              isOpen={this.state.showModal}
+              isOpen={showModal}
               onRequestClose={this.handleOpenModal}
               onClose={this.handleCloseModal}
+              type={choosen}
               addAsk={this.addAsk}
             />
           </div>
