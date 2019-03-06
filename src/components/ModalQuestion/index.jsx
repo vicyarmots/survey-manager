@@ -1,5 +1,6 @@
 import Modal from 'react-modal';
 import React from 'react';
+import './index.css';
 
 const customStyles = {
   content: {
@@ -9,10 +10,10 @@ const customStyles = {
     bottom: 'auto',
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
-    height: '60%',
-    width: '60%',
+    width: '50%',
     display: 'flex',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    height: 'auto'
   }
 };
 
@@ -21,65 +22,75 @@ class ModalQuestion extends React.Component {
     super(props);
     this.state = {
       title: '',
-      variants: [],
-      countInputAnswer: 1
+      variants: ['']
     };
   }
 
-  addNewAsk = () => {
-    
-    this.props.addAsk(this.state);
-    this.setState({ title: '', variants: [], countInputAnswer: 1 });
+  onChange = inputIndex => e => {
+    const textValue = e.target.value;
+    const { variants } = this.state;
+    const newArray = variants.map((value, index) =>
+      index !== inputIndex ? value : textValue
+    );
+    this.setState({ variants: newArray });
   };
 
-  addVariant = e => {
-    this.setState({ variants: [...this.state.variants, e.target.value] });
+  incCounterInput = () =>
+    this.setState({ variants: [...this.state.variants, ''] });
+
+  decCounterInput = () => {
+    const { variants } = this.state;
+    if (variants.length == 1) {
+      return;
+    }
+    const newArray = [...variants];
+    newArray.pop();
+    this.setState({ variants: newArray });
+  };
+
+  addNewAsk = () => {
+    this.props.addAsk(this.state);
+    this.setState({ title: '', variants: [''] });
+    this.props.onClose();
   };
 
   addQuestion = e => {
     this.setState({ title: e.target.value });
   };
 
-  addAnswerInput = () => {
-    this.setState({ countInputAnswer: ++this.state.countInputAnswer });
+  closeModal = () => {
+    this.props.onClose();
+    this.setState({ title: '', variants: [''] });
   };
 
-  collectInputsValue = () => {
-    console.log(answerInputs);
+  afterOpenModal = () => {
+    const { type } = this.props;
+    type === 'severalAsk' && this.incCounterInput();
+    type === 'text' && this.setState({ title: '', variants: [] });
+
+  };
+
+  addVariant = e => {
+    this.setState({ variants: [...this.state.variants, e.target.value] });
   };
 
   render() {
     const { type } = this.props;
-    const { countInputAnswer } = this.state;
-
-    const answerInputs = [];
-
-    for (let index = 0; index < countInputAnswer; index++) {
-      answerInputs.push(
-        <React.Fragment>
-          <label className="label">Answer</label>
-          <input
-            onChange={this.addVariant}
-            className="input is-small"
-            type="text"
-            placeholder="enter answer"
-          />
-        </React.Fragment>
-      );
-    }
+    const { variants } = this.state;
 
     return (
       <Modal
         ariaHideApp={false}
         isOpen={this.props.isOpen}
-        onRequestClose={this.props.nRequestClose}
+        onAfterOpen={this.afterOpenModal}
+        onRequestClose={this.props.onRequestClose}
         style={customStyles}
         contentLabel="Example Modal"
       >
         <div className="modal-ask center">
           <button
             className="delete is-medium delete-button"
-            onClick={this.props.onClose}
+            onClick={this.closeModal}
           >
             Close Modal
           </button>
@@ -87,17 +98,39 @@ class ModalQuestion extends React.Component {
           <label className="label">Question</label>
           <input
             onChange={this.addQuestion}
-            className="input is-small"
+            className="input "
             type="text"
             placeholder="enter question"
           />
 
-          {answerInputs}
+          {variants.map((input, index) => (
+            <input
+              placeholder="enter answer"
+              className="input margin-b"
+              type="text"
+              value={input}
+              onChange={this.onChange(index)}
+            />
+          ))}
 
-          <div className="modal-panel-button">
-            <button onClick={this.addAnswerInput} className="button is-primary">
-              +
-            </button>
+          <div className="modal-panel-button margin-b">
+            {type === 'severalAsk' && (
+              <React.Fragment>
+                <button
+                  onClick={this.decCounterInput}
+                  className="button is-primary margin-10"
+                >
+                  -
+                </button>
+                <button
+                  onClick={this.incCounterInput}
+                  className="button is-primary margin-10"
+                >
+                  +
+                </button>
+              </React.Fragment>
+            )}
+
             <button className="button" onClick={this.addNewAsk}>
               add on page
             </button>

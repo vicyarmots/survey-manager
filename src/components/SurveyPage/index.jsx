@@ -12,7 +12,7 @@ class SurveyPage extends React.Component {
     this.state = {
       pages: {
         page_1: {
-          asks: [{ title: 'A u norm', variants: ['yes', 'no', 'кто знает'] }]
+          asks: [{ title: 'A u norm?', variants: ['yes', 'no', 'кто знает'] }]
         }
       },
       countPages: 1,
@@ -79,6 +79,13 @@ class SurveyPage extends React.Component {
             <div className="notification">
               <h1 className="subtitle">{item.title}</h1>
               <div className="variants flex-column">
+                {!item.variants.length && (
+                  <textarea
+                    className="textarea"
+                    placeholder="enter answer"
+                  />
+                )}
+
                 {item.variants.map(item => {
                   return (
                     <label className="checkbox ">
