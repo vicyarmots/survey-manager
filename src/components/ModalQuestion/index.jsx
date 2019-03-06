@@ -20,9 +20,11 @@ const customStyles = {
 class ModalQuestion extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       title: '',
-      variants: ['']
+      variants: [''],
+      typeAsk: ''
     };
   }
 
@@ -50,7 +52,7 @@ class ModalQuestion extends React.Component {
 
   addNewAsk = () => {
     this.props.addAsk(this.state);
-    this.setState({ title: '', variants: [''] });
+    this.setState({ title: '', variants: [''], typeAsk: '' });
     this.props.onClose();
   };
 
@@ -66,8 +68,10 @@ class ModalQuestion extends React.Component {
   afterOpenModal = () => {
     const { type } = this.props;
     type === 'severalAsk' && this.incCounterInput();
-    type === 'text' && this.setState({ title: '', variants: [] });
-
+    type === 'text' &&
+      this.setState({ title: '', variants: [], typeAsk: 'text' });
+    type === 'starRatings' &&
+      this.setState({ title: '', variants: [], typeAsk: 'starRatings' });
   };
 
   addVariant = e => {
@@ -77,7 +81,6 @@ class ModalQuestion extends React.Component {
   render() {
     const { type } = this.props;
     const { variants } = this.state;
-
     return (
       <Modal
         ariaHideApp={false}

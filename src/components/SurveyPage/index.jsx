@@ -5,6 +5,7 @@ import './index.css';
 import RightPad from '../RightPad/index.jsx';
 import ModalQuestion from '../ModalQuestion/index.jsx';
 const shortid = require('shortid');
+import StarRatings from 'react-star-ratings';
 
 class SurveyPage extends React.Component {
   constructor(props) {
@@ -12,7 +13,7 @@ class SurveyPage extends React.Component {
     this.state = {
       pages: {
         page_1: {
-          asks: [{ title: 'A u norm?', variants: ['yes', 'no', 'кто знает'] }]
+          asks: []
         }
       },
       countPages: 1,
@@ -21,6 +22,12 @@ class SurveyPage extends React.Component {
       choosen: ''
     };
   }
+
+  changeRating = (newRating, name) => {
+    this.setState({
+      rating: newRating
+    });
+  };
 
   setTypeAsk = ({ target }) => {
     this.setState({ choosen: target.name });
@@ -58,8 +65,12 @@ class SurveyPage extends React.Component {
     });
   };
 
+  onStarClick = (nextValue, prevValue, name) => {
+    this.setState({ rating: nextValue });
+  };
+
   render() {
-    const { pages, choosen, showModal } = this.state;
+    const { pages, choosen, showModal, rating } = this.state;
     const tabContent = [];
 
     const tabTitles = Object.keys(pages).map(item => {
@@ -79,13 +90,19 @@ class SurveyPage extends React.Component {
             <div className="notification">
               <h1 className="subtitle">{item.title}</h1>
               <div className="variants flex-column">
-                {!item.variants.length && (
-                  <textarea
-                    className="textarea"
-                    placeholder="enter answer"
+                {item.typeAsk === 'text' && (
+                  <textarea className="textarea" placeholder="enter answer" />
+                )}
+                {item.typeAsk === 'starRatings' && (
+                  <StarRatings
+                    rating={this.state.rating}
+                    starRatedColor="gold"
+                    changeRating={this.changeRating}
+                    numberOfStars={5}
+                    name="rating"
+                    starDimension="25px"
                   />
                 )}
-
                 {item.variants.map(item => {
                   return (
                     <label className="checkbox ">
@@ -149,6 +166,7 @@ class SurveyPage extends React.Component {
               showModal={this.handleOpenModal}
               setTypeAsk={this.setTypeAsk}
             />
+
             <ModalQuestion
               isOpen={showModal}
               onRequestClose={this.handleOpenModal}
