@@ -13,7 +13,8 @@ class SurveyPage extends React.Component {
     this.state = {
       pages: {
         page_1: {
-          asks: []
+          asks: [],
+          index: 1
         }
       },
       countPages: 1,
@@ -33,8 +34,15 @@ class SurveyPage extends React.Component {
     this.setState({ choosen: target.name });
   };
 
-  handleOpenModal = () => {
-    this.setState({ showModal: true });
+  triggerModal = type => {
+    this.setState({
+      showModal: !this.state.showModal,
+      choosen: type || null
+    });
+  };
+
+  handleOpenModal = type => {
+    this.setState({ showModal: true, currentQuestType: type });
   };
 
   handleCloseModal = () => {
@@ -42,14 +50,16 @@ class SurveyPage extends React.Component {
   };
 
   addNewPage = () => {
-    this.setState(({ countPages, pages }) => ({
+    const newCount = ++this.state.countPages;
+    this.setState(({ pages }) => ({
       pages: {
         ...pages,
-        [`page_${countPages + 1}`]: {
-          asks: []
+        [`page_${newCount}`]: {
+          asks: [],
+          index: newCount
         }
       },
-      countPages: ++countPages
+      countPages: newCount
     }));
   };
 
@@ -59,6 +69,7 @@ class SurveyPage extends React.Component {
       pages: {
         ...this.state.pages,
         [page]: {
+          ...this.state.pages[page],
           asks: [...this.state.pages[page].asks, value]
         }
       }
@@ -70,19 +81,20 @@ class SurveyPage extends React.Component {
   };
 
   render() {
-    const { pages, choosen, showModal, rating } = this.state;
+    const { pages, choosen, showModal} = this.state;
     const tabContent = [];
 
-    const tabTitles = Object.keys(pages).map(item => {
+    const tabTitles = Object.keys(pages).map(key => {
       return (
         <Tab key={shortid.generate()}>
           <h1>
-            Page {item.length > 6 ? item.substring(6) : item.substring(5)}
+            Page {pages[key].index}
           </h1>
         </Tab>
       );
     });
 
+    Object.keys(pages).map(key => pages[key]);
     for (let item in pages) {
       tabContent.push(
         <TabPanel key={shortid.generate()}>
@@ -162,15 +174,11 @@ class SurveyPage extends React.Component {
             </div>
           </div>
           <div className="column is-3">
-            <RightPad
-              showModal={this.handleOpenModal}
-              setTypeAsk={this.setTypeAsk}
-            />
+            <RightPad triggerModal={this.triggerModal} />
 
             <ModalQuestion
               isOpen={showModal}
-              onRequestClose={this.handleOpenModal}
-              onClose={this.handleCloseModal}
+              triggerModal={this.triggerModal}
               type={choosen}
               addAsk={this.addAsk}
             />

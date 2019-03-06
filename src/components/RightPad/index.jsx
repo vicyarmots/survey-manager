@@ -6,16 +6,17 @@ class RightPad extends React.Component {
     super(props);
   }
 
-  handleClick = ({ target }) => {
-    this.props.setTypeAsk({ target });
-    this.props.showModal();
+  handleClick = (type) => {
+    //this.props.setTypeAsk({ target });
+    //this.props.showModal();
+    this.props.triggerModal(type)
   };
 
   render() {
     const fields = {
       oneAsk: {
         label: 'Answer (one)',
-        icon: 'fas fa-dice-one'
+        icon: 'fas fa-dice-one',
       },
       severalAsk: {
         label: 'Answer (several)',
@@ -23,6 +24,7 @@ class RightPad extends React.Component {
       },
       text: {
         label: 'Text',
+
         icon: 'fas fa-font'
       },
       starRatings: {
@@ -43,7 +45,7 @@ class RightPad extends React.Component {
             className="panel-block button"
             key={key}
             name={key}
-            onClick={this.handleClick}
+            onClick={() => this.handleClick(fields[key])}
           >
             <span className="panel-icon">
               <i className={fields[key].icon} aria-hidden="true" />

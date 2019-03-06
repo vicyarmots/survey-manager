@@ -24,7 +24,7 @@ class ModalQuestion extends React.Component {
     this.state = {
       title: '',
       variants: [''],
-      typeAsk: ''
+      typeAsk: props.type
     };
   }
 
@@ -78,6 +78,12 @@ class ModalQuestion extends React.Component {
     this.setState({ variants: [...this.state.variants, e.target.value] });
   };
 
+  choose(type) {
+    return {
+      type_1: (<div>dasfdasf</div>)
+    }[type] || null;
+  }
+
   render() {
     const { type } = this.props;
     const { variants } = this.state;
@@ -86,14 +92,14 @@ class ModalQuestion extends React.Component {
         ariaHideApp={false}
         isOpen={this.props.isOpen}
         onAfterOpen={this.afterOpenModal}
-        onRequestClose={this.props.onRequestClose}
+        onRequestClose={this.props.triggerModal}
         style={customStyles}
         contentLabel="Example Modal"
       >
         <div className="modal-ask center">
           <button
             className="delete is-medium delete-button"
-            onClick={this.closeModal}
+            onClick={this.props.triggerModal}
           >
             Close Modal
           </button>
