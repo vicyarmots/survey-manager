@@ -1,11 +1,11 @@
 import React from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import 'react-tabs/style/react-tabs.css';
-import './index.css';
 import RightPad from '../RightPad/index.jsx';
 import ModalQuestion from '../ModalQuestion/index.jsx';
-const shortid = require('shortid');
 import StarRatings from 'react-star-ratings';
+import shortid from 'shortid';
+import 'react-tabs/style/react-tabs.css';
+import './index.css';
 
 class SurveyPage extends React.Component {
   constructor(props) {
@@ -13,25 +13,22 @@ class SurveyPage extends React.Component {
     this.state = {
       pages: {
         page_1: {
-          asks: [],
+          quests: [],
           index: 1
         }
       },
       countPages: 1,
       showModal: false,
       tabIndex: 0,
-      choosen: ''
+      choosen: '',
+      rating: 5
     };
   }
 
-  changeRating = (newRating, name) => {
+  changeRating = newRating => {
     this.setState({
       rating: newRating
     });
-  };
-
-  setTypeAsk = ({ target }) => {
-    this.setState({ choosen: target.name });
   };
 
   triggerModal = type => {
@@ -41,21 +38,13 @@ class SurveyPage extends React.Component {
     });
   };
 
-  handleOpenModal = type => {
-    this.setState({ showModal: true, currentQuestType: type });
-  };
-
-  handleCloseModal = () => {
-    this.setState({ showModal: false });
-  };
-
   addNewPage = () => {
     const newCount = ++this.state.countPages;
     this.setState(({ pages }) => ({
       pages: {
         ...pages,
         [`page_${newCount}`]: {
-          asks: [],
+          quests: [],
           index: newCount
         }
       },
@@ -63,75 +52,69 @@ class SurveyPage extends React.Component {
     }));
   };
 
-  addAsk = value => {
+  addQuest = value => {
     const page = `page_${this.state.tabIndex + 1}`;
     this.setState({
       pages: {
         ...this.state.pages,
         [page]: {
           ...this.state.pages[page],
-          asks: [...this.state.pages[page].asks, value]
+          quests: [...this.state.pages[page].quests, value]
         }
       }
     });
   };
 
-  onStarClick = (nextValue, prevValue, name) => {
-    this.setState({ rating: nextValue });
-  };
-
   render() {
-    const { pages, choosen, showModal} = this.state;
-    const tabContent = [];
+    const { pages, choosen, showModal } = this.state;
 
     const tabTitles = Object.keys(pages).map(key => {
       return (
         <Tab key={shortid.generate()}>
-          <h1>
-            Page {pages[key].index}
-          </h1>
+          <h1>Page {pages[key].index}</h1>
         </Tab>
       );
     });
 
-    Object.keys(pages).map(key => pages[key]);
-    for (let item in pages) {
-      tabContent.push(
-        <TabPanel key={shortid.generate()}>
-          {pages[item].asks.map(item => (
-            <div className="notification">
+    const tabContent = Object.keys(pages).map(page => {
+      return (
+        <TabPanel key={page}>
+          {pages[page].quests.map(item => (
+            <div className="notification  flex-column">
               <h1 className="subtitle">{item.title}</h1>
-              <div className="variants flex-column">
-                {item.typeAsk === 'text' && (
-                  <textarea className="textarea" placeholder="enter answer" />
-                )}
-                {item.typeAsk === 'starRatings' && (
-                  <StarRatings
-                    rating={this.state.rating}
-                    starRatedColor="gold"
-                    changeRating={this.changeRating}
-                    numberOfStars={5}
-                    name="rating"
-                    starDimension="25px"
-                  />
-                )}
-                {item.variants.map(item => {
-                  return (
-                    <label className="checkbox ">
-                      <input
-                        className="margin-10 ask-checkbox"
-                        type="checkbox"
-                      />
-                      {item}
-                    </label>
-                  );
-                })}
-              </div>
+              <div className="variants" />
+              {item.typeQuest === 'oneAnswer' && (
+                <label className="checkbox ">
+                  <input className="margin-10 ask-checkbox" type="checkbox" />
+                  {item.variants[0]}
+                </label>
+              )}
+              {item.variants.map(quest => {
+                return (
+                  <label className="checkbox">
+                    <input className="margin-10 ask-checkbox" type="checkbox" />
+                    {quest}
+                  </label>
+                );
+              })}
+              {item.typeQuest === 'starRatings' && (
+                <StarRatings
+                  rating={this.state.rating}
+                  starRatedColor="gold"
+                  changeRating={this.changeRating}
+                  numberOfStars={5}
+                  name="rating"
+                  starDimension="25px"
+                />
+              )}
+              {item.typeQuest === 'text' && (
+                <textarea className="textarea" placeholder="enter answer" />
+              )}
             </div>
           ))}
         </TabPanel>
       );
-    }
+    });
 
     return (
       <div className="survey-page column is-10">
@@ -148,7 +131,7 @@ class SurveyPage extends React.Component {
               </div>
               <div className="column is-full ">
                 <p className="is-pulled-left margin-10">
-                  Questions: 0, Pages: 0
+                  Questions: 0, Pages: {this.state.countPages}
                 </p>
                 <div className="is-pulled-right ">
                   <button className="button margin-10">Save</button>
@@ -175,12 +158,11 @@ class SurveyPage extends React.Component {
           </div>
           <div className="column is-3">
             <RightPad triggerModal={this.triggerModal} />
-
             <ModalQuestion
               isOpen={showModal}
               triggerModal={this.triggerModal}
               type={choosen}
-              addAsk={this.addAsk}
+              addQuest={this.addQuest}
             />
           </div>
         </div>

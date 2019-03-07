@@ -3,11 +3,17 @@
   margin-right: 10px;
 }
 
-.modal-ask {
+.modal-quest {
+  width: 70%;
   height: auto;
   justify-content: flex-start;
 }
 
 .margin-b {
   margin-top: 10px;
+}
+
+.modal-panel-button {
+  display: flex;
+  justify-content: flex-start;
 }

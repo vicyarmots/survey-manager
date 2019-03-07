@@ -7,18 +7,16 @@ class RightPad extends React.Component {
   }
 
   handleClick = (type) => {
-    //this.props.setTypeAsk({ target });
-    //this.props.showModal();
     this.props.triggerModal(type)
   };
 
   render() {
     const fields = {
-      oneAsk: {
+      oneAnswer: {
         label: 'Answer (one)',
         icon: 'fas fa-dice-one',
       },
-      severalAsk: {
+      severalAnswer: {
         label: 'Answer (several)',
         icon: 'fas fa-dice-four'
       },
@@ -45,7 +43,7 @@ class RightPad extends React.Component {
             className="panel-block button"
             key={key}
             name={key}
-            onClick={() => this.handleClick(fields[key])}
+            onClick={() => this.handleClick(key)}
           >
             <span className="panel-icon">
               <i className={fields[key].icon} aria-hidden="true" />

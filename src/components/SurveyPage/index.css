@@ -35,3 +35,11 @@
   flex-direction: column;
 }
 
+.flex-row {
+  display: flex;
+  align-items: baseline;
+}
+
+.input-ask-wrapp {
+  width: 100%;
+}
