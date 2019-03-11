@@ -1,23 +1,21 @@
-import Modal from 'react-modal';
-import React from 'react';
-import './index.css';
-import { OneAnswer } from './OneAnswer/index.jsx';
-import { SeveralAnswer } from './SeveralAnswer/index.jsx';
-import { customStyles } from './customStylesModal.js';
+import Modal from "react-modal";
+import React from "react";
+import "./index.css";
+import { OneAnswer } from "./OneAnswer/index.jsx";
+import { SeveralAnswer } from "./SeveralAnswer/index.jsx";
+import { customStyles } from "./customStylesModal.js";
 
 class ModalQuestion extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: '',
-      variants: ['']
+      title: "",
+      variants: [""]
     };
   }
 
   removeInput = index => {
-    let newVariants = this.state.variants.filter(
-      item => item !== this.state.variants[index]
-    );
+    const newVariants = this.state.variants.filter((item, i) => i !== index);
     this.setState({ variants: newVariants });
   };
 
@@ -35,17 +33,17 @@ class ModalQuestion extends React.Component {
   };
 
   incCounterInput = () =>
-    this.setState({ variants: [...this.state.variants, ''] });
+    this.setState({ variants: [...this.state.variants, ""] });
 
   decCounterInput = () => {
     const { variants } = this.state;
 
-    if (this.props.type === 'severalAnswer' && variants.length == 2) {
-      return;
+    if (this.props.type === "severalAnswer" && variants.length == 2) {
+      return null;
     }
 
     if (variants.length == 1) {
-      return;
+      return null;
     }
     const newArray = [...variants];
     newArray.pop();
@@ -64,9 +62,9 @@ class ModalQuestion extends React.Component {
   afterOpenModal = () => {
     const { type } = this.props;
 
-    type !== 'severalAnswer'
-      ? this.setState({ title: '', typeQuest: type })
-      : this.setState({ title: '', variants: ['', ''], typeQuest: type });
+    type !== "severalAnswer"
+      ? this.setState({ title: "", typeQuest: type })
+      : this.setState({ title: "", variants: ["", ""], typeQuest: type });
   };
 
   choose(type) {

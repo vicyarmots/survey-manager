@@ -3,6 +3,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import RightPad from '../RightPad/index.jsx';
 import ModalQuestion from '../ModalQuestion/index.jsx';
 import StarRatings from 'react-star-ratings';
+import SettingPad from '../SettingPad/index.jsx';
 import shortid from 'shortid';
 import 'react-tabs/style/react-tabs.css';
 import './index.css';
@@ -14,7 +15,8 @@ class SurveyPage extends React.Component {
       pages: {
         page_1: {
           quests: [],
-          index: 1
+          index: 1,
+          name: 'Page 1'
         }
       },
       countPages: 1,
@@ -45,7 +47,8 @@ class SurveyPage extends React.Component {
         ...pages,
         [`page_${newCount}`]: {
           quests: [],
-          index: newCount
+          index: newCount,
+          name: `Page ${newCount}`
         }
       },
       countPages: newCount
@@ -53,7 +56,8 @@ class SurveyPage extends React.Component {
   };
 
   addQuest = value => {
-    const page = `page_${this.state.tabIndex + 1}`;
+    const { pages } = this.state;
+    const page = Object.keys(pages)[this.state.tabIndex];
     this.setState({
       pages: {
         ...this.state.pages,
@@ -65,13 +69,70 @@ class SurveyPage extends React.Component {
     });
   };
 
+  removeQuest = index => {
+    const page = Object.keys(pages)[this.state.tabIndex];
+
+    const newQuests = this.state.pages[page].quests.filter(
+      (item, i) => i !== index
+    );
+    this.setState({
+      pages: {
+        ...this.state.pages,
+        [page]: {
+          ...this.state.pages[page],
+          quests: [...newQuests]
+        }
+      }
+    });
+  };
+
+  countAllQuests = () => {
+    const { pages } = this.state;
+    let currentCount = 0;
+
+    Object.keys(pages).map(key => {
+      currentCount += pages[key].quests.length;
+    });
+
+    return currentCount;
+  };
+
+  removePage = deleteKey => {
+    const newPages = this.state.pages;
+    delete newPages[deleteKey];
+
+    if (this.state.tabIndex > 0) {
+      this.setState({
+        pages: newPages,
+        countPages: --this.state.countPages,
+        tabIndex: --this.state.tabIndex
+      });
+    } else {
+      this.setState({ pages: newPages, countPages: --this.state.countPages });
+    }
+
+    // this.state.tabIndex > 0 ? this.setState({
+    //   pages: newPages,
+    //   countPages: --this.state.countPages,
+    //   tabIndex: --this.state.tabIndex
+    // }) :  this.setState({ pages: newPages, countPages: --this.state.countPages })
+  };
+
+  changePageName = (textValue, page) => {
+    const newPages = this.state.pages;
+    newPages[page].name = textValue;
+    this.setState({ pages: newPages });
+  };
+
   render() {
+    console.log(this.state.pages);
+
     const { pages, choosen, showModal } = this.state;
 
     const tabTitles = Object.keys(pages).map(key => {
       return (
         <Tab key={shortid.generate()}>
-          <h1>Page {pages[key].index}</h1>
+          <h1>{pages[key].name}</h1>
         </Tab>
       );
     });
@@ -79,9 +140,26 @@ class SurveyPage extends React.Component {
     const tabContent = Object.keys(pages).map(page => {
       return (
         <TabPanel key={page}>
-          {pages[page].quests.map(item => (
-            <div className="notification  flex-column">
-              <h1 className="subtitle">{item.title}</h1>
+          <div className="wrap-page-name-input">
+            <input
+              className="input page-name-input"
+              type="text"
+              placeholder="Enter page name"
+              onChange={e => this.changePageName(e.target.value, page)}
+            />
+            <a
+              onClick={() => this.removePage(page)}
+              className="is-outlined delete-tag button"
+            >
+              delete page
+              <span className="fa-stack fa-lg">
+                <i className="fas fa-backspace fa-stack-1x" />
+              </span>
+            </a>
+          </div>
+          {pages[page].quests.map((item, indexQuest) => (
+            <div key={shortid.generate()} className="notification  flex-column">
+              <h1 className="subtitle"> {item.title} </h1>
               <div className="variants" />
               {item.typeQuest === 'oneAnswer' && (
                 <label className="checkbox ">
@@ -89,14 +167,18 @@ class SurveyPage extends React.Component {
                   {item.variants[0]}
                 </label>
               )}
-              {item.variants.map(quest => {
-                return (
-                  <label className="checkbox">
-                    <input className="margin-10 ask-checkbox" type="checkbox" />
-                    {quest}
-                  </label>
-                );
-              })}
+              {item.typeQuest === 'severalAnswer' &&
+                item.variants.map(quest => {
+                  return (
+                    <label key={shortid.generate()} className="checkbox">
+                      <input
+                        className="margin-10 ask-checkbox"
+                        type="checkbox"
+                      />
+                      {quest}
+                    </label>
+                  );
+                })}
               {item.typeQuest === 'starRatings' && (
                 <StarRatings
                   rating={this.state.rating}
@@ -110,11 +192,21 @@ class SurveyPage extends React.Component {
               {item.typeQuest === 'text' && (
                 <textarea className="textarea" placeholder="enter answer" />
               )}
+              <a
+                className="delete-button button is-outlined"
+                onClick={() => this.removeQuest(indexQuest)}
+              >
+                <span className="icon is-medium">
+                  <i className="fas fa-trash-alt" />
+                </span>
+              </a>
             </div>
           ))}
         </TabPanel>
       );
     });
+
+    console.log(this.state.tabIndex);
 
     return (
       <div className="survey-page column is-10">
@@ -131,7 +223,8 @@ class SurveyPage extends React.Component {
               </div>
               <div className="column is-full ">
                 <p className="is-pulled-left margin-10">
-                  Questions: 0, Pages: {this.state.countPages}
+                  Questions: {this.countAllQuests()} , Pages:
+                  {this.state.countPages}
                 </p>
                 <div className="is-pulled-right ">
                   <button className="button margin-10">Save</button>
@@ -150,7 +243,7 @@ class SurveyPage extends React.Component {
                     this.setState({ tabIndex });
                   }}
                 >
-                  <TabList>{tabTitles}</TabList>
+                  <TabList> {tabTitles} </TabList>
                   {tabContent}
                 </Tabs>
               </div>
@@ -158,6 +251,7 @@ class SurveyPage extends React.Component {
           </div>
           <div className="column is-3">
             <RightPad triggerModal={this.triggerModal} />
+            <SettingPad />
             <ModalQuestion
               isOpen={showModal}
               triggerModal={this.triggerModal}

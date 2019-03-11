@@ -3,8 +3,12 @@
   margin-left: 10px;
 }
 
-.survey-pages {
-  background: rgba(0, 255, 255, 0.596);
+.page-name-input {
+  width: 300px;
+}
+
+.survey-wrap {
+  margin-bottom: 100px;
 }
 
 .modal-ask {
@@ -15,7 +19,23 @@
 
 .delete-button {
   position: absolute;
-  right: 0;
+  right: 10px;
+  top: 10px;
+}
+
+.delete-tag {
+  color: #00000047;
+}
+
+.wrap-page-name-input {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.react-tabs__tab {
+  width: auto;
+  min-width: 80px;
 }
 
 .center {

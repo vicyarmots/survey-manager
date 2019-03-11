@@ -15,7 +15,7 @@ export const checkAuth = ComposedComponent => {
 
     render() {
       return (
-        <div>
+        <div className="survey-wrap">
           {!this.props.isLoggedIn ? (
             <div className="columns is-multiline main-wrap">
               <LeftPad />

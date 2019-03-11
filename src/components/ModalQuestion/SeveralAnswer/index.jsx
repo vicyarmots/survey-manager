@@ -1,4 +1,6 @@
-import React from 'react';
+import React from "react";
+import shortid from "shortid";
+
 export const SeveralAnswer = props => {
   const {
     variants,
@@ -15,7 +17,7 @@ export const SeveralAnswer = props => {
   return (
     <div className="input-ask-wrapp">
       {variants.map((input, index) => (
-        <div className="flex-row">
+        <div key={shortid.generate()} className="flex-row">
           <input
             className="input margin-b"
             type="text"
@@ -24,22 +26,17 @@ export const SeveralAnswer = props => {
             onChange={onChange(index)}
           />
           <a
-            className="margin-10 button  is-outlined"
-            key={index}
+            className="button is-outlined"
             onClick={() => getCurrentInput(index)}
           >
-            <span>Delete</span>
             <span className="icon is-small">
-              <i className="fas fa-times" />
+              <i className="fas fa-minus" />
             </span>
           </a>
         </div>
       ))}
       <div className="modal-panel-button margin-b">
-        <button
-          onClick={decCounterInput}
-          className="button is-primary"
-        >
+        <button onClick={decCounterInput} className="button is-primary">
           -
         </button>
         <button
