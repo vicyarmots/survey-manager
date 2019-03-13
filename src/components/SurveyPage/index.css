@@ -11,10 +11,24 @@
   margin-bottom: 100px;
 }
 
+.margin-r-10 {
+  margin-right: 10px;
+}
+
 .modal-ask {
   width: 350px;
   height: 200px;
   position: relative;
+}
+
+.wrap-check-delete {
+  display: flex;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 150px;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .delete-button {
@@ -31,6 +45,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 10px;
 }
 
 .react-tabs__tab {

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
 import SiteRouter from '../../Router/index.jsx';
 
 import './index.css';

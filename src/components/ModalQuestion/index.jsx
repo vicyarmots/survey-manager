@@ -1,79 +1,127 @@
-import Modal from "react-modal";
-import React from "react";
-import "./index.css";
-import { OneAnswer } from "./OneAnswer/index.jsx";
-import { SeveralAnswer } from "./SeveralAnswer/index.jsx";
-import { customStyles } from "./customStylesModal.js";
+import Modal from 'react-modal';
+import React from 'react';
+import './index.css';
+import { OneAnswer } from './OneAnswer/index.jsx';
+import { SeveralAnswer } from './SeveralAnswer/index.jsx';
+import { customStyles } from './customStylesModal.js';
+import shortid from 'shortid';
 
 class ModalQuestion extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: "",
-      variants: [""]
+      quests: {
+        title: '',
+        variants: [{ body: '', key: shortid.generate() }]
+      },
+      inputError: false
     };
   }
 
   removeInput = index => {
-    const newVariants = this.state.variants.filter((item, i) => i !== index);
-    this.setState({ variants: newVariants });
+    const newQuests = this.state.quests;
+    newQuests.variants.filter((item, i) => i !== index);
+    this.setState({ quests: newQuests });
   };
 
   onChange = inputIndex => e => {
     const textValue = e.target.value;
-    const { variants } = this.state;
-    const newArray = variants.map((value, index) =>
-      index !== inputIndex ? value : textValue
-    );
-    this.setState({ variants: newArray });
+    const newQuests = this.state.quests;
+
+    newQuests.variants.map((value, index) => {
+      if (index === inputIndex) {
+        value.body = textValue;
+        return value;
+      } else {
+        return value;
+      }
+    });
+
+    this.setState({ quests: newQuests });
   };
 
-  addVariant = ({ target }) => {
-    this.setState({ variants: [target.value] });
+  incCounterInput = () => {
+    const newQuests = this.state.quests;
+    newQuests.variants.push({ body: '', key: shortid.generate() });
+    this.setState({ quests: newQuests });
   };
-
-  incCounterInput = () =>
-    this.setState({ variants: [...this.state.variants, ""] });
 
   decCounterInput = () => {
-    const { variants } = this.state;
+    const newQuests = this.state.quests;
 
-    if (this.props.type === "severalAnswer" && variants.length == 2) {
+    if (this.props.type === 'severalAnswer' && newQuests.variants.length == 2) {
       return null;
     }
 
-    if (variants.length == 1) {
+    if (newQuests.variants.length == 1) {
       return null;
     }
-    const newArray = [...variants];
-    newArray.pop();
-    this.setState({ variants: newArray });
+
+    newQuests.variants.pop();
+    this.setState({ quests: newQuests });
   };
 
   addNewQuest = () => {
-    this.props.addQuest(this.state);
-    this.props.triggerModal();
+    const { quests } = this.state;
+
+    if (
+      quests.variants.some(item => item.body.length === 0) ||
+      quests.title.length === 0
+    ) {
+      this.setState({ inputError: true });
+      setTimeout(() => this.setState({ inputError: false }), 1000);
+    } else {
+      this.setState({ inputError: false });
+      this.props.addQuest(quests);
+      this.props.triggerModal();
+    }
   };
 
   addQuestion = e => {
-    this.setState({ title: e.target.value });
+    this.setState({ quests: { ...this.state.quests, title: e.target.value } });
   };
 
   afterOpenModal = () => {
     const { type } = this.props;
 
-    type !== "severalAnswer"
-      ? this.setState({ title: "", typeQuest: type })
-      : this.setState({ title: "", variants: ["", ""], typeQuest: type });
+    type === 'severalAnswer'
+      ? this.setState({
+          quests: {
+            ...this.state.quests,
+            title: '',
+            variants: [
+              { body: '', key: shortid.generate() },
+              { body: '', key: shortid.generate() }
+            ],
+            typeQuest: type
+          }
+        })
+      : type === 'oneAnswer'
+      ? this.setState({
+          quests: {
+            ...this.state.quests,
+            variants: [{ body: '', key: shortid.generate() }],
+            title: '',
+            typeQuest: type
+          }
+        })
+      : this.setState({
+          quests: { ...this.state.quests, title: '', typeQuest: type }
+        });
   };
 
   choose(type) {
     return (
       {
-        oneAnswer: <OneAnswer addVariant={this.addVariant} />,
+        oneAnswer: (
+          <OneAnswer
+            onChange={this.onChange}
+            variants={this.state.quests.variants}
+          />
+        ),
         severalAnswer: (
           <SeveralAnswer
-            variants={this.state.variants}
+            variants={this.state.quests.variants}
             onChange={this.onChange}
             incCounterInput={this.incCounterInput}
             decCounterInput={this.decCounterInput}
@@ -83,8 +131,11 @@ class ModalQuestion extends React.Component {
       }[type] || null
     );
   }
+
   render() {
     const { type } = this.props;
+    const { quests, inputError } = this.state;
+
     return (
       <Modal
         ariaHideApp={false}
@@ -101,10 +152,15 @@ class ModalQuestion extends React.Component {
           >
             Close Modal
           </button>
+          <div className="modal-error">
+            {!!inputError && (
+              <p className="help is-danger">there is an empty field</p>
+            )}
+          </div>
           <label className="label">Question</label>
           <input
             onChange={this.addQuestion}
-            className="input "
+            className={`input ${quests.title.length === 0 ? 'is-danger' : ''}`}
             type="text"
             placeholder="enter question"
           />

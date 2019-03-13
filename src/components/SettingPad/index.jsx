@@ -1,5 +1,5 @@
-import React from "react";
-import "./index.css";
+import React from 'react';
+import './index.css';
 
 class SettingPad extends React.Component {
   constructor(props) {
@@ -9,19 +9,22 @@ class SettingPad extends React.Component {
   render() {
     const fields = {
       anonQuest: {
-        label: "anonymous question"
+        label: 'Anonymous question'
       },
       questNumb: {
-        label: "question numbers"
+        label: 'Question numbers'
       },
       pageNumb: {
-        label: "page numbers"
+        label: 'Page numbers'
       },
       randomQuests: {
-        label: "randomize questions"
+        label: 'Randomize questions'
       },
       asterisksFields: {
-        label: "asterisks for mandatory fields"
+        label: 'Asterisks for mandatory fields'
+      },
+      progressBar : {
+        label: 'Progress bar'
       }
     };
 
@@ -30,9 +33,13 @@ class SettingPad extends React.Component {
         <p className="panel-heading">Survey options</p>
         {Object.keys(fields).map(key => (
           <a className="panel-block button" key={key} name={key}>
-            <label className="checkbox">
-            <input type="checkbox"/>
-            {fields[key].label}
+            <label className="checkbox ">
+              <input
+                name={key}
+                type="checkbox"
+                onChange={this.props.triggerCheckField}
+              />
+              {fields[key].label}
             </label>
           </a>
         ))}

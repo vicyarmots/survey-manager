@@ -23,7 +23,15 @@ class SurveyPage extends React.Component {
       showModal: false,
       tabIndex: 0,
       choosen: '',
-      rating: 5
+      rating: 5,
+      fields: {
+        anonQuest: false,
+        questNumb: false,
+        pageNumb: false,
+        randomQuests: false,
+        asterisksFields: false,
+        progressBar: false
+      }
     };
   }
 
@@ -70,6 +78,7 @@ class SurveyPage extends React.Component {
   };
 
   removeQuest = index => {
+    const { pages } = this.state;
     const page = Object.keys(pages)[this.state.tabIndex];
 
     const newQuests = this.state.pages[page].quests.filter(
@@ -100,22 +109,11 @@ class SurveyPage extends React.Component {
   removePage = deleteKey => {
     const newPages = this.state.pages;
     delete newPages[deleteKey];
-
-    if (this.state.tabIndex > 0) {
-      this.setState({
-        pages: newPages,
-        countPages: --this.state.countPages,
-        tabIndex: --this.state.tabIndex
-      });
-    } else {
-      this.setState({ pages: newPages, countPages: --this.state.countPages });
-    }
-
-    // this.state.tabIndex > 0 ? this.setState({
-    //   pages: newPages,
-    //   countPages: --this.state.countPages,
-    //   tabIndex: --this.state.tabIndex
-    // }) :  this.setState({ pages: newPages, countPages: --this.state.countPages })
+    this.setState({
+      pages: newPages,
+      countPages: --this.state.countPages,
+      tabIndex: 0
+    });
   };
 
   changePageName = (textValue, page) => {
@@ -124,15 +122,37 @@ class SurveyPage extends React.Component {
     this.setState({ pages: newPages });
   };
 
+  triggerCheckField = ({ target }) => {
+    const triggerField = target.name;
+    const newFields = this.state.fields;
+    newFields[triggerField] = !this.state.fields[triggerField];
+    this.setState({ fields: newFields });
+  };
+
+  triggerMandatory = indexQuest => {
+    const { pages } = this.state;
+    const page = Object.keys(pages)[this.state.tabIndex];
+    const newPages = pages;
+    newPages[page].quests[indexQuest].mandatoryQuest = !newPages[page].quests[
+      indexQuest
+    ].mandatoryQuest;
+    this.setState({ pages: newPages });
+  };
+
   render() {
-    console.log(this.state.pages);
+    const { pages, choosen, showModal, fields } = this.state;
 
-    const { pages, choosen, showModal } = this.state;
-
-    const tabTitles = Object.keys(pages).map(key => {
+    const tabTitles = Object.keys(pages).map((key, index) => {
       return (
         <Tab key={shortid.generate()}>
-          <h1>{pages[key].name}</h1>
+          <h1>
+            {fields.pageNumb && (
+              <span className="tag is-light is-rounded margin-r-10">
+                {index + 1}
+              </span>
+            )}
+            {pages[key].name}
+          </h1>
         </Tab>
       );
     });
@@ -159,12 +179,19 @@ class SurveyPage extends React.Component {
           </div>
           {pages[page].quests.map((item, indexQuest) => (
             <div key={shortid.generate()} className="notification  flex-column">
-              <h1 className="subtitle"> {item.title} </h1>
-              <div className="variants" />
+              <h1 className="subtitle">
+                {fields.questNumb && (
+                  <span className="tag is-dark is-rounded margin-10">
+                    {indexQuest + 1}
+                  </span>
+                )}
+
+                {item.title}
+              </h1>
               {item.typeQuest === 'oneAnswer' && (
                 <label className="checkbox ">
                   <input className="margin-10 ask-checkbox" type="checkbox" />
-                  {item.variants[0]}
+                  {item.variants[0].body}
                 </label>
               )}
               {item.typeQuest === 'severalAnswer' &&
@@ -175,7 +202,7 @@ class SurveyPage extends React.Component {
                         className="margin-10 ask-checkbox"
                         type="checkbox"
                       />
-                      {quest}
+                      {quest.body}
                     </label>
                   );
                 })}
@@ -192,21 +219,31 @@ class SurveyPage extends React.Component {
               {item.typeQuest === 'text' && (
                 <textarea className="textarea" placeholder="enter answer" />
               )}
-              <a
-                className="delete-button button is-outlined"
-                onClick={() => this.removeQuest(indexQuest)}
-              >
-                <span className="icon is-medium">
-                  <i className="fas fa-trash-alt" />
-                </span>
-              </a>
+
+              <div className="wrap-check-delete">
+                <label className="checkbox">
+                  <input
+                    type="checkbox"
+                    onChange={e => this.triggerMandatory(indexQuest)}
+                    checked={pages[page].quests[indexQuest].mandatoryQuest}
+                  />
+                  Mandatory
+                </label>
+
+                <a
+                  className="button is-outlined"
+                  onClick={() => this.removeQuest(indexQuest)}
+                >
+                  <span className="icon is-medium">
+                    <i className="fas fa-trash-alt" />
+                  </span>
+                </a>
+              </div>
             </div>
           ))}
         </TabPanel>
       );
     });
-
-    console.log(this.state.tabIndex);
 
     return (
       <div className="survey-page column is-10">
@@ -238,7 +275,7 @@ class SurveyPage extends React.Component {
               </div>
               <div className="column is-full">
                 <Tabs
-                  defaultIndex={0}
+                  selectedIndex={this.state.tabIndex}
                   onSelect={tabIndex => {
                     this.setState({ tabIndex });
                   }}
@@ -251,7 +288,7 @@ class SurveyPage extends React.Component {
           </div>
           <div className="column is-3">
             <RightPad triggerModal={this.triggerModal} />
-            <SettingPad />
+            <SettingPad triggerCheckField={this.triggerCheckField} />
             <ModalQuestion
               isOpen={showModal}
               triggerModal={this.triggerModal}
