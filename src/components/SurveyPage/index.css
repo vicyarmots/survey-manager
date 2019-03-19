@@ -78,3 +78,12 @@
 .input-ask-wrapp {
   width: 100%;
 }
+
+.input-wrapp {
+  position: relative;
+}
+
+.input-help {
+  position: absolute;
+  text-transform: capitalize;
+}

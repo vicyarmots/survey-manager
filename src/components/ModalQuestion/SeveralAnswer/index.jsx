@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 export const SeveralAnswer = props => {
   const {
@@ -6,30 +6,31 @@ export const SeveralAnswer = props => {
     onChange,
     incCounterInput,
     decCounterInput,
-    removeInput
+    removeInput,
+    AnswerValidate
   } = props;
-
-  const getCurrentInput = index => {
-    removeInput(index);
-  };
 
   return (
     <div className="input-ask-wrapp">
       {variants.map((input, index) => (
-        <div key={input.key} className="flex-row">
+        <div key={input.key} className="flex-row input-wrapp quest-input-title">
           <input
             className={`input margin-b ${
-              input.body.length === 0 ? 'is-danger' : ''
+              input.body.length === 0 ? "is-danger" : ""
             } `}
             type="text"
             placeholder="enter answer"
             onChange={onChange(index)}
+            onBlur={e => AnswerValidate(e.target.value, index)}
             required
           />
-          <a
-            className="button is-outlined"
-            onClick={() => getCurrentInput(index)}
-          >
+          {!!variants[index].error && (
+            <p className="input-help help is-danger answer-help">
+              {variants[index].error}
+            </p>
+          )}
+
+          <a className="button is-outlined" onClick={() => removeInput(index)}>
             <span className="icon is-small">
               <i className="fas fa-minus" />
             </span>

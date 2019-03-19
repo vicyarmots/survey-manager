@@ -21,3 +21,13 @@
 .modal-error {
   height: 25px;
 }
+
+.quest-input-title {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.answer-help {
+  bottom: -15px;
+  
+}

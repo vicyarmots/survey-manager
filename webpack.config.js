@@ -29,6 +29,11 @@ module.exports = {
       }
     ]
   },
+  node: {
+    net: "empty",
+    tls: "empty",
+    dns: "empty"
+  },
   resolve: {
     alias: {
       components: path.resolve(__dirname, "src/components"),

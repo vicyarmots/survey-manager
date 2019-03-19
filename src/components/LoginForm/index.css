@@ -9,6 +9,12 @@
   transform: translate(-50%, -50%);
 }
 
-.login-form__button_sign-in {
-  margin-left: 15%;
-} 
+.login-form__wrap-button {
+  position: relative;
+  text-align: center;
+}
+
+.sign-up--link {
+  position: absolute;
+  left: 0;
+}

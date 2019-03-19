@@ -1,12 +1,13 @@
-import React from 'react';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import RightPad from '../RightPad/index.jsx';
-import ModalQuestion from '../ModalQuestion/index.jsx';
-import StarRatings from 'react-star-ratings';
-import SettingPad from '../SettingPad/index.jsx';
-import shortid from 'shortid';
-import 'react-tabs/style/react-tabs.css';
-import './index.css';
+import React from "react";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import RightPad from "../RightPad/index.jsx";
+import ModalQuestion from "../ModalQuestion/index.jsx";
+import StarRatings from "react-star-ratings";
+import SettingPad from "../SettingPad/index.jsx";
+import shortid from "shortid";
+import "react-tabs/style/react-tabs.css";
+import "./index.css";
+import { PageNameSchema, validation } from "../../helpers/validation.js";
 
 class SurveyPage extends React.Component {
   constructor(props) {
@@ -16,13 +17,14 @@ class SurveyPage extends React.Component {
         page_1: {
           quests: [],
           index: 1,
-          name: 'Page 1'
+          name: "Page 1",
+          error: null
         }
       },
       countPages: 1,
       showModal: false,
       tabIndex: 0,
-      choosen: '',
+      choosen: "",
       rating: 5,
       fields: {
         anonQuest: false,
@@ -50,13 +52,15 @@ class SurveyPage extends React.Component {
 
   addNewPage = () => {
     const newCount = ++this.state.countPages;
+
     this.setState(({ pages }) => ({
       pages: {
         ...pages,
         [`page_${newCount}`]: {
           quests: [],
           index: newCount,
-          name: `Page ${newCount}`
+          name: `Page ${newCount}`,
+          error: null
         }
       },
       countPages: newCount
@@ -111,15 +115,29 @@ class SurveyPage extends React.Component {
     delete newPages[deleteKey];
     this.setState({
       pages: newPages,
-      countPages: --this.state.countPages,
       tabIndex: 0
     });
   };
 
   changePageName = (textValue, page) => {
-    const newPages = this.state.pages;
-    newPages[page].name = textValue;
-    this.setState({ pages: newPages });
+    if (textValue.length > 3) {
+      const newPages = this.state.pages;
+      newPages[page].name = textValue;
+      this.setState({ pages: newPages });
+    }
+  };
+
+  handleValidate = (textValue, page) => {
+    const { error } = validation(textValue, PageNameSchema, "name");
+    if (error) {
+      const newPages = this.state.pages;
+      newPages[page].error = error.details[0].message.replace('"value"', "");
+      this.setState({ pages: newPages });
+    } else {
+      const newPages = this.state.pages;
+      newPages[page].error = null;
+      this.setState({ pages: newPages });
+    }
   };
 
   triggerCheckField = ({ target }) => {
@@ -161,12 +179,19 @@ class SurveyPage extends React.Component {
       return (
         <TabPanel key={page}>
           <div className="wrap-page-name-input">
-            <input
-              className="input page-name-input"
-              type="text"
-              placeholder="Enter page name"
-              onChange={e => this.changePageName(e.target.value, page)}
-            />
+            <div className="input-wrapp">
+              <input
+                className="input page-name-input "
+                type="text"
+                placeholder="Enter page name"
+                onChange={e => this.changePageName(e.target.value, page)}
+                onBlur={e => this.handleValidate(e.target.value, page)}
+              />
+              {!!pages[page].error && (
+                <p className="help is-danger input-help">{pages[page].error}</p>
+              )}
+            </div>
+
             <a
               onClick={() => this.removePage(page)}
               className="is-outlined delete-tag button"
@@ -186,15 +211,15 @@ class SurveyPage extends React.Component {
                   </span>
                 )}
 
-                {item.title}
+                {item.title.body}
               </h1>
-              {item.typeQuest === 'oneAnswer' && (
+              {item.typeQuest === "oneAnswer" && (
                 <label className="checkbox ">
                   <input className="margin-10 ask-checkbox" type="checkbox" />
                   {item.variants[0].body}
                 </label>
               )}
-              {item.typeQuest === 'severalAnswer' &&
+              {item.typeQuest === "severalAnswer" &&
                 item.variants.map(quest => {
                   return (
                     <label key={shortid.generate()} className="checkbox">
@@ -206,7 +231,7 @@ class SurveyPage extends React.Component {
                     </label>
                   );
                 })}
-              {item.typeQuest === 'starRatings' && (
+              {item.typeQuest === "starRatings" && (
                 <StarRatings
                   rating={this.state.rating}
                   starRatedColor="gold"
@@ -216,7 +241,7 @@ class SurveyPage extends React.Component {
                   starDimension="25px"
                 />
               )}
-              {item.typeQuest === 'text' && (
+              {item.typeQuest === "text" && (
                 <textarea className="textarea" placeholder="enter answer" />
               )}
 
@@ -261,7 +286,7 @@ class SurveyPage extends React.Component {
               <div className="column is-full ">
                 <p className="is-pulled-left margin-10">
                   Questions: {this.countAllQuests()} , Pages:
-                  {this.state.countPages}
+                  {Object.keys(pages).length}
                 </p>
                 <div className="is-pulled-right ">
                   <button className="button margin-10">Save</button>

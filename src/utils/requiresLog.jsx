@@ -8,7 +8,7 @@ export const checkAuth = ComposedComponent => {
     checkAndRedirect = () => {
       const { isLoggedIn, history } = this.props;
 
-      if (!!isLoggedIn) {
+      if (!isLoggedIn) {
         history.push('/');
       }
     };
@@ -16,7 +16,7 @@ export const checkAuth = ComposedComponent => {
     render() {
       return (
         <div className="survey-wrap">
-          {!this.props.isLoggedIn ? (
+          {!!this.props.isLoggedIn ? (
             <div className="columns is-multiline main-wrap">
               <LeftPad />
               <ComposedComponent {...this.props} />
