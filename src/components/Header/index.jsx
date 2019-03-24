@@ -1,23 +1,24 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { BrowserRouter as Router } from 'react-router-dom';
+import React from "react";
+import { NavLink } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 
-import './index.css';
+import "./index.css";
 
 const Header = () => {
   const headerLogo = {
-    src: 'src/components/header/images/header-logo.png',
-    alt: 'header logo'
+    src:
+      "https://raw.githubusercontent.com/AntonProtas/survey-manager/features/redux-store/src/components/Header/images/header-logo.PNG",
+    alt: "header logo"
   };
 
   const navItems = [
     {
-      link: '/about-us',
-      label: 'About Us'
+      link: "/about-us",
+      label: "About Us"
     },
     {
-      link: '/sign-up',
-      label: 'Log In'
+      link: "/sign-up",
+      label: "Log In"
     }
   ];
   return (
@@ -31,7 +32,7 @@ const Header = () => {
         <div className="navbar-end">
           <ul className="header__wrap-nav__nav__ul navbar-item ">
             {!!navItems &&
-              navItems.map((item,index) => (
+              navItems.map((item, index) => (
                 <Router key={index}>
                   <li className="navbar-item">
                     <NavLink to={item.link}>{item.label}</NavLink>

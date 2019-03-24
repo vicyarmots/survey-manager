@@ -1,91 +1,40 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import {
-  schemaPassword,
-  schemaLogin,
-  validation
-} from '../../helpers/validation.js';
-import './index.css';
+import React from "react";
+import { Link } from "react-router-dom";
+import { schemaUser, Validation } from "../../helpers/validation.js";
+import "./index.css";
 
 class LoginForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      login: { body: '', error: null },
-      password: { body: '', error: null }
+      login: { body: "", error: null },
+      password: { body: "", error: null }
     };
   }
 
   onSubmit = e => {
     e.preventDefault();
     if (
-      !Object.keys(this.state).some(key => !!this.state[key].error !== false) &&
-      Object.keys(this.state).some(key => this.state[key].body.length > 0)
+      !Object.keys(this.state).some(
+        key => !!this.state[key].error || !this.state[key].body
+      )
     ) {
       this.props.setUser(true);
     }
   };
 
-  onPasswordChange = ({ target }) =>
-    this.setState({ password: { ...this.state.password, body: target.value } });
-
-  onLoginChange = ({ target }) =>
-    this.setState({ login: { ...this.state.password, body: target.value } });
-
-  loginValidate = ({ target }) => {
-    const { error } = validation(target.value, schemaLogin, 'login');
-    if (!!error) {
-      this.setState({
-        login: {
-          ...this.state.login,
-          error: error.details[0].message.replace('"value"', '')
-        }
-      });
-    } else {
-      this.setState({
-        login: {
-          ...this.state.login,
-          error: null
-        }
-      });
-    }
+  handleChange = ({ target }) => {
+    this.setState({
+      ...this.state,
+      [target.name]: {
+        ...this.state[target.name],
+        body: target.value
+      }
+    });
   };
 
-  passwordValidate = ({ target }) => {
-    const { error } = validation(target.value, schemaPassword, 'password');
-    if (!!error) {
-      if (error.details[0].message.search(/pattern/) > 0) {
-        if (error.details[0].message.split(' ').pop().length > 17) {
-          this.setState({
-            password: {
-              ...this.state.password,
-              error: 'password must have at least one capital letter'
-            }
-          });
-        } else {
-          this.setState({
-            password: {
-              ...this.state.password,
-              error: 'password must have two digits'
-            }
-          });
-        }
-      } else {
-        this.setState({
-          password: {
-            ...this.state.password,
-            error: error.details[0].message.replace('"value"', '')
-          }
-        });
-      }
-    } else if (error === null) {
-      this.setState({
-        password: {
-          ...this.state.password,
-          error: null
-        }
-      });
-    }
+  handleValidate = ({ target }) => {
+    Validation(target.value, schemaUser, target.name, this);
   };
 
   render() {
@@ -97,9 +46,10 @@ class LoginForm extends React.Component {
           <input
             className="login-form__input_login input"
             type="text"
+            name={"login"}
             placeholder="Login(email)"
-            onChange={this.onLoginChange}
-            onBlur={this.loginValidate}
+            onChange={this.handleChange}
+            onBlur={this.handleValidate}
           />
           {!!login.error && (
             <p className="help is-danger input-help">{login.error}</p>
@@ -110,9 +60,10 @@ class LoginForm extends React.Component {
           <input
             className="login-form__input_pass input"
             type="password"
+            name={"password"}
             placeholder="Password"
-            onChange={this.onPasswordChange}
-            onBlur={this.passwordValidate}
+            onChange={this.handleChange}
+            onBlur={this.handleValidate}
           />
           {!!password.error && (
             <p className="help is-danger input-help">{password.error}</p>

@@ -8,7 +8,7 @@ export const OneAnswer = props => {
         <div key={input.key} className="flex-row input-wrapp quest-input-title">
           <input
             className={`input margin-b ${
-              input.body.length === 0 ? "is-danger" : ""
+              !input.body.length ? "is-danger" : ""
             } `}
             type="text"
             placeholder="enter answer"

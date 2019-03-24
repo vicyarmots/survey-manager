@@ -7,12 +7,17 @@ import SettingPad from "../SettingPad/index.jsx";
 import shortid from "shortid";
 import "react-tabs/style/react-tabs.css";
 import "./index.css";
-import { PageNameSchema, validation } from "../../helpers/validation.js";
+import {
+  schemaSurvey,
+  Validation,
+  getErrorMessage
+} from "../../helpers/validation.js";
 
 class SurveyPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      surveyName: { body: "New Survey", error: null },
       pages: {
         page_1: {
           quests: [],
@@ -67,7 +72,7 @@ class SurveyPage extends React.Component {
     }));
   };
 
-  addQuest = value => {
+  addQuest = (quest, variants, type) => {
     const { pages } = this.state;
     const page = Object.keys(pages)[this.state.tabIndex];
     this.setState({
@@ -75,10 +80,25 @@ class SurveyPage extends React.Component {
         ...this.state.pages,
         [page]: {
           ...this.state.pages[page],
-          quests: [...this.state.pages[page].quests, value]
+          quests: [
+            ...this.state.pages[page].quests,
+            { title: quest, variants: [...variants], typeQuest: type }
+          ]
         }
       }
     });
+  };
+
+  handleChange = ({ target }) => {
+    if (target.value.length > 3) {
+      this.setState({
+        ...this.state,
+        [target.name]: {
+          ...this.state[target.name],
+          body: target.value
+        }
+      });
+    }
   };
 
   removeQuest = index => {
@@ -128,16 +148,9 @@ class SurveyPage extends React.Component {
   };
 
   handleValidate = (textValue, page) => {
-    const { error } = validation(textValue, PageNameSchema, "name");
-    if (error) {
-      const newPages = this.state.pages;
-      newPages[page].error = error.details[0].message.replace('"value"', "");
-      this.setState({ pages: newPages });
-    } else {
-      const newPages = this.state.pages;
-      newPages[page].error = null;
-      this.setState({ pages: newPages });
-    }
+    const newPages = this.state.pages;
+    newPages[page].error = getErrorMessage(textValue, schemaSurvey, "name");
+    this.setState({ pages: newPages });
   };
 
   triggerCheckField = ({ target }) => {
@@ -157,8 +170,12 @@ class SurveyPage extends React.Component {
     this.setState({ pages: newPages });
   };
 
+  validateSuveyName = ({ target }) => {
+    Validation(target.value, schemaSurvey, target.name, this);
+  };
+
   render() {
-    const { pages, choosen, showModal, fields } = this.state;
+    const { surveyName, pages, choosen, showModal, fields } = this.state;
 
     const tabTitles = Object.keys(pages).map((key, index) => {
       return (
@@ -276,10 +293,23 @@ class SurveyPage extends React.Component {
           <div className="column is-9">
             <div className="columns is-multiline">
               <div className="column is-full">
-                <div className="box field survey-main">
-                  <label className="label">New Survey</label>
-                  <div className="control">
-                    <input className="input is-small" type="text" />
+                <div className="box field survey-name-wrapp input-wrapp">
+                  <label className="label margin-10">
+                    {this.state.surveyName.body}
+                  </label>
+                  <div className="control margin-10">
+                    <input
+                      className="input"
+                      type="text"
+                      onChange={this.handleChange}
+                      onBlur={this.validateSuveyName}
+                      name={"surveyName"}
+                    />
+                    {!!surveyName.error && (
+                      <p className="help is-danger input-help">
+                        {surveyName.error}
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>

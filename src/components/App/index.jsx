@@ -1,15 +1,15 @@
-import React from 'react';
-import Header from 'components/Header/index.jsx';
-import Footer from 'components/Footer/index.jsx';
-import Main from 'components/Main/index.jsx';
+import React from "react";
+import Header from "components/Header/index.jsx";
+import Footer from "components/Footer/index.jsx";
+import Main from "components/Main/index.jsx";
 
-import './index.css';
+import "./index.css";
 
-const App = ({ isLoggedIn }) => {
+const App = () => {
   return (
     <React.Fragment>
       <Header />
-      <Main isLoggedIn={isLoggedIn} />
+      <Main />
       <Footer />
     </React.Fragment>
   );

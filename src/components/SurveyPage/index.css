@@ -87,3 +87,9 @@
   position: absolute;
   text-transform: capitalize;
 }
+
+.survey-name-wrapp {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

@@ -6,36 +6,33 @@ import { SeveralAnswer } from "./SeveralAnswer/index.jsx";
 import { customStyles } from "./customStylesModal.js";
 import shortid from "shortid";
 import {
-  schemaAnswer,
-  schemaTitleQuest,
-  validation
+  schemaSurvey,
+  Validation,
+  getErrorMessage
 } from "../../helpers/validation.js";
 
 class ModalQuestion extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      quests: {
-        title: { body: "", error: null },
-        variants: [{ body: "", key: shortid.generate(), error: null }]
-      },
+      quest: { body: "", error: null },
+      variants: [{ body: "", key: shortid.generate(), error: null }],
       inputError: false
     };
   }
 
   removeInput = index => {
-    if (this.state.quests.variants.length > 2) {
-      const newQuests = this.state.quests;
-      newQuests.variants = newQuests.variants.filter((item, i) => i !== index);
-      this.setState({ quests: newQuests });
+    if (this.state.variants.length > 2) {
+      const newVariants = this.state.variants.filter((item, i) => i !== index);
+      this.setState({ variants: newVariants });
     }
   };
 
   onChange = inputIndex => e => {
     const textValue = e.target.value;
-    const newQuests = this.state.quests;
+    const newVariants = this.state.variants;
 
-    newQuests.variants.map((value, index) => {
+    newVariants.map((value, index) => {
       if (index === inputIndex) {
         value.body = textValue;
         return value;
@@ -44,101 +41,89 @@ class ModalQuestion extends React.Component {
       }
     });
 
-    this.setState({ quests: newQuests });
+    this.setState({ variants: newVariants });
   };
 
   incCounterInput = () => {
-    const newQuests = this.state.quests;
-    newQuests.variants.push({ body: "", key: shortid.generate(), error: null });
-    this.setState({ quests: newQuests });
+    const newVariants = this.state.variants;
+    newVariants.push({ body: "", key: shortid.generate(), error: null });
+    this.setState({ variants: newVariants });
   };
 
   decCounterInput = () => {
-    if (this.state.quests.variants.length > 2) {
-      const newQuests = this.state.quests;
-      newQuests.variants.pop();
-      this.setState({ quests: newQuests });
+    if (this.state.variants.length > 2) {
+      const newVariants = this.state.variants;
+      newVariants.pop();
+      this.setState({ variants: newVariants });
     }
   };
 
   addNewQuest = () => {
-    const { quests } = this.state;
+    const { quest, variants, typeQuest } = this.state;
 
-    if (
-      quests.variants.some(item => item.body.length === 0) ||
-      quests.title.error !== null ||
-      quests.title.length > 3
-    ) {
+    if (variants.some(item => !item.body) || !!quest.error || !quest.body) {
       this.setState({ inputError: true });
       setTimeout(() => this.setState({ inputError: false }), 1000);
     } else {
       this.setState({ inputError: false });
-      this.props.addQuest(quests);
+      this.props.addQuest(quest, variants, typeQuest);
       this.props.triggerModal();
     }
   };
 
-  addQuestion = ({ target }) => {
-    const newQuests = this.state.quests;
-    newQuests.title.body = target.value;
-    this.setState({ quests: newQuests });
+  handleChange = ({ target }) => {
+    this.setState({
+      ...this.state,
+      [target.name]: {
+        ...this.state[target.name],
+        body: target.value
+      }
+    });
   };
 
   afterOpenModal = () => {
     const { type } = this.props;
 
-    if (type === "severalAnswer") {
-      this.setState({
-        quests: {
-          ...this.state.quests,
-          title: { body: "", error: null },
+    (({
+      oneAnswer: () => {
+        this.setState({
+          variants: [{ body: "", key: shortid.generate() }],
+          typeQuest: type,
+          quest: { body: "", error: null }
+        });
+      },
+      severalAnswer: () => {
+        this.setState({
           variants: [
             { body: "", key: shortid.generate() },
             { body: "", key: shortid.generate() }
           ],
-          typeQuest: type
-        }
-      });
-    } else if (type === "oneAnswer") {
-      this.setState({
-        quests: {
-          ...this.state.quests,
-          variants: [{ body: "", key: shortid.generate() }],
-          title: { body: "", error: null },
-          typeQuest: type
-        }
-      });
-    } else {
-      this.setState({
-        quests: {
-          ...this.state.quests,
-          title: { body: "", error: null },
-          typeQuest: type
-        }
-      });
-    }
+          typeQuest: type,
+          quest: { body: "", error: null }
+        });
+      }
+    }[type] ||
+      (() => {
+        this.setState({
+          quest: { body: "", error: null },
+          typeQuest: type,
+          variants: []
+        });
+      }))());
   };
 
   handleValiadate = ({ target }) => {
-    const { error } = validation(target.value, schemaTitleQuest, "body");
-    const newQuests = this.state.quests;
-
-    newQuests.title.error = !!error
-      ? error.details[0].message.replace('"value"', "")
-      : null;
-
-    this.setState({ quests: newQuests });
+    Validation(target.value, schemaSurvey, target.name, this);
   };
 
   AnswerValidate = (textValuem, index) => {
-    const { error } = validation(textValuem, schemaAnswer, "body");
-    const newQuests = this.state.quests;
-
-    newQuests.variants[index].error = !!error
-      ? error.details[0].message.replace('"value"', "")
-      : null;
-
-    this.setState({ quests: newQuests });
+    const newVariants = this.state.variants;
+    newVariants[index].error = getErrorMessage(
+      textValuem,
+      schemaSurvey,
+      "body"
+    );
+    this.setState({ variants: newVariants });
   };
 
   choose(type) {
@@ -147,13 +132,13 @@ class ModalQuestion extends React.Component {
         oneAnswer: (
           <OneAnswer
             onChange={this.onChange}
-            variants={this.state.quests.variants}
+            variants={this.state.variants}
             AnswerValidate={this.AnswerValidate}
           />
         ),
         severalAnswer: (
           <SeveralAnswer
-            variants={this.state.quests.variants}
+            variants={this.state.variants}
             AnswerValidate={this.AnswerValidate}
             onChange={this.onChange}
             incCounterInput={this.incCounterInput}
@@ -167,7 +152,7 @@ class ModalQuestion extends React.Component {
 
   render() {
     const { type } = this.props;
-    const { quests, inputError } = this.state;
+    const { quest, inputError } = this.state;
 
     return (
       <Modal
@@ -195,16 +180,15 @@ class ModalQuestion extends React.Component {
           <div className="input-wrapp quest-input-title">
             <label className="label">Question</label>
             <input
-              onChange={this.addQuestion}
+              onChange={this.handleChange}
+              name={"quest"}
               onBlur={this.handleValiadate}
-              className={`input ${
-                quests.title.body.length === 0 ? "is-danger" : ""
-              }`}
+              className={`input ${!quest.body ? "is-danger" : ""}`}
               type="text"
               placeholder="enter question"
             />
-            {!!quests.title.error && (
-              <p className="help is-danger input-help">{quests.title.error}</p>
+            {!!quest.error && (
+              <p className="help is-danger input-help">{quest.error}</p>
             )}
           </div>
 

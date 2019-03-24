@@ -1,23 +1,18 @@
-import React from 'react';
+import React from "react";
 
-import {
-  schemaPassword,
-  schemaLogin,
-  schemaUserName,
-  validation
-} from '../../helpers/validation.js';
+import { schemaUser, Validation } from "../../helpers/validation.js";
 
-import './index.css';
+import "./index.css";
 
 class RegistrForm extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      firstName: { body: '', error: null },
-      login: { body: '', error: null },
-      password: { body: '', error: null },
-      repePassword: { body: '', error: null }
+      firstName: { body: "", error: null },
+      login: { body: "", error: null },
+      password: { body: "", error: null },
+      rePass: { body: "", error: null }
     };
   }
 
@@ -25,10 +20,12 @@ class RegistrForm extends React.Component {
     e.preventDefault();
 
     if (
-      !Object.keys(this.state).some(key => !!this.state[key].error !== false) &&
-      Object.keys(this.state).some(key => this.state[key].body.length > 0)
+      !Object.keys(this.state).some(
+        key => !!this.state[key].error || !this.state[key].body
+      )
     ) {
       this.props.setUser(true);
+      
     }
   };
 
@@ -43,81 +40,33 @@ class RegistrForm extends React.Component {
   };
 
   handleValidate = ({ target }) => {
-    let currentSchema = {};
-
-    if (target.name === 'firstName') {
-      currentSchema = schemaUserName;
-    }
-    if (target.name === 'login') {
-      currentSchema = schemaLogin;
-    }
-    if (target.name === 'password' || target.name === 'repePassword') {
-      currentSchema = schemaPassword;
-    }
-
-    const { error } = validation(target.value, currentSchema, target.name);
-
-    if (!!error) {
-      if (error.details[0].message.search(/pattern/) > 0) {
-        if (error.details[0].message.split(' ').pop().length > 17) {
-          this.setState({
-            password: {
-              ...this.state.password,
-              error: 'password must have at least one capital letter'
-            }
-          });
-        } else {
-          this.setState({
-            password: {
-              ...this.state.password,
-              error: 'password must have two digits'
-            }
-          });
-        }
-      } else {
-        this.setState({
-          ...this.state,
-          [target.name]: {
-            ...this.state[target.name],
-            error: error.details[0].message.replace('"value"', '')
-          }
-        });
-      }
-    } else if (error === null) {
-      this.setState({
-        ...this.state,
-        [target.name]: {
-          ...this.state[target.name],
-          error: null
-        }
-      });
-    }
+    Validation(target.value, schemaUser, target.name, this);
   };
 
-  onBlurRepePassword = ({ target }) => {
+  handleRePassValidate = ({ target }) => {
     if (target.value === this.state.password.body) {
       this.setState({
-        repePassword: { ...this.state.repePassword, error: null }
+        rePass: { ...this.state.rePass, error: null }
       });
     } else {
       this.setState({
-        repePassword: {
-          ...this.state.repePassword,
-          error: 'passwords do not match please retype'
+        rePass: {
+          ...this.state.rePass,
+          error: "passwords do not match please retype"
         }
       });
     }
   };
 
   render() {
-    const { firstName, login, password, repePassword } = this.state;
+    const { firstName, login, password, rePass } = this.state;
     return (
       <div className="registr-form columns is-multiline is-centered is-vcentered box">
         <div className="input-wrapp control  column is-10">
           <input
             className="registr-form__input_first-name input"
             type="text"
-            name={'firstName'}
+            name={"firstName"}
             placeholder="First Name"
             value={this.state.firstName.body}
             onChange={this.handleChange}
@@ -132,7 +81,7 @@ class RegistrForm extends React.Component {
           <input
             className="registr-form__input_login input"
             type="text"
-            name={'login'}
+            name={"login"}
             placeholder="Login(email)"
             value={this.state.login.body}
             onChange={this.handleChange}
@@ -147,7 +96,7 @@ class RegistrForm extends React.Component {
           <input
             className="registr-form__input_pass input"
             type="password"
-            name={'password'}
+            name={"password"}
             placeholder="Password"
             value={this.state.password.body}
             onChange={this.handleChange}
@@ -162,15 +111,15 @@ class RegistrForm extends React.Component {
           <input
             className="registr-form__input_pass repeat input"
             type="password"
-            name={'repePassword'}
+            name={"rePass"}
             placeholder="Password repeat"
-            value={this.state.repePassword.body}
+            value={rePass.body}
             onChange={this.handleChange}
-            onBlur={this.onBlurRepePassword}
+            onBlur={this.handleRePassValidate}
             disabled={!!password.error}
           />
-          {!!repePassword.error && (
-            <p className="help is-danger input-help">{repePassword.error}</p>
+          {!!rePass.error && (
+            <p className="help is-danger input-help">{rePass.error}</p>
           )}
         </div>
 
