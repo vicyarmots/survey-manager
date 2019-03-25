@@ -1,6 +1,11 @@
-import { setUser, setAuthError } from "./action";
+import {
+  setUser,
+  setAuthError,
+  signUpUserSuccess,
+  signUpUserUnSuccess
+} from "./action";
 import { history } from "../../Router/index.jsx";
-import { signIn } from "../../api/index.js";
+import { signIn, signUp } from "../../api/index.js";
 import { setToken } from "../../helpers/tokenHelpers.js";
 
 export const setUserAsync = user => dispatch => {
@@ -16,4 +21,13 @@ export const setUserAsync = user => dispatch => {
     .catch(err => {
       dispatch(setAuthError(err.response.data.message));
     });
+};
+
+export const signUpUserAsync = user => dispatch => {
+  signUp(user)
+    .then(res => {
+      dispatch(signUpUserSuccess(res.data));
+      history.push("/home");
+    })
+    .catch(err => dispatch(signUpUserUnSuccess(err.response.data.message)));
 };

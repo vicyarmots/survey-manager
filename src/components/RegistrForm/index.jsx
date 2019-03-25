@@ -7,7 +7,6 @@ import "./index.css";
 class RegistrForm extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       firstName: { body: "", error: null },
       login: { body: "", error: null },
@@ -24,8 +23,11 @@ class RegistrForm extends React.Component {
         key => !!this.state[key].error || !this.state[key].body
       )
     ) {
-      this.props.setUser(true);
-      
+      this.props.signUpUserAsync({
+        username: this.state.firstName.body,
+        email: this.state.login.body,
+        password: this.state.password.body
+      });
     }
   };
 

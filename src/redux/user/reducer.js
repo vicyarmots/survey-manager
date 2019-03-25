@@ -1,5 +1,9 @@
-import { SIGN_IN_SUCCESS } from "./types";
-import { SIGN_IN_UNSUCCESS } from "./types";
+import {
+  SIGN_IN_SUCCESS,
+  SIGN_IN_UNSUCCESS,
+  SIGN_UP_SUCCESS,
+  SIGN_UP_UNSUCCESS
+} from "./types";
 
 export const initialState = {
   isLoggedIn: false,
@@ -22,7 +26,20 @@ export function rootReducer(state = initialState, action) {
         userData: null,
         errors: action.payload
       };
-
+    case SIGN_UP_SUCCESS:
+      return {
+        ...state,
+        isLoggedIn: true,
+        userData: action.userData,
+        errors: null
+      };
+    case SIGN_UP_UNSUCCESS:
+      return {
+        ...state,
+        isLoggedIn: false,
+        userData: null,
+        errors: action.payload
+      };
     default:
       return state;
   }
