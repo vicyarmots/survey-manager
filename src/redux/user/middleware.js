@@ -1,9 +1,19 @@
-import {setUser} from './action';
+import { setUser, setAuthError } from "./action";
+import { history } from "../../Router/index.jsx";
+import { signIn } from "../../api/index.js";
+import { setToken } from "../../helpers/tokenHelpers.js";
 
-export function setUserAsync(user) {
-  return dispatch => {
-    setTimeout(() => {
-      dispatch(setUser(user));
-    }, 0);
-  };
-}
+export const setUserAsync = user => dispatch => {
+  signIn(user)
+    .then(res => {
+      dispatch(setUser(res.data));
+      history.push("/home");
+      return res.data.token;
+    })
+    .then(token => {
+      setToken(token);
+    })
+    .catch(err => {
+      dispatch(setAuthError(err.response.data.message));
+    });
+};

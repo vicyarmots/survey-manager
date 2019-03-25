@@ -1,6 +1,16 @@
-export function setUser(bool) {
+export function setUser({ firstName, email }) {
   return {
-    type: 'SET_USER',
-    isLoggedIn: bool
+    type: "SIGN_IN_SUCCESS",
+    userData: {
+      firstName: firstName,
+      email: email
+    }
+  };
+}
+
+export function setAuthError(error) {
+  return {
+    type: "SIGN_IN_UNSUCCESS",
+    payload: error
   };
 }

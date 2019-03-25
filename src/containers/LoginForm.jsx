@@ -1,7 +1,7 @@
-import LoginForm from '../components/LoginForm/index.jsx';
-import { setUserAsync } from '../redux/user/middleware.js';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import LoginForm from "../components/LoginForm/index.jsx";
+import { setUserAsync } from "../redux/user/middleware.js";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
 const mapStateToProps = store => {
   return {

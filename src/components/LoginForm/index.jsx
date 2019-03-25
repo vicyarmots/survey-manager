@@ -19,7 +19,10 @@ class LoginForm extends React.Component {
         key => !!this.state[key].error || !this.state[key].body
       )
     ) {
-      this.props.setUser(true);
+      this.props.setUser({
+        email: this.state.login.body,
+        password: this.state.password.body
+      });
     }
   };
 

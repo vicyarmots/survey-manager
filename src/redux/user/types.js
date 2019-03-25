@@ -1,1 +1,2 @@
-export const SET_USER = "SET_USER";
+export const SIGN_IN_SUCCESS = "SIGN_IN_SUCCESS";
+export const SIGN_IN_UNSUCCESS = "SIGN_IN_UNSUCCESS";

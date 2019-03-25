@@ -8,7 +8,7 @@ const mapStateToProps = store => {
     isLoggedIn: store.isLoggedIn
   };
 };
-
+ 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators({ setUser: setUserAsync }, dispatch);
 };

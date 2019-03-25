@@ -5,26 +5,31 @@ import LeftPad from "../components/LeftPad/index.jsx";
 
 export const checkAuth = ComposedComponent => {
   class Authenticate extends React.Component {
-    checkAndRedirect = () => {
+    _checkAndRedirect = () => {
       const { isLoggedIn, history } = this.props;
 
-      console.log(isLoggedIn);
       if (!isLoggedIn) {
         history.push("/");
       }
     };
 
+    componentDidMount() {
+      this._checkAndRedirect();
+    }
+
+    componentDidUpdate() {
+      this._checkAndRedirect();
+    }
+
     render() {
       return (
-        <div className="survey-wrap">
+        <div>
           {!!this.props.isLoggedIn ? (
             <div className="columns is-multiline main-wrap">
               <LeftPad />
               <ComposedComponent {...this.props} />
             </div>
-          ) : (
-            this.checkAndRedirect()
-          )}
+          ) : null}
         </div>
       );
     }
