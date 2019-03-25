@@ -11,7 +11,7 @@ export const initialState = {
   errors: null
 };
 
-export function rootReducer(state = initialState, action) {
+export function userReducer(state = initialState, action) {
   switch (action.type) {
     case SIGN_IN_SUCCESS:
       return {

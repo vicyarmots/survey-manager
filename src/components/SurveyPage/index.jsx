@@ -1,35 +1,35 @@
-import React from "react";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-import RightPad from "../RightPad/index.jsx";
-import ModalQuestion from "../ModalQuestion/index.jsx";
-import StarRatings from "react-star-ratings";
-import SettingPad from "../SettingPad/index.jsx";
-import shortid from "shortid";
-import "react-tabs/style/react-tabs.css";
-import "./index.css";
+import React from 'react';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import RightPad from '../RightPad/index.jsx';
+import ModalQuestion from '../ModalQuestion/index.jsx';
+import StarRatings from 'react-star-ratings';
+import SettingPad from '../SettingPad/index.jsx';
+import shortid from 'shortid';
+import 'react-tabs/style/react-tabs.css';
+import './index.css';
 import {
   schemaSurvey,
   Validation,
   getErrorMessage
-} from "../../helpers/validation.js";
+} from '../../helpers/validation.js';
 
 class SurveyPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      surveyName: { body: "New Survey", error: null },
+      surveyName: { body: 'New Survey', error: null },
       pages: {
         page_1: {
           quests: [],
           index: 1,
-          name: "Page 1",
+          name: 'Page 1',
           error: null
         }
       },
       countPages: 1,
       showModal: false,
       tabIndex: 0,
-      choosen: "",
+      choosen: '',
       rating: 5,
       fields: {
         anonQuest: false,
@@ -149,7 +149,7 @@ class SurveyPage extends React.Component {
 
   handleValidate = (textValue, page) => {
     const newPages = this.state.pages;
-    newPages[page].error = getErrorMessage(textValue, schemaSurvey, "name");
+    newPages[page].error = getErrorMessage(textValue, schemaSurvey, 'name');
     this.setState({ pages: newPages });
   };
 
@@ -173,6 +173,14 @@ class SurveyPage extends React.Component {
   validateSuveyName = ({ target }) => {
     Validation(target.value, schemaSurvey, target.name, this);
   };
+
+  saveSurvey = () =>
+    this.props.saveSurveyAsync({
+      user: this.props.userData.id,
+      surveyName: this.state.surveyName.body,
+      pages: this.state.pages,
+      setting: this.state.fields
+    });
 
   render() {
     const { surveyName, pages, choosen, showModal, fields } = this.state;
@@ -230,13 +238,13 @@ class SurveyPage extends React.Component {
 
                 {item.title.body}
               </h1>
-              {item.typeQuest === "oneAnswer" && (
+              {item.typeQuest === 'oneAnswer' && (
                 <label className="checkbox ">
                   <input className="margin-10 ask-checkbox" type="checkbox" />
                   {item.variants[0].body}
                 </label>
               )}
-              {item.typeQuest === "severalAnswer" &&
+              {item.typeQuest === 'severalAnswer' &&
                 item.variants.map(quest => {
                   return (
                     <label key={shortid.generate()} className="checkbox">
@@ -248,7 +256,7 @@ class SurveyPage extends React.Component {
                     </label>
                   );
                 })}
-              {item.typeQuest === "starRatings" && (
+              {item.typeQuest === 'starRatings' && (
                 <StarRatings
                   rating={this.state.rating}
                   starRatedColor="gold"
@@ -258,7 +266,7 @@ class SurveyPage extends React.Component {
                   starDimension="25px"
                 />
               )}
-              {item.typeQuest === "text" && (
+              {item.typeQuest === 'text' && (
                 <textarea className="textarea" placeholder="enter answer" />
               )}
 
@@ -303,7 +311,7 @@ class SurveyPage extends React.Component {
                       type="text"
                       onChange={this.handleChange}
                       onBlur={this.validateSuveyName}
-                      name={"surveyName"}
+                      name={'surveyName'}
                     />
                     {!!surveyName.error && (
                       <p className="help is-danger input-help">
@@ -319,7 +327,12 @@ class SurveyPage extends React.Component {
                   {Object.keys(pages).length}
                 </p>
                 <div className="is-pulled-right ">
-                  <button className="button margin-10">Save</button>
+                  <button
+                    onClick={this.saveSurvey}
+                    className="button margin-10"
+                  >
+                    Save
+                  </button>
                   <button
                     onClick={this.addNewPage}
                     className="button margin-10"

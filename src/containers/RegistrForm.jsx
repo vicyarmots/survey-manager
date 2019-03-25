@@ -5,7 +5,7 @@ import { bindActionCreators } from "redux";
 
 const mapStateToProps = store => {
   return {
-    isLoggedIn: store.isLoggedIn
+    isLoggedIn: store.userReducer.isLoggedIn
   };
 };
 

@@ -1,15 +1,14 @@
-import React from "react";
-import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
-import LeftPad from "../components/LeftPad/index.jsx";
+import React from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import LeftPad from '../components/LeftPad/index.jsx';
 
 export const checkAuth = ComposedComponent => {
   class Authenticate extends React.Component {
     _checkAndRedirect = () => {
       const { isLoggedIn, history } = this.props;
-
       if (!isLoggedIn) {
-        history.push("/");
+        history.push('/');
       }
     };
 
@@ -37,7 +36,7 @@ export const checkAuth = ComposedComponent => {
 
   const mapStateToProps = state => {
     return {
-      isLoggedIn: state.isLoggedIn
+      isLoggedIn: state.userReducer.isLoggedIn
     };
   };
 
