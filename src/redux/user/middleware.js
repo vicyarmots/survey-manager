@@ -4,7 +4,7 @@ import {
   signUpUserSuccess,
   signUpUserUnSuccess
 } from './action';
-import { history } from '../../Router/index.jsx';
+import { history } from '../../index.jsx';
 import { signIn, signUp } from '../../api/index.js';
 import { setToken } from '../../helpers/tokenHelpers.js';
 

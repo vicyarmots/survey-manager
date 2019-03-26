@@ -20,3 +20,11 @@ export const saveSurvey = ({ user, surveyName, pages, setting }) => {
     setting
   });
 };
+
+export const _getSurveys = ({ user }) => {
+  return axios.get('http://localhost:3000/get-surveys', {
+    params: {
+      user
+    }
+  });
+};

@@ -1,8 +1,14 @@
-import { SAVE_SERVER_ERROR, SAVE_SERVER_SECCESS } from './types';
+import {
+  SAVE_SERVER_ERROR,
+  SAVE_SERVER_SECCESS,
+  GET_SURVEYS_SECCESS,
+  GET_SURVEYS_ERROR
+} from './types';
 
 export const initialState = {
   isSaved: false,
-  error: null
+  error: null,
+  surveys: []
 };
 
 export function surveyReducer(state = initialState, action) {
@@ -17,6 +23,16 @@ export function surveyReducer(state = initialState, action) {
       return {
         ...state,
         isSaved: false,
+        error: action.payload
+      };
+    case GET_SURVEYS_SECCESS:
+      return {
+        ...state,
+        surveys: action.payload
+      };
+    case GET_SURVEYS_ERROR:
+      return {
+        ...state,
         error: action.payload
       };
     default:
