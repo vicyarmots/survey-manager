@@ -179,7 +179,12 @@ class SurveyPage extends React.Component {
       user: this.props.userData.id,
       surveyName: this.state.surveyName.body,
       pages: this.state.pages,
-      setting: this.state.fields
+      setting: this.state.fields,
+      url: this.state.surveyName.body
+        .split(' ')
+        .map(str => str.toLowerCase())
+        .join('_')
+        .concat('_', shortid.generate())
     });
 
   render() {

@@ -6,12 +6,14 @@ import {
 } from './action';
 import { history } from '../../index.jsx';
 import { signIn, signUp } from '../../api/index.js';
-import { setToken } from '../../helpers/tokenHelpers.js';
+import { setToken, getToken } from '../../helpers/tokenHelpers.js';
+import jwt from 'jsonwebtoken';
 
 export const setUserAsync = user => dispatch => {
   signIn(user)
     .then(res => {
-      dispatch(setUser(res.data));
+      const userData = jwt.decode(res.data.token, { complete: true });
+      dispatch(setUser(userData.payload));
       history.push('/home');
       return res.data.token;
     })
@@ -30,4 +32,14 @@ export const signUpUserAsync = user => dispatch => {
       history.push('/home');
     })
     .catch(err => dispatch(signUpUserUnSuccess(err.response.data.message)));
+};
+
+export const setUserUseToken = () => dispatch => {
+  const token = getToken();
+  if (!!token) {
+    const userData = jwt.decode(token, { complete: true });
+    console.log(userData);
+    dispatch(setUser(userData.payload));
+    history.push('/home');
+  }
 };

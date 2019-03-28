@@ -7,7 +7,7 @@ class LeftPad extends React.Component {
     super(props);
   }
   _getSurveys = () => {
-    this.props.getSurveys(this.props.userId);
+    this.props.getSurveys(this.props.userId, 5, 1);
   };
 
   render() {

@@ -1,15 +1,21 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { schemaUser, Validation } from "../../helpers/validation.js";
-import "./index.css";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { schemaUser, Validation } from '../../helpers/validation.js';
+import './index.css';
 
 class LoginForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      login: { body: "", error: null },
-      password: { body: "", error: null }
+      login: { body: '', error: null },
+      password: { body: '', error: null }
     };
+  }
+
+  componentDidMount() {
+    if (!this.props.isLoggedIn) {
+      this.props.setUserUseToken();
+    }
   }
 
   onSubmit = e => {
@@ -49,7 +55,7 @@ class LoginForm extends React.Component {
           <input
             className="login-form__input_login input"
             type="text"
-            name={"login"}
+            name={'login'}
             placeholder="Login(email)"
             onChange={this.handleChange}
             onBlur={this.handleValidate}
@@ -63,7 +69,7 @@ class LoginForm extends React.Component {
           <input
             className="login-form__input_pass input"
             type="password"
-            name={"password"}
+            name={'password'}
             placeholder="Password"
             onChange={this.handleChange}
             onBlur={this.handleValidate}

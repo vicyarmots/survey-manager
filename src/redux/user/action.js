@@ -1,9 +1,8 @@
-export function setUser({ username, email, id }) {
+export function setUser({ username, id }) {
   return {
     type: 'SIGN_IN_SUCCESS',
     userData: {
       username: username,
-      email: email,
       id: id
     }
   };
