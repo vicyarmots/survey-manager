@@ -9,6 +9,7 @@ import { checkAuth } from '../utils/requiresLog.jsx';
 import Surveys from '../containers/Surveys.jsx';
 import SurveyContainer from '../containers/SurveyContainer.jsx';
 import './index.css';
+import PassingPage from '../containers/PassingPage.jsx';
 
 const SiteRouter = () => {
   return (
@@ -19,6 +20,8 @@ const SiteRouter = () => {
       <Route exact path="/survey-page" component={checkAuth(SurveyPage)} />
       <Route exact path="/surveys" component={checkAuth(Surveys)} />
       <Route path="/surveys/:path" component={checkAuth(SurveyContainer)} />
+      <Route exact path="/passing" component={PassingPage} />
+      <Route path="/passing/:path" component={PassingPage} />
       <Route component={NoMatch} />
     </Switch>
   );

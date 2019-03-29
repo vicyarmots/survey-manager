@@ -1,17 +1,17 @@
-import React from "react";
+import React from 'react';
 
-import { schemaUser, Validation } from "../../helpers/validation.js";
+import { schemaUser, Validation } from '../../helpers/validation.js';
 
-import "./index.css";
+import './index.css';
 
 class RegistrForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      firstName: { body: "", error: null },
-      login: { body: "", error: null },
-      password: { body: "", error: null },
-      rePass: { body: "", error: null }
+      firstName: { body: '', error: null },
+      login: { body: '', error: null },
+      password: { body: '', error: null },
+      rePass: { body: '', error: null }
     };
   }
 
@@ -54,7 +54,7 @@ class RegistrForm extends React.Component {
       this.setState({
         rePass: {
           ...this.state.rePass,
-          error: "passwords do not match please retype"
+          error: 'passwords do not match please retype'
         }
       });
     }
@@ -68,7 +68,7 @@ class RegistrForm extends React.Component {
           <input
             className="registr-form__input_first-name input"
             type="text"
-            name={"firstName"}
+            name={'firstName'}
             placeholder="First Name"
             value={this.state.firstName.body}
             onChange={this.handleChange}
@@ -83,7 +83,7 @@ class RegistrForm extends React.Component {
           <input
             className="registr-form__input_login input"
             type="text"
-            name={"login"}
+            name={'login'}
             placeholder="Login(email)"
             value={this.state.login.body}
             onChange={this.handleChange}
@@ -98,7 +98,7 @@ class RegistrForm extends React.Component {
           <input
             className="registr-form__input_pass input"
             type="password"
-            name={"password"}
+            name={'password'}
             placeholder="Password"
             value={this.state.password.body}
             onChange={this.handleChange}
@@ -113,7 +113,7 @@ class RegistrForm extends React.Component {
           <input
             className="registr-form__input_pass repeat input"
             type="password"
-            name={"rePass"}
+            name={'rePass'}
             placeholder="Password repeat"
             value={rePass.body}
             onChange={this.handleChange}

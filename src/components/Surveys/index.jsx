@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import shortid from 'shortid';
 import './index.css';
 
 export default class Surveys extends Component {
@@ -7,8 +7,14 @@ export default class Surveys extends Component {
     super(props);
   }
 
-  setCurrentId = id => {
-    this.props.setCurrentSurveyId(id);
+  componentDidMount() {
+    if (!this.props.countPages) {
+      this.props.getSurveys(this.props.userId, 5, 1);
+    }
+  }
+
+  setCurrent = (id, url) => {
+    this.props.setCurrentSurvey(id, url);
   };
 
   getNextPage = () => {
@@ -20,8 +26,6 @@ export default class Surveys extends Component {
   };
 
   render() {
-    console.log('prp', this.props);
-
     return (
       <div className="hero-body">
         <h1 className="title">Surveys</h1>
@@ -63,16 +67,23 @@ export default class Surveys extends Component {
         <div>
           {this.props.surveys.map((item, index) => {
             return (
-              <Link
+              // <Link
+              //   className="box"
+              //   key={index}
+              //   to={`surveys/${item.url}`}
+              //   onClick={() => {
+              //     this.setCurrent(item._id);
+              //   }}
+              // >
+              //   {item.surveyName}
+              // </Link>
+              <a
+                key={shortid.generate()}
                 className="box"
-                key={index}
-                to={`surveys/${item.url}`}
-                onClick={() => {
-                  this.setCurrentId(item._id);
-                }}
+                onClick={() => this.setCurrent(item._id, item.url)}
               >
                 {item.surveyName}
-              </Link>
+              </a>
             );
           })}
         </div>

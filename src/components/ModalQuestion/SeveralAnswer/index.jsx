@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 export const SeveralAnswer = props => {
   const {
@@ -15,7 +15,7 @@ export const SeveralAnswer = props => {
       {variants.map((input, index) => (
         <div key={input.key} className="flex-row input-wrapp quest-input-title">
           <input
-            className={`input margin-b ${!input.body ? "is-danger" : ""} `}
+            className={`input margin-b ${!input.body ? 'is-danger' : ''} `}
             type="text"
             placeholder="enter answer"
             onChange={onChange(index)}

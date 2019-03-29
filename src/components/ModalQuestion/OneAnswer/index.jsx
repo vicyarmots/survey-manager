@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 export const OneAnswer = props => {
   const { variants, onChange, AnswerValidate } = props;
 
@@ -8,7 +8,7 @@ export const OneAnswer = props => {
         <div key={input.key} className="flex-row input-wrapp quest-input-title">
           <input
             className={`input margin-b ${
-              !input.body.length ? "is-danger" : ""
+              !input.body.length ? 'is-danger' : ''
             } `}
             type="text"
             placeholder="enter answer"

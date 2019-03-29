@@ -7,21 +7,16 @@ import StarRatings from 'react-star-ratings';
 export default class SurveyContainer extends Component {
   constructor(props) {
     super(props);
-    console.log(this.props);
+
     this.state = {
       survey: [],
       tabIndex: 0
     };
   }
 
-  componentDidMount() {
-    getSurveyById(this.props.id)
-      .then(res => this.setState({ survey: res.data.survey[0] }))
-      .catch(err => console.log(err));
-  }
-
   render() {
-    const { pages, setting, surveyName } = this.state.survey;
+    console.log(this.props);
+    const { pages, setting, surveyName } = this.props.survey;
 
     let tabTitles,
       tabContent = [];

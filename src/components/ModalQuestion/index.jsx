@@ -1,22 +1,22 @@
-import Modal from "react-modal";
-import React from "react";
-import "./index.css";
-import { OneAnswer } from "./OneAnswer/index.jsx";
-import { SeveralAnswer } from "./SeveralAnswer/index.jsx";
-import { customStyles } from "./customStylesModal.js";
-import shortid from "shortid";
+import Modal from 'react-modal';
+import React from 'react';
+import './index.css';
+import { OneAnswer } from './OneAnswer/index.jsx';
+import { SeveralAnswer } from './SeveralAnswer/index.jsx';
+import { customStyles } from './customStylesModal.js';
+import shortid from 'shortid';
 import {
   schemaSurvey,
   Validation,
   getErrorMessage
-} from "../../helpers/validation.js";
+} from '../../helpers/validation.js';
 
 class ModalQuestion extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      quest: { body: "", error: null },
-      variants: [{ body: "", key: shortid.generate(), error: null }],
+      quest: { body: '', error: null },
+      variants: [{ body: '', key: shortid.generate(), error: null }],
       inputError: false
     };
   }
@@ -46,7 +46,7 @@ class ModalQuestion extends React.Component {
 
   incCounterInput = () => {
     const newVariants = this.state.variants;
-    newVariants.push({ body: "", key: shortid.generate(), error: null });
+    newVariants.push({ body: '', key: shortid.generate(), error: null });
     this.setState({ variants: newVariants });
   };
 
@@ -87,25 +87,25 @@ class ModalQuestion extends React.Component {
     (({
       oneAnswer: () => {
         this.setState({
-          variants: [{ body: "", key: shortid.generate() }],
+          variants: [{ body: '', key: shortid.generate() }],
           typeQuest: type,
-          quest: { body: "", error: null }
+          quest: { body: '', error: null }
         });
       },
       severalAnswer: () => {
         this.setState({
           variants: [
-            { body: "", key: shortid.generate() },
-            { body: "", key: shortid.generate() }
+            { body: '', key: shortid.generate() },
+            { body: '', key: shortid.generate() }
           ],
           typeQuest: type,
-          quest: { body: "", error: null }
+          quest: { body: '', error: null }
         });
       }
     }[type] ||
       (() => {
         this.setState({
-          quest: { body: "", error: null },
+          quest: { body: '', error: null },
           typeQuest: type,
           variants: []
         });
@@ -121,7 +121,7 @@ class ModalQuestion extends React.Component {
     newVariants[index].error = getErrorMessage(
       textValuem,
       schemaSurvey,
-      "body"
+      'body'
     );
     this.setState({ variants: newVariants });
   };
@@ -181,9 +181,9 @@ class ModalQuestion extends React.Component {
             <label className="label">Question</label>
             <input
               onChange={this.handleChange}
-              name={"quest"}
+              name={'quest'}
               onBlur={this.handleValiadate}
-              className={`input ${!quest.body ? "is-danger" : ""}`}
+              className={`input ${!quest.body ? 'is-danger' : ''}`}
               type="text"
               placeholder="enter question"
             />

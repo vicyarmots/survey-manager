@@ -1,10 +1,10 @@
-import { saveSurvey, _getSurveys } from '../../api/index.js';
+import { saveSurvey, _getSurveys, getSurveyById } from '../../api/index.js';
 import {
   SAVE_SERVER_ERROR,
   SAVE_SERVER_SECCESS,
   GET_SURVEYS_ERROR,
   GET_SURVEYS_SECCESS,
-  SET_CURRENT_SURVEY_ID
+  SET_CURRENT_SURVEY
 } from '../survey/types';
 import { history } from '../../index.jsx';
 
@@ -41,9 +41,14 @@ export const getSurveys = (userId, limit, currentPage) => dispatch => {
     });
 };
 
-export const setCurrentSurveyId = id => dispatch => {
-  dispatch({
-    type: SET_CURRENT_SURVEY_ID,
-    payload: id
-  });
+export const setCurrentSurvey = (id, url) => dispatch => {
+  getSurveyById(id)
+    .then(res => {
+      dispatch({
+        type: SET_CURRENT_SURVEY,
+        payload: res.data.survey[0]
+      });
+      history.push(`/surveys/${url}`);
+    })
+    .catch(er => console.log(er));
 };
