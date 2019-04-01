@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import shortid from 'shortid';
 import './index.css';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 export default class Surveys extends Component {
   constructor(props) {
@@ -27,8 +28,13 @@ export default class Surveys extends Component {
 
   render() {
     return (
-      <div className="hero-body">
+      <div className="hero-body wrapp-main-content">
         <h1 className="title">Surveys</h1>
+        {!this.props.surveys[0] && (
+          <div className="notification">
+            <h1 className="subtitle">You don't have surveys.</h1>
+          </div>
+        )}
         {this.props.countPages > 1 ? (
           <nav
             className="pagination margin-b-40"
@@ -44,46 +50,39 @@ export default class Surveys extends Component {
               </span>
             </div>
             <div className="paginationWrapp">
-              <a
-                onClick={this.getPrevPage}
-                className="pagination-previous"
-                title="This is the first page"
-                disabled={this.props.page === 1 ? true : null}
-              >
-                Previous
-              </a>
-              <a
-                onClick={this.getNextPage}
-                className="pagination-next"
-                disabled={
-                  this.props.page === this.props.countPages ? true : null
-                }
-              >
-                Next page
-              </a>
+              {this.props.page !== 1 && (
+                <a
+                  onClick={this.getPrevPage}
+                  className="pagination-previous"
+                  title="This is the first page"
+                >
+                  Previous
+                </a>
+              )}
+              {this.props.page !== this.props.countPages && (
+                <a onClick={this.getNextPage} className="pagination-next">
+                  Next page
+                </a>
+              )}
             </div>
           </nav>
         ) : null}
         <div>
-          {this.props.surveys.map((item, index) => {
+          {this.props.surveys.map(item => {
             return (
-              // <Link
-              //   className="box"
-              //   key={index}
-              //   to={`surveys/${item.url}`}
-              //   onClick={() => {
-              //     this.setCurrent(item._id);
-              //   }}
-              // >
-              //   {item.surveyName}
-              // </Link>
-              <a
-                key={shortid.generate()}
-                className="box"
-                onClick={() => this.setCurrent(item._id, item.url)}
-              >
-                {item.surveyName}
-              </a>
+              <div className="survey-link-wrapp " key={shortid.generate()}>
+                <a
+                  className="box"
+                  onClick={() => this.setCurrent(item._id, item.url)}
+                >
+                  {item.surveyName}
+                </a>
+                <CopyToClipboard
+                  text={`http://localhost:8080/passing/${item._id}`}
+                >
+                  <button className="button copy-link">Copy link</button>
+                </CopyToClipboard>
+              </div>
             );
           })}
         </div>

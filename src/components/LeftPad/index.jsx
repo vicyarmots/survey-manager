@@ -17,7 +17,6 @@ class LeftPad extends React.Component {
           <Link className="panel-block" to="/survey-page">
             New survey
           </Link>
-
           <a
             className="panel-block"
             onClick={this._getSurveys}
@@ -25,7 +24,6 @@ class LeftPad extends React.Component {
           >
             My surveys
           </a>
-
           <a className="panel-block">Survey templates</a>
         </nav>
       </div>

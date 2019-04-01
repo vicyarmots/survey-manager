@@ -1,8 +1,8 @@
 import React from 'react';
-export const HomePage = () => {
+export const AboutUs = () => {
   return (
     <section className="hero-body">
-      <h1 className="title">It's home baby</h1>
+      <h1 className="title">About Us</h1>
     </section>
   );
 };

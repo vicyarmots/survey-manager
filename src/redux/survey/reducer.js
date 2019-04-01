@@ -3,14 +3,16 @@ import {
   SAVE_SERVER_SECCESS,
   GET_SURVEYS_SECCESS,
   GET_SURVEYS_ERROR,
-  SET_CURRENT_SURVEY
-} from './types';
+  SET_CURRENT_SURVEY,
+  SET_PASSING_SURVEY
+} from "./types";
 
 export const initialState = {
   isSaved: false,
   error: null,
   surveys: [],
   currentSurvey: null,
+  passingSurvey: null,
   pages: null,
   page: null
 };
@@ -45,6 +47,11 @@ export function surveyReducer(state = initialState, action) {
       return {
         ...state,
         currentSurvey: action.payload
+      };
+    case SET_PASSING_SURVEY:
+      return {
+        ...state,
+        passingSurvey: action.payload
       };
     default:
       return state;

@@ -23,7 +23,7 @@ class SettingPad extends React.Component {
       asterisksFields: {
         label: 'Asterisks for mandatory fields'
       },
-      progressBar : {
+      progressBar: {
         label: 'Progress bar'
       }
     };

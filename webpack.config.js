@@ -1,7 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: './src/index.jsx',
@@ -27,6 +26,10 @@ module.exports = {
           fallback: 'style-loader',
           use: ['css-loader', 'sass-loader']
         })
+      },
+      {
+        test: /.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)$/,
+        loader: 'url-loader?limit=10000'
       }
     ]
   },
@@ -39,7 +42,9 @@ module.exports = {
     alias: {
       components: path.resolve(__dirname, 'src/components'),
       store: path.resolve(__dirname, 'src/redux/store'),
-      containers: path.resolve(__dirname, 'src/containers')
+      containers: path.resolve(__dirname, 'src/containers'),
+      helpers: path.resolve(__dirname, 'src/helpers'),
+      utils: path.resolve(__dirname, 'src/utils')
     }
   },
   devServer: {
@@ -52,14 +57,5 @@ module.exports = {
     }
   },
   devtool: 'eval-cheap-module-source-map',
-  plugins: [
-    new HtmlWebpackPlugin(),
-    new ExtractTextPlugin('./src/index.css'),
-    new CopyWebpackPlugin([
-      {
-        from: './node_modules/@fortawesome/fontawesome-free/webfonts',
-        to: './webfonts'
-      }
-    ])
-  ]
+  plugins: [new HtmlWebpackPlugin(), new ExtractTextPlugin('./src/index.css')]
 };

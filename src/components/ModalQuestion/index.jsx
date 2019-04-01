@@ -15,7 +15,7 @@ class ModalQuestion extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      quest: { body: '', error: null },
+      quest: { body: '', error: null, key: shortid.generate() },
       variants: [{ body: '', key: shortid.generate(), error: null }],
       inputError: false
     };
@@ -45,9 +45,11 @@ class ModalQuestion extends React.Component {
   };
 
   incCounterInput = () => {
-    const newVariants = this.state.variants;
-    newVariants.push({ body: '', key: shortid.generate(), error: null });
-    this.setState({ variants: newVariants });
+    if (this.state.variants.length < 5) {
+      const newVariants = this.state.variants;
+      newVariants.push({ body: '', key: shortid.generate(), error: null });
+      this.setState({ variants: newVariants });
+    }
   };
 
   decCounterInput = () => {
@@ -84,32 +86,30 @@ class ModalQuestion extends React.Component {
   afterOpenModal = () => {
     const { type } = this.props;
 
-    (({
-      oneAnswer: () => {
-        this.setState({
+    const defState = {
+      quest: { body: '', error: null, key: shortid.generate() },
+      typeQuest: type,
+      variants: []
+    };
+
+    const variants =
+      {
+        oneAnswer: {
           variants: [{ body: '', key: shortid.generate() }],
           typeQuest: type,
-          quest: { body: '', error: null }
-        });
-      },
-      severalAnswer: () => {
-        this.setState({
+          quest: { body: '', error: null, key: shortid.generate() }
+        },
+        severalAnswer: {
           variants: [
             { body: '', key: shortid.generate() },
             { body: '', key: shortid.generate() }
           ],
           typeQuest: type,
-          quest: { body: '', error: null }
-        });
-      }
-    }[type] ||
-      (() => {
-        this.setState({
-          quest: { body: '', error: null },
-          typeQuest: type,
-          variants: []
-        });
-      }))());
+          quest: { body: '', error: null, key: shortid.generate() }
+        }
+      }[type] || defState;
+
+    this.setState({ ...variants });
   };
 
   handleValiadate = ({ target }) => {

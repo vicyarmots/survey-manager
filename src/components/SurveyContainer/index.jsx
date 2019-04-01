@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import { getSurveyById } from '../../api/index.js';
 import shortid from 'shortid';
 import StarRatings from 'react-star-ratings';
 
@@ -15,7 +14,6 @@ export default class SurveyContainer extends Component {
   }
 
   render() {
-    console.log(this.props);
     const { pages, setting, surveyName } = this.props.survey;
 
     let tabTitles,
@@ -92,6 +90,9 @@ export default class SurveyContainer extends Component {
 
     return (
       <div className="hero-body">
+        <div className="has-text-centered">
+          <h1 className="title margin-r-10">{surveyName}</h1>
+        </div>
         <Tabs
           selectedIndex={this.state.tabIndex}
           onSelect={tabIndex => {

@@ -15,14 +15,11 @@ class RegistrForm extends React.Component {
     };
   }
 
-  onSubmit = e => {
-    e.preventDefault();
-
-    if (
-      !Object.keys(this.state).some(
-        key => !!this.state[key].error || !this.state[key].body
-      )
-    ) {
+  onSubmit = () => {
+    const isValid = !Object.keys(this.state).some(
+      key => !!this.state[key].error || !this.state[key].body
+    );
+    if (!!isValid) {
       this.props.signUpUserAsync({
         username: this.state.firstName.body,
         email: this.state.login.body,
@@ -60,11 +57,22 @@ class RegistrForm extends React.Component {
     }
   };
 
+  keyPressed = event => {
+    if (event.key === 'Enter') {
+      this.onSubmit();
+    }
+  };
+
   render() {
     const { firstName, login, password, rePass } = this.state;
     return (
       <div className="registr-form columns is-multiline is-centered is-vcentered box">
         <div className="input-wrapp control  column is-10">
+          <div className="is-full has-text-centered">
+            {!!this.props.error && (
+              <p className="help is-danger">{this.props.error}</p>
+            )}
+          </div>
           <input
             className="registr-form__input_first-name input"
             type="text"
@@ -73,6 +81,7 @@ class RegistrForm extends React.Component {
             value={this.state.firstName.body}
             onChange={this.handleChange}
             onBlur={this.handleValidate}
+            onKeyPress={this.keyPressed}
           />
           {!!firstName.error && (
             <p className="help is-danger input-help">{firstName.error}</p>
@@ -88,6 +97,7 @@ class RegistrForm extends React.Component {
             value={this.state.login.body}
             onChange={this.handleChange}
             onBlur={this.handleValidate}
+            onKeyPress={this.keyPressed}
           />
           {!!login.error && (
             <p className="help is-danger input-help">{login.error}</p>
@@ -103,6 +113,7 @@ class RegistrForm extends React.Component {
             value={this.state.password.body}
             onChange={this.handleChange}
             onBlur={this.handleValidate}
+            onKeyPress={this.keyPressed}
           />
           {!!password.error && (
             <p className="help is-danger input-help">{password.error}</p>
@@ -118,6 +129,7 @@ class RegistrForm extends React.Component {
             value={rePass.body}
             onChange={this.handleChange}
             onBlur={this.handleRePassValidate}
+            onKeyPress={this.keyPressed}
             disabled={!!password.error}
           />
           {!!rePass.error && (

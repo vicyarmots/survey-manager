@@ -6,15 +6,15 @@ class RightPad extends React.Component {
     super(props);
   }
 
-  handleClick = (type) => {
-    this.props.triggerModal(type)
+  handleClick = type => {
+    this.props.triggerModal(type);
   };
 
   render() {
     const fields = {
       oneAnswer: {
         label: 'Answer (one)',
-        icon: 'fas fa-dice-one',
+        icon: 'fas fa-dice-one'
       },
       severalAnswer: {
         label: 'Answer (several)',

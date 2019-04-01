@@ -13,32 +13,29 @@ import {
   getErrorMessage
 } from '../../helpers/validation.js';
 
+const defaultState = {
+  surveyName: { body: 'New Survey', error: null },
+  pages: {},
+  countPages: 0,
+  showModal: false,
+  tabIndex: 0,
+  choosen: '',
+  rating: 5,
+  fields: {
+    anonQuest: false,
+    questNumb: false,
+    pageNumb: false,
+    randomQuests: false,
+    asterisksFields: false,
+    progressBar: false
+  }
+};
+
 class SurveyPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      surveyName: { body: 'New Survey', error: null },
-      pages: {
-        page_1: {
-          quests: [],
-          index: 1,
-          name: 'Page 1',
-          error: null
-        }
-      },
-      countPages: 1,
-      showModal: false,
-      tabIndex: 0,
-      choosen: '',
-      rating: 5,
-      fields: {
-        anonQuest: false,
-        questNumb: false,
-        pageNumb: false,
-        randomQuests: false,
-        asterisksFields: false,
-        progressBar: false
-      }
+      ...defaultState
     };
   }
 
@@ -172,9 +169,10 @@ class SurveyPage extends React.Component {
 
   validateSuveyName = ({ target }) => {
     Validation(target.value, schemaSurvey, target.name, this);
+    target.value = '';
   };
 
-  saveSurvey = () =>
+  saveSurvey = () => {
     this.props.saveSurveyAsync({
       user: this.props.userData.id,
       surveyName: this.state.surveyName.body,
@@ -186,6 +184,8 @@ class SurveyPage extends React.Component {
         .join('_')
         .concat('_', shortid.generate())
     });
+    this.setState({ ...defaultState });
+  };
 
   render() {
     const { surveyName, pages, choosen, showModal, fields } = this.state;
@@ -314,6 +314,7 @@ class SurveyPage extends React.Component {
                     <input
                       className="input"
                       type="text"
+                      placeholder="Enter survey name"
                       onChange={this.handleChange}
                       onBlur={this.validateSuveyName}
                       name={'surveyName'}

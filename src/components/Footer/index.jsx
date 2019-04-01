@@ -2,7 +2,7 @@ import React from 'react';
 
 import './index.css';
 
-const Footer = props => {
+const Footer = () => {
   return (
     <footer className="footer hero-foot columns is-centered">
       <div className="content has-text-centered">

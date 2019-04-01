@@ -39,12 +39,14 @@ export const SeveralAnswer = props => {
         <button onClick={decCounterInput} className="button is-primary">
           -
         </button>
-        <button
-          onClick={incCounterInput}
-          className="button is-primary margin-10 "
-        >
-          +
-        </button>
+        {variants.length === 5 ? null : (
+          <button
+            onClick={incCounterInput}
+            className="button is-primary margin-10 "
+          >
+            +
+          </button>
+        )}
       </div>
     </div>
   );
