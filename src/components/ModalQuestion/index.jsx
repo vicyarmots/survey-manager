@@ -16,7 +16,10 @@ class ModalQuestion extends React.Component {
     super(props);
     this.state = {
       quest: { body: '', error: null, key: shortid.generate() },
-      variants: [{ body: '', key: shortid.generate(), error: null }],
+      variants: [
+        { body: '', key: shortid.generate(), error: null },
+        { body: '', key: shortid.generate(), error: null }
+      ],
       inputError: false
     };
   }
@@ -95,7 +98,10 @@ class ModalQuestion extends React.Component {
     const variants =
       {
         oneAnswer: {
-          variants: [{ body: '', key: shortid.generate() }],
+          variants: [
+            { body: '', key: shortid.generate() },
+            { body: '', key: shortid.generate() }
+          ],
           typeQuest: type,
           quest: { body: '', error: null, key: shortid.generate() }
         },
@@ -130,10 +136,13 @@ class ModalQuestion extends React.Component {
     return (
       {
         oneAnswer: (
-          <OneAnswer
-            onChange={this.onChange}
+          <SeveralAnswer
             variants={this.state.variants}
             AnswerValidate={this.AnswerValidate}
+            onChange={this.onChange}
+            incCounterInput={this.incCounterInput}
+            decCounterInput={this.decCounterInput}
+            removeInput={this.removeInput}
           />
         ),
         severalAnswer: (

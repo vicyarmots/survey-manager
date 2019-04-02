@@ -243,12 +243,20 @@ class SurveyPage extends React.Component {
 
                 {item.title.body}
               </h1>
-              {item.typeQuest === 'oneAnswer' && (
-                <label className="checkbox ">
-                  <input className="margin-10 ask-checkbox" type="checkbox" />
-                  {item.variants[0].body}
-                </label>
-              )}
+              {item.typeQuest === 'oneAnswer' &&
+                item.variants.map(quest => {
+                  console.log(quest);
+                  return (
+                    <label key={shortid.generate()} className="checkbox">
+                      <input
+                        className="margin-10 ask-checkbox"
+                        type="radio"
+                        name={`${indexQuest}`}
+                      />
+                      {quest.body}
+                    </label>
+                  );
+                })}
               {item.typeQuest === 'severalAnswer' &&
                 item.variants.map(quest => {
                   return (

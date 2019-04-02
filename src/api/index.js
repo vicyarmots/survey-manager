@@ -40,3 +40,7 @@ export const getSurveyById = id => {
     }
   });
 };
+
+export const saveSurveyResult = result => {
+  return axios.post(`${API_URL}/save-survey-result`, result);
+};

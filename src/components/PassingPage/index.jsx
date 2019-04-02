@@ -4,7 +4,6 @@ import shortid from 'shortid';
 import StarRatings from 'react-star-ratings';
 
 import './index.css';
-import { ifError } from 'assert';
 
 export default class PassingPage extends Component {
   constructor(props) {
@@ -47,6 +46,16 @@ export default class PassingPage extends Component {
     this.setState({ pages: newPages });
   };
 
+  handleChechBox = (page, index, checkboxIndex) => {
+    const newPages = this.state.pages;
+    if (newPages[page][index][checkboxIndex] === checkboxIndex) {
+      delete newPages[page][index][checkboxIndex];
+    } else {
+      newPages[page][index][checkboxIndex] = checkboxIndex;
+    }
+    this.setState({ pages: newPages });
+  };
+
   sentSurveyRes = () => {
     const { pages } = this.state;
     const allAnswers = [];
@@ -58,11 +67,22 @@ export default class PassingPage extends Component {
     const isValid = !allAnswers.some(
       item => !!item.mandatory && item.value === ''
     );
+
+    if (!!isValid) {
+      !!this.props.userData
+        ? this.props.saveSurveyResultAsync({
+            answers: pages,
+            userId: this.props.userData.id,
+            surveyId: this.props.survey._id
+          })
+        : this.props.saveSurveyResultAsync({
+            answers: allAnswers,
+            surveyId: this.props.survey._id
+          });
+    }
   };
 
   render() {
-    console.log(this.state);
-
     let tabTitles,
       tabContent = [];
 
@@ -97,23 +117,25 @@ export default class PassingPage extends Component {
                   {!!item.mandatoryQuest && <i className="fas fa-asterisk" />}
                   {item.title.body}
                 </h1>
-                {item.typeQuest === 'oneAnswer' && (
-                  <label className="checkbox ">
-                    <input
-                      className="margin-10 ask-checkbox"
-                      type="checkbox"
-                      checked={this.state.pages[page][indexQuest].value}
-                      onChange={() =>
-                        this.handleChange(
-                          page,
-                          indexQuest,
-                          !this.state.pages[page][indexQuest].value
-                        )
-                      }
-                    />
-                    {item.variants[0].body}
-                  </label>
-                )}
+                {item.typeQuest === 'oneAnswer' &&
+                  item.variants.map((quest, index) => {
+                    return (
+                      <label key={shortid.generate()} className="checkbox">
+                        <input
+                          className="margin-10 ask-checkbox"
+                          type="radio"
+                          name={`${indexQuest}`}
+                          checked={
+                            this.state.pages[page][indexQuest].value === index
+                          }
+                          onChange={() =>
+                            this.handleChange(page, indexQuest, index)
+                          }
+                        />
+                        {quest.body}
+                      </label>
+                    );
+                  })}
                 {item.typeQuest === 'severalAnswer' &&
                   item.variants.map((quest, index) => {
                     return (
@@ -122,10 +144,10 @@ export default class PassingPage extends Component {
                           className="margin-10 ask-checkbox"
                           type="checkbox"
                           checked={
-                            this.state.pages[page][indexQuest].value === index
+                            this.state.pages[page][indexQuest][index] === index
                           }
                           onChange={() =>
-                            this.handleChange(page, indexQuest, index)
+                            this.handleChechBox(page, indexQuest, index)
                           }
                         />
                         {quest.body}

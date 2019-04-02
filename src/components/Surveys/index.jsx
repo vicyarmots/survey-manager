@@ -82,6 +82,7 @@ export default class Surveys extends Component {
                 >
                   <button className="button copy-link">Copy link</button>
                 </CopyToClipboard>
+                <button>results</button>
               </div>
             );
           })}
