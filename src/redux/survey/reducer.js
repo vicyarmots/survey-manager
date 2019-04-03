@@ -6,7 +6,9 @@ import {
   SET_CURRENT_SURVEY,
   SET_PASSING_SURVEY,
   SAVE_SURVEY_RESULT_SECCESS,
-  SAVE_SURVEY_RESULT_ERROR
+  SAVE_SURVEY_RESULT_ERROR,
+  GET_SURVEY_RESULT_SECCESS,
+  GET_SURVEY_RESULT_ERROR
 } from './types';
 
 export const initialState = {
@@ -14,6 +16,7 @@ export const initialState = {
   error: null,
   surveys: [],
   currentSurvey: null,
+  currentSurveyResults: null,
   passingSurvey: null,
   pages: null,
   page: null,
@@ -66,6 +69,18 @@ export function surveyReducer(state = initialState, action) {
       return {
         ...state,
         surveyResultIsSaved: false,
+        error: action.payload
+      };
+    case GET_SURVEY_RESULT_SECCESS:
+      return {
+        ...state,
+        currentSurveyResults: action.payload,
+        error: null
+      };
+    case GET_SURVEY_RESULT_ERROR:
+      return {
+        ...state,
+        currentSurveyResults: null,
         error: action.payload
       };
     default:

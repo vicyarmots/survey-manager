@@ -1,8 +1,9 @@
 import {
   saveSurvey,
   _getSurveys,
-  getSurveyById,
-  saveSurveyResult
+  _getSurveyById,
+  saveSurveyResult,
+  _getSurveyResults
 } from '../../api/index.js';
 import {
   SAVE_SURVEY_SECCESS,
@@ -12,7 +13,9 @@ import {
   SET_CURRENT_SURVEY,
   SET_PASSING_SURVEY,
   SAVE_SURVEY_RESULT_SECCESS,
-  SAVE_SURVEY_RESULT_ERROR
+  SAVE_SURVEY_RESULT_ERROR,
+  GET_SURVEY_RESULT_SECCESS,
+  GET_SURVEY_RESULT_ERROR
 } from '../survey/types';
 import { history } from '../../index.jsx';
 
@@ -49,7 +52,7 @@ export const getSurveys = (userId, limit, currentPage) => dispatch => {
 };
 
 export const setCurrentSurvey = (id, url) => dispatch => {
-  getSurveyById(id)
+  _getSurveyById(id)
     .then(res => {
       dispatch({
         type: SET_CURRENT_SURVEY,
@@ -60,8 +63,19 @@ export const setCurrentSurvey = (id, url) => dispatch => {
     .catch(er => console.log(er));
 };
 
+export const getSurveyById = id => dispatch => {
+  _getSurveyById(id)
+    .then(res => {
+      dispatch({
+        type: SET_CURRENT_SURVEY,
+        payload: res.data.survey[0]
+      });
+    })
+    .catch(er => console.log(er));
+};
+
 export const setPassingSurvey = id => dispatch => {
-  getSurveyById(id)
+  _getSurveyById(id)
     .then(res => {
       dispatch({
         type: SET_PASSING_SURVEY,
@@ -82,6 +96,23 @@ export const saveSurveyResultAsync = result => dispatch => {
       console.log(error);
       dispatch({
         type: SAVE_SURVEY_RESULT_ERROR,
+        payload: error
+      });
+    });
+};
+
+export const getSurveyResults = surveyId => dispatch => {
+  _getSurveyResults(surveyId)
+    .then(res =>
+      dispatch({
+        type: GET_SURVEY_RESULT_SECCESS,
+        payload: res.data.results
+      })
+    )
+    .catch(error => {
+      console.log(error);
+      dispatch({
+        type: GET_SURVEY_RESULT_ERROR,
         payload: error
       });
     });

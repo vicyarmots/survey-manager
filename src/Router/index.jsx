@@ -11,6 +11,7 @@ import SurveyContainer from 'containers/SurveyContainer.jsx';
 import { AboutUs } from 'components/AboutUs/index.jsx';
 import './index.css';
 import PassingPage from 'containers/PassingPage.jsx';
+import SurveyResultPage from 'containers/SurveyResultPage.jsx';
 
 const SiteRouter = () => {
   return (
@@ -22,9 +23,13 @@ const SiteRouter = () => {
       <Route exact path="/survey-page" component={checkAuth(SurveyPage)} />
       <Route exact path="/surveys" component={checkAuth(Surveys)} />
       <Route path="/surveys/:path" component={checkAuth(SurveyContainer)} />
-      <Route exact path="/passing" component={PassingPage} />
+      <Route exact path="/passing" component={checkAuth(HomePage)} />
       <Route path="/passing/:path" component={PassingPage} />
-
+      <Route exact path="/survey-result" component={checkAuth(HomePage)} />
+      <Route
+        path="/survey-result/:path"
+        component={checkAuth(SurveyResultPage)}
+      />
       <Route component={NoMatch} />
     </Switch>
   );

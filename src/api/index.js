@@ -33,7 +33,7 @@ export const _getSurveys = ({ user, currentPage, limit }) => {
   });
 };
 
-export const getSurveyById = id => {
+export const _getSurveyById = id => {
   return axios.get(`${API_URL}/get-survey-by-id`, {
     params: {
       id: id
@@ -43,4 +43,12 @@ export const getSurveyById = id => {
 
 export const saveSurveyResult = result => {
   return axios.post(`${API_URL}/save-survey-result`, result);
+};
+
+export const _getSurveyResults = id => {
+  return axios.get(`${API_URL}/get-survey-results`, {
+    params: {
+      surveyId: id
+    }
+  });
 };

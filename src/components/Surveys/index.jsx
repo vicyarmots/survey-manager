@@ -3,6 +3,8 @@ import shortid from 'shortid';
 import './index.css';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
+import { history } from '../../index.jsx';
+
 export default class Surveys extends Component {
   constructor(props) {
     super(props);
@@ -77,12 +79,19 @@ export default class Surveys extends Component {
                 >
                   {item.surveyName}
                 </a>
+                <button
+                  className="button top-button result-button"
+                  onClick={() => history.push(`/survey-result/${item._id}`)}
+                >
+                  results
+                </button>
                 <CopyToClipboard
                   text={`http://localhost:8080/passing/${item._id}`}
                 >
-                  <button className="button copy-link">Copy link</button>
+                  <button className="button top-button copy-button">
+                    Copy link
+                  </button>
                 </CopyToClipboard>
-                <button>results</button>
               </div>
             );
           })}

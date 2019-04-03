@@ -1,33 +1,23 @@
 import React from 'react';
-import Chart from 'react-apexcharts';
 
-const data = {
-  options: {
-    chart: {
-      id: 'basic-bar'
-    },
-    xaxis: {
-      categories: ['кайф', 1992, 1993, 1994]
-    }
-  },
-  series: [
-    {
-      name: 'series-1',
-      data: [-50, 40, 45, 50]
-    }
-  ]
-};
+import ReactChartkick, { BarChart } from 'react-chartkick';
+import Chart from 'chart.js';
+
+ReactChartkick.addAdapter(Chart);
 
 export const HomePage = () => {
   return (
     <section className="hero-body">
-      <h1 className="title">It's home baby</h1>
-      <Chart
-        options={data.options}
-        series={data.series}
-        type="bar"
-        width="500"
+      <BarChart
+        data={[['X-Small', 5], ['Small', 27], ['Smalldasdas', 90]]}
+        min={0}
+        max={100}
+        width="400px"
+        height="120px"
+        colors={[['#999999', '#ffff66', '#ff5050', '#00cc66', '#66ccff']]}
+        suffix="%"
       />
+      <h1 className="title">It's home baby</h1>
     </section>
   );
 };
