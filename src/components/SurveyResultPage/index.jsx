@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import StarRatings from 'react-star-ratings';
 import shortid from 'shortid';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import ReactChartkick, { BarChart } from 'react-chartkick';
+import Chart from 'chart.js';
+ReactChartkick.addAdapter(Chart);
 
 export default class SurveyResultPage extends Component {
   constructor(props) {
@@ -18,6 +21,28 @@ export default class SurveyResultPage extends Component {
     this.props.getSurveyById(this.props.match.params.path);
   }
 
+  getQuestResults = (page, indexQuest) => {
+    return this.props.results.map(user => user.answers[page][indexQuest].value);
+  };
+
+  getCountMissed = (page, indexQuest) => {
+    const questResults = this.getQuestResults(page, indexQuest);
+    return questResults.filter(item => {
+      if (Array.isArray(item)) {
+        return !item.length;
+      } else {
+        return item === '';
+      }
+    }).length;
+  };
+
+  getPercentageRatio = (page, indexQuest, quest) => {
+    const questResults = this.getQuestResults(page, indexQuest);
+    console.log(questResults);
+    console.log(quest);
+    return '6969';
+  };
+
   render() {
     let tabTitles,
       tabContent = [];
@@ -28,14 +53,7 @@ export default class SurveyResultPage extends Component {
       tabTitles = Object.keys(pages).map((key, index) => {
         return (
           <Tab key={shortid.generate()}>
-            <h1>
-              {!!setting.pageNumb && (
-                <span className="tag is-light is-rounded margin-r-10">
-                  {index + 1}
-                </span>
-              )}
-              {pages[key].name}
-            </h1>
+            <h1>{pages[key].name}</h1>
           </Tab>
         );
       });
@@ -52,11 +70,26 @@ export default class SurveyResultPage extends Component {
                   {!!item.mandatoryQuest && <i className="fas fa-asterisk" />}
                   {item.title.body}
                 </h1>
+                <div>
+                  <span className="notification margin-r-20 ">
+                    Responded:{' '}
+                    {this.props.results.length -
+                      this.getCountMissed(page, indexQuest)}
+                  </span>
+                  <span className="notification margin-r-20">
+                    Missed: {this.getCountMissed(page, indexQuest)}
+                  </span>
+                </div>
                 {item.typeQuest === 'oneAnswer' &&
-                  item.variants.map((quest, index) => {
+                  item.variants.map((quest, index, array) => {
                     return (
                       <label key={shortid.generate()} className="checkbox">
-                        {quest.body}
+                        {quest.body}{' '}
+                        {this.getPercentageRatio(
+                          page,
+                          indexQuest,
+                          array.length
+                        )}
                       </label>
                     );
                   })}
@@ -85,7 +118,6 @@ export default class SurveyResultPage extends Component {
         );
       });
     }
-    console.log('SurveyResultPage', this.props);
     return (
       <div className="hero-body">
         {!!this.props.survey ? (

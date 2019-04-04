@@ -22,15 +22,30 @@ export default class PassingPage extends Component {
   static getDerivedStateFromProps(props, state) {
     if (!!props.survey && !state.pages) {
       const newPages = {};
+      console.log(props.survey.pages);
       Object.keys(props.survey.pages).map(
         key =>
           (newPages[key] = Array.apply(null, {
             length: props.survey.pages[key].quests.length
           }).map((item, index) => {
             if (!!props.survey.pages[key].quests[index].mandatoryQuest) {
-              return { value: '', mandatory: true };
+              if (
+                props.survey.pages[key].quests[index].typeQuest ===
+                'severalAnswer'
+              ) {
+                return { value: [], mandatory: true };
+              } else {
+                return { value: '', mandatory: true };
+              }
             } else {
-              return { value: '', mandatory: false };
+              if (
+                props.survey.pages[key].quests[index].typeQuest ===
+                'severalAnswer'
+              ) {
+                return { value: [], mandatory: false };
+              } else {
+                return { value: '', mandatory: false };
+              }
             }
           }))
       );
@@ -48,10 +63,10 @@ export default class PassingPage extends Component {
 
   handleChechBox = (page, index, checkboxIndex) => {
     const newPages = this.state.pages;
-    if (newPages[page][index][checkboxIndex] === checkboxIndex) {
-      delete newPages[page][index][checkboxIndex];
+    if (newPages[page][index].value[checkboxIndex] === checkboxIndex) {
+      delete newPages[page][index].value[checkboxIndex];
     } else {
-      newPages[page][index][checkboxIndex] = checkboxIndex;
+      newPages[page][index].value[checkboxIndex] = checkboxIndex;
     }
     this.setState({ pages: newPages });
   };
@@ -85,6 +100,8 @@ export default class PassingPage extends Component {
   render() {
     let tabTitles,
       tabContent = [];
+
+    console.log(this.state);
 
     if (!!this.props.survey) {
       const { pages, setting } = this.props.survey;
@@ -144,7 +161,8 @@ export default class PassingPage extends Component {
                           className="margin-10 ask-checkbox"
                           type="checkbox"
                           checked={
-                            this.state.pages[page][indexQuest][index] === index
+                            this.state.pages[page][indexQuest].value[index] ===
+                            index
                           }
                           onChange={() =>
                             this.handleChechBox(page, indexQuest, index)
