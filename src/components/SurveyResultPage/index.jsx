@@ -36,11 +36,37 @@ export default class SurveyResultPage extends Component {
     }).length;
   };
 
-  getPercentageRatio = (page, indexQuest, quest) => {
-    const questResults = this.getQuestResults(page, indexQuest);
+  getPercentageRatio = (page, indexQuest, questLength) => {
+    let questResults = this.getQuestResults(page, indexQuest);
+
     console.log(questResults);
-    console.log(quest);
-    return '6969';
+
+    if (
+      this.props.survey.pages[page].quests[indexQuest].typeQuest ===
+      'severalAnswer'
+    ) {
+      questResults = questResults
+        .reduce((acc, item) => acc.concat(item))
+        .filter(item => item !== null);
+    }
+
+    console.log(questResults);
+
+    if (
+      this.props.survey.pages[page].quests[indexQuest].typeQuest ===
+      'starRatings'
+    ) {
+      questLength = 6;
+    }
+
+    const countRepeat = {};
+    for (let index = 0; index < questLength; index++) {
+      countRepeat[index] = questResults.filter(item => item === index).length;
+    }
+
+    console.log(countRepeat);
+
+    return '00';
   };
 
   render() {
@@ -85,6 +111,14 @@ export default class SurveyResultPage extends Component {
                     return (
                       <label key={shortid.generate()} className="checkbox">
                         {quest.body}{' '}
+                      </label>
+                    );
+                  })}
+                {item.typeQuest === 'severalAnswer' &&
+                  item.variants.map((quest, index, array) => {
+                    return (
+                      <label key={shortid.generate()} className="checkbox">
+                        {quest.body}
                         {this.getPercentageRatio(
                           page,
                           indexQuest,
@@ -93,21 +127,15 @@ export default class SurveyResultPage extends Component {
                       </label>
                     );
                   })}
-                {item.typeQuest === 'severalAnswer' &&
-                  item.variants.map((quest, index) => {
-                    return (
-                      <label key={shortid.generate()} className="checkbox">
-                        {quest.body}
-                      </label>
-                    );
-                  })}
                 {item.typeQuest === 'starRatings' && (
-                  <StarRatings
-                    starRatedColor="gold"
-                    numberOfStars={5}
-                    name="rating"
-                    starDimension="25px"
-                  />
+                  <React.Fragment>
+                    <StarRatings
+                      starRatedColor="gold"
+                      numberOfStars={5}
+                      name="rating"
+                      starDimension="25px"
+                    />
+                  </React.Fragment>
                 )}
                 {item.typeQuest === 'text' && (
                   <textarea className="textarea" placeholder="enter answer" />
