@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import StarRatings from 'react-star-ratings';
 import shortid from 'shortid';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import ReactChartkick, { BarChart } from 'react-chartkick';
 import Chart from 'chart.js';
+
+import Modal from 'react-modal';
+import { customStyles } from '../ModalQuestion/customStylesModal.js';
+
 import './index.css';
 ReactChartkick.addAdapter(Chart);
 
@@ -12,8 +15,10 @@ export default class SurveyResultPage extends Component {
     super(props);
 
     this.state = {
-      tabIndex: 0,
-      results: null
+      tabIndex: 1,
+      results: null,
+      modalIsOpen: false,
+      modalData: null
     };
   }
 
@@ -21,6 +26,10 @@ export default class SurveyResultPage extends Component {
     this.props.getSurveyResults(this.props.match.params.path);
     this.props.getSurveyById(this.props.match.params.path);
   }
+
+  triggerModal = ({ target }) => {
+    this.setState({ modalIsOpen: !this.state.modalIsOpen });
+  };
 
   getQuestResults = (page, indexQuest) => {
     return this.props.results.map(user => user.answers[page][indexQuest].value);
@@ -63,8 +72,37 @@ export default class SurveyResultPage extends Component {
           this.getCountResponded(page, indexQuest),
           countRepeat
         )}
-        %<span>({countRepeat} answers)</span>
+        %<span> ({countRepeat} answers)</span>
       </label>
+    );
+  };
+
+  getDataFromTextArea = (page, indexQuest) => {
+    const questResults = this.getQuestResults(page, indexQuest).filter(
+      item => !!item
+    );
+
+    return (
+      <nav className="panel">
+        <p className="panel-heading text-anwer-wrapp">All Answers</p>
+        {questResults.map((item, index) => {
+          return (
+            <a
+              className="panel-block"
+              key={shortid.generate()}
+              onClick={() => {
+                this.setState({ modalData: item, modalIsOpen: true });
+              }}
+              name={index}
+            >
+              <span className="panel-icon">
+                <i className="fas fa-envelope-open-text" aria-hidden="true" />
+              </span>
+              Respondent {index + 1}
+            </a>
+          );
+        })}
+      </nav>
     );
   };
 
@@ -75,7 +113,7 @@ export default class SurveyResultPage extends Component {
           <span>
             <strong>
               {' '}
-              <span class="icon ">
+              <span className="icon ">
                 <i className="fas fa-star star-icon" />
               </span>
               {index + 1}.{' '}
@@ -172,7 +210,7 @@ export default class SurveyResultPage extends Component {
                         )}
                         min={0}
                         max={100}
-                        width="500px"
+                        width="50vw"
                         height={`${item.variants.length * 35}px`}
                         colors={[
                           [
@@ -216,7 +254,7 @@ export default class SurveyResultPage extends Component {
                         )}
                         min={0}
                         max={100}
-                        width="500px"
+                        width="50vw"
                         height={`${item.variants.length * 35}px`}
                         colors={[
                           [
@@ -256,7 +294,7 @@ export default class SurveyResultPage extends Component {
                         data={this.getDataForChart(page, indexQuest, 6)}
                         min={0}
                         max={100}
-                        width="500px"
+                        width="50vw"
                         height={`${5 * 35}px`}
                         colors={[
                           [
@@ -276,7 +314,26 @@ export default class SurveyResultPage extends Component {
                   </React.Fragment>
                 )}
                 {item.typeQuest === 'text' && (
-                  <textarea className="textarea" placeholder="enter answer" />
+                  <React.Fragment>
+                    {this.getDataFromTextArea(page, indexQuest)}
+
+                    <Modal
+                      isOpen={this.state.modalIsOpen}
+                      style={customStyles}
+                      ariaHideApp={false}
+                    >
+                      <div className="modal-quest center">
+                        <p>{this.state.modalData}</p>
+                        <button
+                          className="delete is-medium delete-button"
+                          onClick={this.triggerModal}
+                        >
+                          Close Modal
+                        </button>
+                        <div className="message" />
+                      </div>
+                    </Modal>
+                  </React.Fragment>
                 )}
               </div>
             ))}
