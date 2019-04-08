@@ -4,6 +4,7 @@ import shortid from 'shortid';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import ReactChartkick, { BarChart } from 'react-chartkick';
 import Chart from 'chart.js';
+import './index.css';
 ReactChartkick.addAdapter(Chart);
 
 export default class SurveyResultPage extends Component {
@@ -12,7 +13,7 @@ export default class SurveyResultPage extends Component {
 
     this.state = {
       tabIndex: 0,
-      pages: null
+      results: null
     };
   }
 
@@ -36,10 +37,13 @@ export default class SurveyResultPage extends Component {
     }).length;
   };
 
-  getPercentageRatio = (page, indexQuest, questLength) => {
-    let questResults = this.getQuestResults(page, indexQuest);
+  getCountResponded = (page, indexQuest) =>
+    this.props.results.length - this.getCountMissed(page, indexQuest);
 
-    console.log(questResults);
+  getPercentageRatio = (total, part) => Math.round((part / total) * 100);
+
+  countPersentage = (page, indexQuest, anwersIndex) => {
+    let questResults = this.getQuestResults(page, indexQuest);
 
     if (
       this.props.survey.pages[page].quests[indexQuest].typeQuest ===
@@ -50,23 +54,75 @@ export default class SurveyResultPage extends Component {
         .filter(item => item !== null);
     }
 
-    console.log(questResults);
+    const countRepeat = questResults.filter(item => item === anwersIndex)
+      .length;
+
+    return (
+      <label>
+        {this.getPercentageRatio(
+          this.getCountResponded(page, indexQuest),
+          countRepeat
+        )}
+        %<span>({countRepeat} answers)</span>
+      </label>
+    );
+  };
+
+  getLegendStarRate = (page, indexQuest) => {
+    return Array.apply(null, { length: 5 }).map((item, index) => {
+      return (
+        <label key={shortid.generate()} className="box">
+          <span>
+            <strong>
+              {' '}
+              <span class="icon ">
+                <i className="fas fa-star star-icon" />
+              </span>
+              {index + 1}.{' '}
+            </strong>
+          </span>
+          {this.countPersentage(page, indexQuest, index + 1)}
+        </label>
+      );
+    });
+  };
+
+  getDataForChart = (page, indexQuest, questLength) => {
+    let questResults = this.getQuestResults(page, indexQuest);
+    const countRepeat = {};
+    let loopIndex = 0;
 
     if (
       this.props.survey.pages[page].quests[indexQuest].typeQuest ===
       'starRatings'
     ) {
-      questLength = 6;
+      loopIndex = 1;
     }
 
-    const countRepeat = {};
-    for (let index = 0; index < questLength; index++) {
-      countRepeat[index] = questResults.filter(item => item === index).length;
+    if (
+      this.props.survey.pages[page].quests[indexQuest].typeQuest ===
+      'severalAnswer'
+    ) {
+      questResults = questResults
+        .reduce((acc, item) => acc.concat(item))
+        .filter(item => item !== null);
     }
 
-    console.log(countRepeat);
+    for (loopIndex; loopIndex < questLength; loopIndex++) {
+      countRepeat[loopIndex] = questResults.filter(
+        item => item === loopIndex
+      ).length;
+    }
 
-    return '00';
+    const chartsData = Object.keys(countRepeat).map((key, index) => [
+      index + 1,
+      this.getPercentageRatio(
+        this.getCountResponded(page, indexQuest),
+        countRepeat[key]
+      )
+    ]);
+
+    return chartsData;
   };
 
   render() {
@@ -98,43 +154,125 @@ export default class SurveyResultPage extends Component {
                 </h1>
                 <div>
                   <span className="notification margin-r-20 ">
-                    Responded:{' '}
-                    {this.props.results.length -
-                      this.getCountMissed(page, indexQuest)}
+                    Responded:
+                    {this.getCountResponded(page, indexQuest)}
                   </span>
                   <span className="notification margin-r-20">
                     Missed: {this.getCountMissed(page, indexQuest)}
                   </span>
                 </div>
-                {item.typeQuest === 'oneAnswer' &&
-                  item.variants.map((quest, index, array) => {
-                    return (
-                      <label key={shortid.generate()} className="checkbox">
-                        {quest.body}{' '}
-                      </label>
-                    );
-                  })}
-                {item.typeQuest === 'severalAnswer' &&
-                  item.variants.map((quest, index, array) => {
-                    return (
-                      <label key={shortid.generate()} className="checkbox">
-                        {quest.body}
-                        {this.getPercentageRatio(
+                {item.typeQuest === 'oneAnswer' && (
+                  <React.Fragment>
+                    <div className="chart-wrapp">
+                      <BarChart
+                        data={this.getDataForChart(
                           page,
                           indexQuest,
-                          array.length
+                          item.variants.length
                         )}
-                      </label>
-                    );
-                  })}
+                        min={0}
+                        max={100}
+                        width="500px"
+                        height={`${item.variants.length * 35}px`}
+                        colors={[
+                          [
+                            '#999999',
+                            '#ffff66',
+                            '#ff5050',
+                            '#00cc66',
+                            '#66ccff'
+                          ]
+                        ]}
+                        suffix="%"
+                      />
+                    </div>
+                    <div className="legend">
+                      {item.variants.map((quest, index) => {
+                        return (
+                          <label
+                            key={shortid.generate()}
+                            className="box stats margin-r-5"
+                          >
+                            <span className="margin-r-5">
+                              <strong>{index + 1}. </strong>
+                            </span>
+                            {this.countPersentage(page, indexQuest, index)}
+                            <p className="answer-text">{quest.body}</p>
+                          </label>
+                        );
+                      })}
+                    </div>
+                  </React.Fragment>
+                )}
+
+                {item.typeQuest === 'severalAnswer' && (
+                  <React.Fragment>
+                    <div className="chart-wrapp">
+                      <BarChart
+                        data={this.getDataForChart(
+                          page,
+                          indexQuest,
+                          item.variants.length
+                        )}
+                        min={0}
+                        max={100}
+                        width="500px"
+                        height={`${item.variants.length * 35}px`}
+                        colors={[
+                          [
+                            '#999999',
+                            '#ffff66',
+                            '#ff5050',
+                            '#00cc66',
+                            '#66ccff'
+                          ]
+                        ]}
+                        suffix="%"
+                      />
+                    </div>
+                    <div className="legend">
+                      {item.variants.map((quest, index) => {
+                        return (
+                          <label
+                            key={shortid.generate()}
+                            className="box stats margin-r-5"
+                          >
+                            <span className="margin-r-5">
+                              <strong>{index + 1} .</strong>
+                            </span>
+                            {this.countPersentage(page, indexQuest, index)}
+                            <p className="answer-text">{quest.body}</p>
+                          </label>
+                        );
+                      })}
+                    </div>
+                  </React.Fragment>
+                )}
+
                 {item.typeQuest === 'starRatings' && (
                   <React.Fragment>
-                    <StarRatings
-                      starRatedColor="gold"
-                      numberOfStars={5}
-                      name="rating"
-                      starDimension="25px"
-                    />
+                    <div className="chart-wrapp">
+                      <BarChart
+                        data={this.getDataForChart(page, indexQuest, 6)}
+                        min={0}
+                        max={100}
+                        width="500px"
+                        height={`${5 * 35}px`}
+                        colors={[
+                          [
+                            '#999999',
+                            '#ffff66',
+                            '#ff5050',
+                            '#00cc66',
+                            '#66ccff'
+                          ]
+                        ]}
+                        suffix="%"
+                      />
+                    </div>
+                    <div className="legend-start-rating">
+                      {this.getLegendStarRate(page, indexQuest)}
+                    </div>
                   </React.Fragment>
                 )}
                 {item.typeQuest === 'text' && (
@@ -148,14 +286,14 @@ export default class SurveyResultPage extends Component {
     }
     return (
       <div className="hero-body">
-        {!!this.props.survey ? (
-          <div className="has-text-centered passing-header">
-            <div className="passing-header">
-              <h1 className="title">{this.props.survey.surveyName}</h1>
-            </div>
-          </div>
-        ) : null}
         <div className="wrapp-main-content">
+          {!!this.props.survey ? (
+            <div className="has-text-centered passing-header">
+              <div className="passing-header">
+                <h1 className="title">{this.props.survey.surveyName}</h1>
+              </div>
+            </div>
+          ) : null}
           <Tabs
             selectedIndex={this.state.tabIndex}
             onSelect={tabIndex => {
