@@ -5,3 +5,10 @@ header {
 .header__wrap-logo__logo img {
   max-height: 4.5rem;
 }
+
+.username-wrapp {
+  padding: 10px 20px;
+  background: #aeaeae;
+  color: aliceblue;
+  border-radius: 15px;
+}

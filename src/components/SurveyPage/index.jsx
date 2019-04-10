@@ -187,10 +187,9 @@ class SurveyPage extends React.Component {
     this.setState({ ...defaultState });
   };
 
-  render() {
-    const { surveyName, pages, choosen, showModal, fields } = this.state;
-
-    const tabTitles = Object.keys(pages).map((key, index) => {
+  getTabNames = () => {
+    const { pages, fields } = this.state;
+    return Object.keys(pages).map((key, index) => {
       return (
         <Tab key={shortid.generate()}>
           <h1>
@@ -204,8 +203,11 @@ class SurveyPage extends React.Component {
         </Tab>
       );
     });
+  };
 
-    const tabContent = Object.keys(pages).map(page => {
+  getTabContent = () => {
+    const { pages, fields } = this.state;
+    return Object.keys(pages).map(page => {
       return (
         <TabPanel key={page}>
           <div className="wrap-page-name-input">
@@ -243,45 +245,63 @@ class SurveyPage extends React.Component {
 
                 {item.title.body}
               </h1>
-              {item.typeQuest === 'oneAnswer' &&
-                item.variants.map(quest => {
-                  console.log(quest);
-                  return (
-                    <label key={shortid.generate()} className="checkbox">
-                      <input
-                        className="margin-10 ask-checkbox"
-                        type="radio"
-                        name={`${indexQuest}`}
+
+              {
+                {
+                  oneAnswer: (
+                    <React.Fragment>
+                      {item.variants.map(quest => {
+                        console.log(quest);
+                        return (
+                          <label key={shortid.generate()} className="checkbox">
+                            <input
+                              className="margin-10 ask-checkbox"
+                              type="radio"
+                              name={`${indexQuest}`}
+                            />
+                            {quest.body}
+                          </label>
+                        );
+                      })}
+                    </React.Fragment>
+                  ),
+                  severalAnswer: (
+                    <React.Fragment>
+                      {item.variants.map(quest => {
+                        return (
+                          <label key={shortid.generate()} className="checkbox">
+                            <input
+                              className="margin-10 ask-checkbox"
+                              type="checkbox"
+                            />
+                            {quest.body}
+                          </label>
+                        );
+                      })}
+                    </React.Fragment>
+                  ),
+                  starRatings: (
+                    <React.Fragment>
+                      <StarRatings
+                        rating={this.state.rating}
+                        starRatedColor="gold"
+                        changeRating={this.changeRating}
+                        numberOfStars={5}
+                        name="rating"
+                        starDimension="25px"
                       />
-                      {quest.body}
-                    </label>
-                  );
-                })}
-              {item.typeQuest === 'severalAnswer' &&
-                item.variants.map(quest => {
-                  return (
-                    <label key={shortid.generate()} className="checkbox">
-                      <input
-                        className="margin-10 ask-checkbox"
-                        type="checkbox"
+                    </React.Fragment>
+                  ),
+                  text: (
+                    <React.Fragment>
+                      <textarea
+                        className="textarea"
+                        placeholder="enter answer"
                       />
-                      {quest.body}
-                    </label>
-                  );
-                })}
-              {item.typeQuest === 'starRatings' && (
-                <StarRatings
-                  rating={this.state.rating}
-                  starRatedColor="gold"
-                  changeRating={this.changeRating}
-                  numberOfStars={5}
-                  name="rating"
-                  starDimension="25px"
-                />
-              )}
-              {item.typeQuest === 'text' && (
-                <textarea className="textarea" placeholder="enter answer" />
-              )}
+                    </React.Fragment>
+                  )
+                }[item.typeQuest]
+              }
 
               <div className="wrap-check-delete">
                 <label className="checkbox">
@@ -307,7 +327,10 @@ class SurveyPage extends React.Component {
         </TabPanel>
       );
     });
+  };
 
+  render() {
+    const { surveyName, pages, choosen, showModal } = this.state;
     return (
       <div className="survey-page column is-10">
         <div className="columns">
@@ -362,8 +385,8 @@ class SurveyPage extends React.Component {
                     this.setState({ tabIndex });
                   }}
                 >
-                  <TabList> {tabTitles} </TabList>
-                  {tabContent}
+                  <TabList> {this.getTabNames()} </TabList>
+                  {this.getTabContent()}
                 </Tabs>
               </div>
             </div>

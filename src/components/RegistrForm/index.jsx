@@ -57,7 +57,7 @@ class RegistrForm extends React.Component {
     }
   };
 
-  keyPressed = event => {
+  onkeyPressed = event => {
     if (event.key === 'Enter') {
       this.onSubmit();
     }
@@ -81,7 +81,7 @@ class RegistrForm extends React.Component {
             value={this.state.firstName.body}
             onChange={this.handleChange}
             onBlur={this.handleValidate}
-            onKeyPress={this.keyPressed}
+            onKeyPress={this.onkeyPressed}
           />
           {!!firstName.error && (
             <p className="help is-danger input-help">{firstName.error}</p>
@@ -97,7 +97,7 @@ class RegistrForm extends React.Component {
             value={this.state.login.body}
             onChange={this.handleChange}
             onBlur={this.handleValidate}
-            onKeyPress={this.keyPressed}
+            onKeyPress={this.onkeyPressed}
           />
           {!!login.error && (
             <p className="help is-danger input-help">{login.error}</p>
@@ -113,7 +113,7 @@ class RegistrForm extends React.Component {
             value={this.state.password.body}
             onChange={this.handleChange}
             onBlur={this.handleValidate}
-            onKeyPress={this.keyPressed}
+            onKeyPress={this.onkeyPressed}
           />
           {!!password.error && (
             <p className="help is-danger input-help">{password.error}</p>
@@ -129,7 +129,7 @@ class RegistrForm extends React.Component {
             value={rePass.body}
             onChange={this.handleChange}
             onBlur={this.handleRePassValidate}
-            onKeyPress={this.keyPressed}
+            onKeyPress={this.onkeyPressed}
             disabled={!!password.error}
           />
           {!!rePass.error && (

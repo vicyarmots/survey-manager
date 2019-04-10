@@ -4,39 +4,53 @@ import shortid from 'shortid';
 
 import './index.css';
 
-const Header = () => {
-  const headerLogo = {
-    src:
-      'https://raw.githubusercontent.com/AntonProtas/survey-manager/features/redux-store/src/components/Header/images/header-logo.PNG',
-    alt: 'header logo'
+const Header = props => {
+  const singOut = () => {
+    props.signOut();
+    localStorage.removeItem('token');
   };
 
-  const navItems = [
-    {
-      link: '/about-us',
-      label: 'About Us'
-    },
-    {
-      link: '/',
-      label: 'Log In'
+  console.log(props);
+
+  const getDataForHeader = () => {
+    if (!!props.userData) {
+      return (
+        <React.Fragment>
+          <a className="navbar-item" onClick={singOut}>
+            Sign Out
+          </a>
+          <li className="navbar-item">
+            <span className="notification username-wrapp">{props.userData.username}</span>
+          </li>
+        </React.Fragment>
+      );
+    } else {
+      return (
+        <NavLink to="/" className="navbar-item">
+          Sign In
+        </NavLink>
+      );
     }
-  ];
+  };
+
   return (
     <header>
       <nav className="navbar is-light">
         <div className="navbar-brand">
           <div className="navbar-item header__wrap-logo__logo">
-            <img className="" src={headerLogo.src} alt={headerLogo.alt} />
+            <img
+              className=""
+              src="https://raw.githubusercontent.com/AntonProtas/survey-manager/features/redux-store/src/components/Header/images/header-logo.PNG"
+              alt="header logo"
+            />
           </div>
         </div>
         <div className="navbar-end">
-          <ul className="header__wrap-nav__nav__ul navbar-item ">
-            {!!navItems &&
-              navItems.map(item => (
-                <li key={shortid.generate()} className="navbar-item">
-                  <NavLink to={item.link}>{item.label}</NavLink>
-                </li>
-              ))}
+          <ul className="header__wrap-nav__nav__ul navbar-item">
+            <NavLink to="/about-us" className="navbar-item">
+              About Us
+            </NavLink>
+            {getDataForHeader()}
           </ul>
         </div>
       </nav>

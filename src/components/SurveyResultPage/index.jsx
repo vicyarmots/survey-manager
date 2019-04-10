@@ -15,7 +15,7 @@ export default class SurveyResultPage extends Component {
     super(props);
 
     this.state = {
-      tabIndex: 1,
+      tabIndex: 0,
       results: null,
       modalIsOpen: false,
       modalData: null
@@ -27,7 +27,7 @@ export default class SurveyResultPage extends Component {
     this.props.getSurveyById(this.props.match.params.path);
   }
 
-  triggerModal = ({ target }) => {
+  triggerModal = () => {
     this.setState({ modalIsOpen: !this.state.modalIsOpen });
   };
 
@@ -159,26 +159,26 @@ export default class SurveyResultPage extends Component {
         countRepeat[key]
       )
     ]);
-
     return chartsData;
   };
 
-  render() {
-    let tabTitles,
-      tabContent = [];
-
+  getTabNames = () => {
     if (!!this.props.survey && !!this.props.results) {
-      const { pages, setting } = this.props.survey;
-
-      tabTitles = Object.keys(pages).map((key, index) => {
+      const { pages } = this.props.survey;
+      return Object.keys(pages).map((key, index) => {
         return (
           <Tab key={shortid.generate()}>
             <h1>{pages[key].name}</h1>
           </Tab>
         );
       });
+    }
+  };
 
-      tabContent = Object.keys(pages).map(page => {
+  getTabContent = () => {
+    if (!!this.props.survey && !!this.props.results) {
+      const { pages } = this.props.survey;
+      return Object.keys(pages).map(page => {
         return (
           <TabPanel key={page}>
             {pages[page].quests.map((item, indexQuest) => (
@@ -199,166 +199,172 @@ export default class SurveyResultPage extends Component {
                     Missed: {this.getCountMissed(page, indexQuest)}
                   </span>
                 </div>
-                {item.typeQuest === 'oneAnswer' && (
-                  <React.Fragment>
-                    <div className="chart-wrapp">
-                      <BarChart
-                        data={this.getDataForChart(
-                          page,
-                          indexQuest,
-                          item.variants.length
-                        )}
-                        min={0}
-                        max={100}
-                        width="50vw"
-                        height={`${item.variants.length * 35}px`}
-                        colors={[
-                          [
-                            '#999999',
-                            '#ffff66',
-                            '#ff5050',
-                            '#00cc66',
-                            '#66ccff'
-                          ]
-                        ]}
-                        suffix="%"
-                      />
-                    </div>
-                    <div className="legend">
-                      {item.variants.map((quest, index) => {
-                        return (
-                          <label
-                            key={shortid.generate()}
-                            className="box stats margin-r-5"
-                          >
-                            <span className="margin-r-5">
-                              <strong>{index + 1}. </strong>
-                            </span>
-                            {this.countPersentage(page, indexQuest, index)}
-                            <p className="answer-text">{quest.body}</p>
-                          </label>
-                        );
-                      })}
-                    </div>
-                  </React.Fragment>
-                )}
 
-                {item.typeQuest === 'severalAnswer' && (
-                  <React.Fragment>
-                    <div className="chart-wrapp">
-                      <BarChart
-                        data={this.getDataForChart(
-                          page,
-                          indexQuest,
-                          item.variants.length
-                        )}
-                        min={0}
-                        max={100}
-                        width="50vw"
-                        height={`${item.variants.length * 35}px`}
-                        colors={[
-                          [
-                            '#999999',
-                            '#ffff66',
-                            '#ff5050',
-                            '#00cc66',
-                            '#66ccff'
-                          ]
-                        ]}
-                        suffix="%"
-                      />
-                    </div>
-                    <div className="legend">
-                      {item.variants.map((quest, index) => {
-                        return (
-                          <label
-                            key={shortid.generate()}
-                            className="box stats margin-r-5"
-                          >
-                            <span className="margin-r-5">
-                              <strong>{index + 1} .</strong>
-                            </span>
-                            {this.countPersentage(page, indexQuest, index)}
-                            <p className="answer-text">{quest.body}</p>
-                          </label>
-                        );
-                      })}
-                    </div>
-                  </React.Fragment>
-                )}
+                {
+                  {
+                    oneAnswer: (
+                      <React.Fragment>
+                        <div className="chart-wrapp">
+                          <BarChart
+                            data={this.getDataForChart(
+                              page,
+                              indexQuest,
+                              item.variants.length
+                            )}
+                            min={0}
+                            max={100}
+                            width="50vw"
+                            height={`${item.variants.length * 35}px`}
+                            colors={[
+                              [
+                                '#999999',
+                                '#ffff66',
+                                '#ff5050',
+                                '#00cc66',
+                                '#66ccff'
+                              ]
+                            ]}
+                            suffix="%"
+                          />
+                        </div>
+                        <div className="legend">
+                          {item.variants.map((quest, index) => {
+                            return (
+                              <label
+                                key={shortid.generate()}
+                                className="box stats margin-r-5"
+                              >
+                                <span className="margin-r-5">
+                                  <strong>{index + 1}. </strong>
+                                </span>
+                                {this.countPersentage(page, indexQuest, index)}
+                                <p className="answer-text">{quest.body}</p>
+                              </label>
+                            );
+                          })}
+                        </div>
+                      </React.Fragment>
+                    ),
+                    severalAnswer: (
+                      <React.Fragment>
+                        <div className="chart-wrapp">
+                          <BarChart
+                            data={this.getDataForChart(
+                              page,
+                              indexQuest,
+                              item.variants.length
+                            )}
+                            min={0}
+                            max={100}
+                            width="50vw"
+                            height={`${item.variants.length * 35}px`}
+                            colors={[
+                              [
+                                '#999999',
+                                '#ffff66',
+                                '#ff5050',
+                                '#00cc66',
+                                '#66ccff'
+                              ]
+                            ]}
+                            suffix="%"
+                          />
+                        </div>
+                        <div className="legend">
+                          {item.variants.map((quest, index) => {
+                            return (
+                              <label
+                                key={shortid.generate()}
+                                className="box stats margin-r-5"
+                              >
+                                <span className="margin-r-5">
+                                  <strong>{index + 1} .</strong>
+                                </span>
+                                {this.countPersentage(page, indexQuest, index)}
+                                <p className="answer-text">{quest.body}</p>
+                              </label>
+                            );
+                          })}
+                        </div>
+                      </React.Fragment>
+                    ),
+                    starRatings: (
+                      <React.Fragment>
+                        <div className="chart-wrapp">
+                          <BarChart
+                            data={this.getDataForChart(page, indexQuest, 6)}
+                            min={0}
+                            max={100}
+                            width="50vw"
+                            height={`${5 * 35}px`}
+                            colors={[
+                              [
+                                '#999999',
+                                '#ffff66',
+                                '#ff5050',
+                                '#00cc66',
+                                '#66ccff'
+                              ]
+                            ]}
+                            suffix="%"
+                          />
+                        </div>
+                        <div className="legend-start-rating">
+                          {this.getLegendStarRate(page, indexQuest)}
+                        </div>
+                      </React.Fragment>
+                    ),
+                    text: (
+                      <React.Fragment>
+                        {this.getDataFromTextArea(page, indexQuest)}
 
-                {item.typeQuest === 'starRatings' && (
-                  <React.Fragment>
-                    <div className="chart-wrapp">
-                      <BarChart
-                        data={this.getDataForChart(page, indexQuest, 6)}
-                        min={0}
-                        max={100}
-                        width="50vw"
-                        height={`${5 * 35}px`}
-                        colors={[
-                          [
-                            '#999999',
-                            '#ffff66',
-                            '#ff5050',
-                            '#00cc66',
-                            '#66ccff'
-                          ]
-                        ]}
-                        suffix="%"
-                      />
-                    </div>
-                    <div className="legend-start-rating">
-                      {this.getLegendStarRate(page, indexQuest)}
-                    </div>
-                  </React.Fragment>
-                )}
-                {item.typeQuest === 'text' && (
-                  <React.Fragment>
-                    {this.getDataFromTextArea(page, indexQuest)}
-
-                    <Modal
-                      isOpen={this.state.modalIsOpen}
-                      style={customStyles}
-                      ariaHideApp={false}
-                    >
-                      <div className="modal-quest center">
-                        <p>{this.state.modalData}</p>
-                        <button
-                          className="delete is-medium delete-button"
-                          onClick={this.triggerModal}
+                        <Modal
+                          isOpen={this.state.modalIsOpen}
+                          style={customStyles}
+                          ariaHideApp={false}
                         >
-                          Close Modal
-                        </button>
-                        <div className="message" />
-                      </div>
-                    </Modal>
-                  </React.Fragment>
-                )}
+                          <div className="modal-quest center">
+                            <p>{this.state.modalData}</p>
+                            <button
+                              className="delete is-medium delete-button"
+                              onClick={this.triggerModal}
+                            >
+                              Close Modal
+                            </button>
+                            <div className="message" />
+                          </div>
+                        </Modal>
+                      </React.Fragment>
+                    )
+                  }[item.typeQuest]
+                }
               </div>
             ))}
           </TabPanel>
         );
       });
     }
+  };
+
+  getSurveyName = () => !!this.props.survey && this.props.survey.surveyName;
+
+  render() {
     return (
       <div className="hero-body">
         <div className="wrapp-main-content">
-          {!!this.props.survey ? (
-            <div className="has-text-centered passing-header">
-              <div className="passing-header">
-                <h1 className="title">{this.props.survey.surveyName}</h1>
-              </div>
+          <div className="has-text-centered passing-header">
+            <div className="passing-header">
+              <h1 className="title">{this.getSurveyName()}</h1>
             </div>
-          ) : null}
+          </div>
           <Tabs
             selectedIndex={this.state.tabIndex}
             onSelect={tabIndex => {
               this.setState({ tabIndex });
             }}
           >
-            <TabList> {tabTitles} </TabList>
-            {tabContent}
+            <TabList> {this.getTabNames()} </TabList>
+            {this.getTabContent()}
           </Tabs>
         </div>
       </div>

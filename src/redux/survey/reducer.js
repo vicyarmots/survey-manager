@@ -1,15 +1,4 @@
-import {
-  SAVE_SURVEY_SECCESS,
-  SAVE_SURVEY_ERROR,
-  GET_SURVEYS_SECCESS,
-  GET_SURVEYS_ERROR,
-  SET_CURRENT_SURVEY,
-  SET_PASSING_SURVEY,
-  SAVE_SURVEY_RESULT_SECCESS,
-  SAVE_SURVEY_RESULT_ERROR,
-  GET_SURVEY_RESULT_SECCESS,
-  GET_SURVEY_RESULT_ERROR
-} from './types';
+import * as types from './types';
 
 export const initialState = {
   isSaved: false,
@@ -25,59 +14,59 @@ export const initialState = {
 
 export function surveyReducer(state = initialState, action) {
   switch (action.type) {
-    case SAVE_SURVEY_SECCESS:
+    case types.SAVE_SURVEY_SECCESS:
       return {
         ...state,
         isSaved: true,
         error: null
       };
-    case SAVE_SURVEY_ERROR:
+    case types.SAVE_SURVEY_ERROR:
       return {
         ...state,
         isSaved: false,
         error: action.payload
       };
-    case GET_SURVEYS_SECCESS:
+    case types.GET_SURVEYS_SECCESS:
       return {
         ...state,
         surveys: action.payload.surveys,
         pages: action.payload.countPages,
         page: action.payload.page
       };
-    case GET_SURVEYS_ERROR:
+    case types.GET_SURVEYS_ERROR:
       return {
         ...state,
         error: action.payload
       };
-    case SET_CURRENT_SURVEY:
+    case types.SET_CURRENT_SURVEY:
       return {
         ...state,
         currentSurvey: action.payload
       };
-    case SET_PASSING_SURVEY:
+    case types.SET_PASSING_SURVEY:
       return {
         ...state,
         passingSurvey: action.payload
       };
-    case SAVE_SURVEY_RESULT_SECCESS:
+    case types.SAVE_SURVEY_RESULT_SECCESS:
       return {
         ...state,
         surveyResultIsSaved: true,
         error: null
       };
-    case SAVE_SURVEY_RESULT_ERROR:
+    case types.SAVE_SURVEY_RESULT_ERROR:
       return {
         ...state,
         surveyResultIsSaved: false,
         error: action.payload
       };
-    case GET_SURVEY_RESULT_SECCESS:
+    case types.GET_SURVEY_RESULT_SECCESS:
       return {
         ...state,
         currentSurveyResults: action.payload,
         error: null
       };
-    case GET_SURVEY_RESULT_ERROR:
+    case types.GET_SURVEY_RESULT_ERROR:
       return {
         ...state,
         currentSurveyResults: null,

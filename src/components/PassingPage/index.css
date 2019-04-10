@@ -3,3 +3,14 @@
   align-items: center;
   justify-content: center;
 }
+
+.passing-page-wrapp {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.passing-page-content-wrapp {
+  max-width: 1200px;
+  width: 90%;
+}

@@ -4,6 +4,9 @@ import {
   signUpUserSuccess,
   signUpUserUnSuccess
 } from './action';
+
+import { SIGN_OUT_SUCCESS } from './types.js';
+
 import { history } from '../../index.jsx';
 import { signIn, signUp } from '../../api/index.js';
 import { setToken, getToken } from '../../helpers/tokenHelpers.js';
@@ -42,4 +45,10 @@ export const setUserUseToken = () => dispatch => {
     dispatch(setUser(userData.payload));
     history.push('/home');
   }
+};
+
+export const signOut = () => dispatch => {
+  dispatch({
+    type: SIGN_OUT_SUCCESS
+  });
 };

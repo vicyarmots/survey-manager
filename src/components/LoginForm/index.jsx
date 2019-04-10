@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { schemaUser, Validation } from 'helpers/validation.js';
 import './index.css';
 
+import { NotificationManager } from 'react-notifications';
+
 class LoginForm extends React.Component {
   constructor(props) {
     super(props);
@@ -19,16 +21,22 @@ class LoginForm extends React.Component {
   }
 
   onSubmit = () => {
-    const isValid = !Object.keys(this.state).some(
-      key => !!this.state[key].error || !this.state[key].body
-    );
+    NotificationManager.warning('Warning message', 'Close after 3000ms', 200000);
 
-    if (!!isValid) {
-      this.props.setUser({
-        email: this.state.login.body,
-        password: this.state.password.body
-      });
-    }
+    //   const isValid = !Object.keys(this.state).some(
+    //     key => !!this.state[key].error || !this.state[key].body
+    //   );
+
+    //   const isEmpty = !Object.keys(this.state).some(
+    //     key => this.state[key].error !== null || !!this.state[key].body
+    //   );
+
+    //   if (!!isValid) {
+    //     this.props.setUser({
+    //       email: this.state.login.body,
+    //       password: this.state.password.body
+    //     });
+    //   }
   };
 
   handleChange = ({ target }) => {
@@ -45,7 +53,7 @@ class LoginForm extends React.Component {
     Validation(target.value, schemaUser, target.name, this);
   };
 
-  keyPressed = event => {
+  onkeyPressed = event => {
     if (event.key === 'Enter') {
       this.onSubmit();
     }
@@ -53,9 +61,6 @@ class LoginForm extends React.Component {
 
   render() {
     const { login, password } = this.state;
-
-    console.log(this.props.error);
-
     return (
       <div className="login-form columns is-multiline is-centered is-vcentered box">
         <div className="input-wrapp control  column is-10">
@@ -72,7 +77,7 @@ class LoginForm extends React.Component {
             placeholder="Login(email)"
             onChange={this.handleChange}
             onBlur={this.handleValidate}
-            onKeyPress={this.keyPressed}
+            onKeyPress={this.onkeyPressed}
           />
           {!!login.error && (
             <p className="help is-danger input-help">{login.error}</p>
@@ -87,7 +92,7 @@ class LoginForm extends React.Component {
             placeholder="Password"
             onChange={this.handleChange}
             onBlur={this.handleValidate}
-            onKeyPress={this.keyPressed}
+            onKeyPress={this.onkeyPressed}
           />
           {!!password.error && (
             <p className="help is-danger input-help">{password.error}</p>

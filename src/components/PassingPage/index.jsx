@@ -22,13 +22,14 @@ export default class PassingPage extends Component {
   static getDerivedStateFromProps(props, state) {
     if (!!props.survey && !state.pages) {
       const newPages = {};
-      console.log(props.survey.pages);
       Object.keys(props.survey.pages).map(
         key =>
           (newPages[key] = Array.apply(null, {
             length: props.survey.pages[key].quests.length
           }).map((item, index) => {
-            if (!!props.survey.pages[key].quests[index].mandatoryQuest) {
+            const isMadatory = !!props.survey.pages[key].quests[index]
+              .mandatoryQuest;
+            if (isMadatory) {
               if (
                 props.survey.pages[key].quests[index].typeQuest ===
                 'severalAnswer'
@@ -97,15 +98,23 @@ export default class PassingPage extends Component {
     }
   };
 
-  render() {
-    let tabTitles,
-      tabContent = [];
+  showTitle = () => {
+    return !!this.props.survey ? (
+      <div className="has-text-centered passing-header">
+        <div className="passing-header">
+          <h1 className="title margin-r-10">{this.props.survey.surveyName}</h1>
+          <button onClick={this.sentSurveyRes} className="button">
+            Done
+          </button>
+        </div>
+      </div>
+    ) : null;
+  };
 
-    console.log(this.state);
-
+  getTabNames = () => {
     if (!!this.props.survey) {
       const { pages, setting } = this.props.survey;
-      tabTitles = Object.keys(pages).map((key, index) => {
+      return Object.keys(pages).map((key, index) => {
         return (
           <Tab key={shortid.generate()}>
             <h1>
@@ -119,8 +128,13 @@ export default class PassingPage extends Component {
           </Tab>
         );
       });
+    }
+  };
 
-      tabContent = Object.keys(pages).map(page => {
+  getTabContent = () => {
+    if (!!this.props.survey) {
+      const { pages, setting } = this.props.survey;
+      return Object.keys(pages).map(page => {
         return (
           <TabPanel key={page}>
             {pages[page].quests.map((item, indexQuest) => (
@@ -134,97 +148,116 @@ export default class PassingPage extends Component {
                   {!!item.mandatoryQuest && <i className="fas fa-asterisk" />}
                   {item.title.body}
                 </h1>
-                {item.typeQuest === 'oneAnswer' &&
-                  item.variants.map((quest, index) => {
-                    return (
-                      <label key={shortid.generate()} className="checkbox">
-                        <input
-                          className="margin-10 ask-checkbox"
-                          type="radio"
-                          name={`${indexQuest}`}
-                          checked={
-                            this.state.pages[page][indexQuest].value === index
-                          }
-                          onChange={() =>
-                            this.handleChange(page, indexQuest, index)
-                          }
-                        />
-                        {quest.body}
-                      </label>
-                    );
-                  })}
-                {item.typeQuest === 'severalAnswer' &&
-                  item.variants.map((quest, index) => {
-                    return (
-                      <label key={shortid.generate()} className="checkbox">
-                        <input
-                          className="margin-10 ask-checkbox"
-                          type="checkbox"
-                          checked={
-                            this.state.pages[page][indexQuest].value[index] ===
-                            index
-                          }
-                          onChange={() =>
-                            this.handleChechBox(page, indexQuest, index)
-                          }
-                        />
-                        {quest.body}
-                      </label>
-                    );
-                  })}
-                {item.typeQuest === 'starRatings' && (
-                  <StarRatings
-                    rating={+this.state.pages[page][indexQuest].value}
-                    changeRating={countStars =>
-                      this.handleChange(page, indexQuest, countStars)
-                    }
-                    starRatedColor="gold"
-                    numberOfStars={5}
-                    name="rating"
-                    starDimension="25px"
-                  />
-                )}
-                {item.typeQuest === 'text' && (
-                  <textarea
-                    className="textarea"
-                    placeholder="enter answer"
-                    value={this.state.pages[page][indexQuest].value}
-                    onChange={({ target }) =>
-                      this.handleChange(page, indexQuest, target.value)
-                    }
-                  />
-                )}
+                {
+                  {
+                    oneAnswer: (
+                      <React.Fragment>
+                        {item.variants.map((quest, index) => {
+                          return (
+                            <label
+                              key={shortid.generate()}
+                              className="checkbox"
+                            >
+                              <input
+                                className="margin-10 ask-checkbox"
+                                type="radio"
+                                name={`${indexQuest}`}
+                                checked={
+                                  this.state.pages[page][indexQuest].value ===
+                                  index
+                                }
+                                onChange={() =>
+                                  this.handleChange(page, indexQuest, index)
+                                }
+                              />
+                              {quest.body}
+                            </label>
+                          );
+                        })}
+                      </React.Fragment>
+                    ),
+                    severalAnswer: (
+                      <React.Fragment>
+                        {item.variants.map((quest, index) => {
+                          return (
+                            <label
+                              key={shortid.generate()}
+                              className="checkbox"
+                            >
+                              <input
+                                className="margin-10 ask-checkbox"
+                                type="checkbox"
+                                checked={
+                                  this.state.pages[page][indexQuest].value[
+                                    index
+                                  ] === index
+                                }
+                                onChange={() =>
+                                  this.handleChechBox(page, indexQuest, index)
+                                }
+                              />
+                              {quest.body}
+                            </label>
+                          );
+                        })}
+                      </React.Fragment>
+                    ),
+                    starRatings: (
+                      <React.Fragment>
+                        {
+                          <StarRatings
+                            rating={+this.state.pages[page][indexQuest].value}
+                            changeRating={countStars =>
+                              this.handleChange(page, indexQuest, countStars)
+                            }
+                            starRatedColor="gold"
+                            numberOfStars={5}
+                            name="rating"
+                            starDimension="25px"
+                          />
+                        }
+                      </React.Fragment>
+                    ),
+                    text: (
+                      <React.Fragment>
+                        {
+                          <textarea
+                            className="textarea"
+                            placeholder="enter answer"
+                            value={this.state.pages[page][indexQuest].value}
+                            onChange={({ target }) =>
+                              this.handleChange(page, indexQuest, target.value)
+                            }
+                          />
+                        }
+                      </React.Fragment>
+                    )
+                  }[item.typeQuest]
+                }
               </div>
             ))}
           </TabPanel>
         );
       });
     }
+  };
 
+  render() {
     return (
       <div className="hero-body">
-        {!!this.props.survey ? (
-          <div className="has-text-centered passing-header">
-            <div className="passing-header">
-              <h1 className="title margin-r-10">
-                {this.props.survey.surveyName}
-              </h1>
-              <button onClick={this.sentSurveyRes} className="button">
-                Done
-              </button>
-            </div>
+        <div className="passing-page-wrapp">
+          {this.showTitle()}
+          <div className="passing-page-content-wrapp">
+            <Tabs
+              selectedIndex={this.state.tabIndex}
+              onSelect={tabIndex => {
+                this.setState({ tabIndex });
+              }}
+            >
+              <TabList> {this.getTabNames()} </TabList>
+              {this.getTabContent()}
+            </Tabs>
           </div>
-        ) : null}
-        <div className="wrapp-main-content">
-          <Tabs
-            selectedIndex={this.state.tabIndex}
-            onSelect={tabIndex => {
-              this.setState({ tabIndex });
-            }}
-          >
-            <TabList> {tabTitles} </TabList>
-            {tabContent}
-          </Tabs>
         </div>
       </div>
     );

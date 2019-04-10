@@ -13,14 +13,10 @@ export default class SurveyContainer extends Component {
     };
   }
 
-  render() {
+  getTabNames = () => {
     const { pages, setting, surveyName } = this.props.survey;
-
-    let tabTitles,
-      tabContent = [];
-
     if (!!pages) {
-      tabTitles = Object.keys(pages).map((key, index) => {
+      return Object.keys(pages).map((key, index) => {
         return (
           <Tab key={shortid.generate()}>
             <h1>
@@ -34,8 +30,13 @@ export default class SurveyContainer extends Component {
           </Tab>
         );
       });
+    }
+  };
 
-      tabContent = Object.keys(pages).map(page => {
+  getTabContent = () => {
+    const { pages, setting, surveyName } = this.props.survey;
+    if (!!pages) {
+      return Object.keys(pages).map(page => {
         return (
           <TabPanel key={page}>
             {pages[page].quests.map((item, indexQuest) => (
@@ -49,56 +50,68 @@ export default class SurveyContainer extends Component {
                       {indexQuest + 1}
                     </span>
                   )}
-
                   {item.title.body}
                 </h1>
-                {item.typeQuest === 'oneAnswer' &&
-                  item.variants.map(quest => {
-                    return (
-                      <label key={shortid.generate()} className="checkbox">
-                        <input
-                          className="margin-10 ask-checkbox"
-                          type="radio"
-                          name={`${indexQuest}`}
-                        />
-                        {quest.body}
-                      </label>
-                    );
-                  })}
-                {item.typeQuest === 'severalAnswer' &&
-                  item.variants.map(quest => {
-                    return (
-                      <label key={shortid.generate()} className="checkbox">
-                        <input
-                          className="margin-10 ask-checkbox"
-                          type="checkbox"
-                        />
-                        {quest.body}
-                      </label>
-                    );
-                  })}
-                {item.typeQuest === 'starRatings' && (
-                  <StarRatings
-                    starRatedColor="gold"
-                    numberOfStars={5}
-                    name="rating"
-                    starDimension="25px"
-                  />
-                )}
-                {item.typeQuest === 'text' && (
-                  <textarea className="textarea" placeholder="enter answer" />
-                )}
+
+                {
+                  {
+                    oneAnswer: (
+                      <React.Fragment>
+                        {item.variants.map(quest => {
+                          return (
+                            <label
+                              key={shortid.generate()}
+                              className="checkbox"
+                            >
+                              <input
+                                className="margin-10 ask-checkbox"
+                                type="checkbox"
+                              />
+                              {quest.body}
+                            </label>
+                          );
+                        })}
+                      </React.Fragment>
+                    ),
+                    starRatings: (
+                      <React.Fragment>
+                        {
+                          <StarRatings
+                            starRatedColor="gold"
+                            numberOfStars={5}
+                            name="rating"
+                            starDimension="25px"
+                          />
+                        }
+                      </React.Fragment>
+                    ),
+                    text: (
+                      <React.Fragment>
+                        {
+                          <textarea
+                            className="textarea"
+                            placeholder="enter answer"
+                          />
+                        }
+                      </React.Fragment>
+                    )
+                  }[item.typeQuest]
+                }
               </div>
             ))}
           </TabPanel>
         );
       });
     }
+  };
 
+  getSurveyName = () => !!this.props.survey && this.props.survey.surveyName;
+
+  render() {
     return (
       <div className="hero-body">
         <div className="has-text-centered">
-          <h1 className="title margin-r-10">{surveyName}</h1>
+          <h1 className="title margin-r-10">{this.getSurveyName()}</h1>
         </div>
         <Tabs
           selectedIndex={this.state.tabIndex}
@@ -106,8 +119,8 @@ export default class SurveyContainer extends Component {
             this.setState({ tabIndex });
           }}
         >
-          <TabList> {tabTitles} </TabList>
-          {tabContent}
+          <TabList> {this.getTabNames()} </TabList>
+          {this.getTabContent()}
         </Tabs>
       </div>
     );
