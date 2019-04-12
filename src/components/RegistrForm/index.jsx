@@ -1,7 +1,6 @@
 import React from 'react';
-
+import { Link } from 'react-router-dom';
 import { schemaUser, Validation } from '../../helpers/validation.js';
-
 import './index.css';
 
 class RegistrForm extends React.Component {
@@ -19,6 +18,16 @@ class RegistrForm extends React.Component {
     const isValid = !Object.keys(this.state).some(
       key => !!this.state[key].error || !this.state[key].body
     );
+
+    const isEmpty = !Object.keys(this.state).some(
+      key => this.state[key].error !== null || !!this.state[key].body
+    );
+
+    if (!!isEmpty) {
+      !this.props.toastText &&
+        this.props.addToast('Please enter your data', 'is-warning');
+    }
+
     if (!!isValid) {
       this.props.signUpUserAsync({
         username: this.state.firstName.body,
@@ -66,7 +75,7 @@ class RegistrForm extends React.Component {
   render() {
     const { firstName, login, password, rePass } = this.state;
     return (
-      <div className="registr-form columns is-multiline is-centered is-vcentered box">
+      <div className="sign-form columns is-multiline is-centered is-vcentered box">
         <div className="input-wrapp control  column is-10">
           <div className="is-full has-text-centered">
             {!!this.props.error && (
@@ -137,15 +146,16 @@ class RegistrForm extends React.Component {
           )}
         </div>
 
-        <div className="column is-full">
-          <div className="is-centered columns">
-            <button
-              onClick={this.onSubmit}
-              className="registr-for__button_sign-up button is-link"
-            >
-              Sign Up
-            </button>
-          </div>
+        <div className="column is-full flex-center">
+          <button
+            onClick={this.onSubmit}
+            className="button_sign button is-link"
+          >
+            Sign Up
+          </button>
+          <Link className="sign-link" to="/">
+            Sign In
+          </Link>
         </div>
       </div>
     );

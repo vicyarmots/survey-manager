@@ -6,14 +6,6 @@
   position: relative;
 }
 
-.stars-wrapp {
-  position: absolute;
-  display: inline-block;
-  top: 37%;
-  left: 18%;
-  transform: rotate(90deg);
-}
-
 .star-icon {
   margin: 0 5px;
 }

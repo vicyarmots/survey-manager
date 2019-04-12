@@ -238,7 +238,7 @@ export default class SurveyResultPage extends Component {
                                   <strong>{index + 1}. </strong>
                                 </span>
                                 {this.countPersentage(page, indexQuest, index)}
-                                <p className="answer-text">{quest.body}</p>
+                                <p className="wrapp-text">{quest.body}</p>
                               </label>
                             );
                           })}
@@ -281,7 +281,7 @@ export default class SurveyResultPage extends Component {
                                   <strong>{index + 1} .</strong>
                                 </span>
                                 {this.countPersentage(page, indexQuest, index)}
-                                <p className="answer-text">{quest.body}</p>
+                                <p className="wrapp-text">{quest.body}</p>
                               </label>
                             );
                           })}
@@ -348,6 +348,28 @@ export default class SurveyResultPage extends Component {
 
   getSurveyName = () => !!this.props.survey && this.props.survey.surveyName;
 
+  getMain = () => {
+    if (!this.props.results.length) {
+      return (
+        <div className="hero-body">
+          <h1 className="subtitle">Suck</h1>
+        </div>
+      );
+    } else {
+      return (
+        <Tabs
+          selectedIndex={this.state.tabIndex}
+          onSelect={tabIndex => {
+            this.setState({ tabIndex });
+          }}
+        >
+          <TabList> {this.getTabNames()} </TabList>
+          {this.getTabContent()}
+        </Tabs>
+      );
+    }
+  };
+
   render() {
     return (
       <div className="hero-body">
@@ -357,15 +379,7 @@ export default class SurveyResultPage extends Component {
               <h1 className="title">{this.getSurveyName()}</h1>
             </div>
           </div>
-          <Tabs
-            selectedIndex={this.state.tabIndex}
-            onSelect={tabIndex => {
-              this.setState({ tabIndex });
-            }}
-          >
-            <TabList> {this.getTabNames()} </TabList>
-            {this.getTabContent()}
-          </Tabs>
+          {this.getMain()}
         </div>
       </div>
     );

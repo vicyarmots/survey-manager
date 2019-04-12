@@ -72,26 +72,29 @@ export default class Surveys extends Component {
         <div>
           {this.props.surveys.map(item => {
             return (
-              <div className="survey-link-wrapp " key={shortid.generate()}>
+              <div
+                className="box survey-link margin-top-20"
+                key={shortid.generate()}
+              >
                 <a
-                  className="box"
+                  className="wrapp-text survey-link__name "
                   onClick={() => this.setCurrent(item._id, item.url)}
                 >
                   {item.surveyName}
                 </a>
-                <button
-                  className="button top-button result-button"
-                  onClick={() => history.push(`/survey-result/${item._id}`)}
-                >
-                  results
-                </button>
-                <CopyToClipboard
-                  text={`http://localhost:8080/passing/${item._id}`}
-                >
-                  <button className="button top-button copy-button">
-                    Copy link
+                <div className="button-wrapp">
+                  <button
+                    className="button margin-r-20"
+                    onClick={() => history.push(`/survey-result/${item._id}`)}
+                  >
+                    results
                   </button>
-                </CopyToClipboard>
+                  <CopyToClipboard
+                    text={`http://localhost:8080/passing/${item._id}`}
+                  >
+                    <button className="button">Copy link</button>
+                  </CopyToClipboard>
+                </div>
               </div>
             );
           })}

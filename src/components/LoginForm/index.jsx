@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom';
 import { schemaUser, Validation } from 'helpers/validation.js';
 import './index.css';
 
-import { NotificationManager } from 'react-notifications';
-
 class LoginForm extends React.Component {
   constructor(props) {
     super(props);
@@ -21,22 +19,23 @@ class LoginForm extends React.Component {
   }
 
   onSubmit = () => {
-    NotificationManager.warning('Warning message', 'Close after 3000ms', 200000);
+    const isValid = !Object.keys(this.state).some(
+      key => !!this.state[key].error || !this.state[key].body
+    );
+    const isEmpty = !Object.keys(this.state).some(
+      key => this.state[key].error !== null || !!this.state[key].body
+    );
 
-    //   const isValid = !Object.keys(this.state).some(
-    //     key => !!this.state[key].error || !this.state[key].body
-    //   );
-
-    //   const isEmpty = !Object.keys(this.state).some(
-    //     key => this.state[key].error !== null || !!this.state[key].body
-    //   );
-
-    //   if (!!isValid) {
-    //     this.props.setUser({
-    //       email: this.state.login.body,
-    //       password: this.state.password.body
-    //     });
-    //   }
+    if (!!isEmpty) {
+      !this.props.toastText &&
+        this.props.addToast('Please enter your data', 'is-warning');
+    }
+    if (!!isValid) {
+      this.props.setUser({
+        email: this.state.login.body,
+        password: this.state.password.body
+      });
+    }
   };
 
   handleChange = ({ target }) => {
@@ -62,7 +61,7 @@ class LoginForm extends React.Component {
   render() {
     const { login, password } = this.state;
     return (
-      <div className="login-form columns is-multiline is-centered is-vcentered box">
+      <div className="sign-form columns is-multiline is-centered is-vcentered box">
         <div className="input-wrapp control  column is-10">
           <div className="is-full has-text-centered">
             {!!this.props.error && (
@@ -99,16 +98,16 @@ class LoginForm extends React.Component {
           )}
         </div>
 
-        <div className="login-form__wrap-button column is-10">
-          <Link className="sign-up--link" to="/sign-up">
-            Sign Up
-          </Link>
+        <div className="flex-center column is-10">
           <button
-            className="button is-info login-form__button_sign-in"
+            className="button button_sign is-link"
             onClick={this.onSubmit}
           >
-            Log In
+            Sign In
           </button>
+          <Link className="sign-link" to="/sign-up">
+            Sign Up
+          </Link>
         </div>
       </div>
     );

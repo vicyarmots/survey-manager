@@ -2,6 +2,7 @@ import SurveyPage from '../components/SurveyPage/index.jsx';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { saveSurveyAsync } from '../redux/survey/middleware.js';
+import { addToast } from '../redux/toast/middleware.js';
 
 const mapStateToProps = store => {
   return {
@@ -10,7 +11,10 @@ const mapStateToProps = store => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ saveSurveyAsync: saveSurveyAsync }, dispatch);
+  return bindActionCreators(
+    { saveSurveyAsync: saveSurveyAsync, addToast },
+    dispatch
+  );
 };
 
 export default connect(

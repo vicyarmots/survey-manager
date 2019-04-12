@@ -32,15 +32,9 @@ class SettingPad extends React.Component {
       <nav className="right-pad panel box has-text-weight-semibold">
         <p className="panel-heading">Survey options</p>
         {Object.keys(fields).map(key => (
-          <a className="panel-block button" key={key} name={key}>
-            <label className="checkbox ">
-              <input
-                name={key}
-                type="checkbox"
-                onChange={this.props.triggerCheckField}
-              />
-              {fields[key].label}
-            </label>
+          <a className="checkbox panel-block" name={key} key={key}>
+            <input type="checkbox" onChange={this.props.triggerCheckField} />
+            {fields[key].label}
           </a>
         ))}
       </nav>

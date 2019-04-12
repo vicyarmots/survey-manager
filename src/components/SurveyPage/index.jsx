@@ -46,10 +46,14 @@ class SurveyPage extends React.Component {
   };
 
   triggerModal = type => {
-    this.setState({
-      showModal: !this.state.showModal,
-      choosen: type || null
-    });
+    if (Object.keys(this.state.pages).length === 0) {
+      this.props.addToast('pealse, add at least one question', 'is-info');
+    } else {
+      this.setState({
+        showModal: !this.state.showModal,
+        choosen: type || null
+      });
+    }
   };
 
   addNewPage = () => {
@@ -118,6 +122,7 @@ class SurveyPage extends React.Component {
 
   countAllQuests = () => {
     const { pages } = this.state;
+
     let currentCount = 0;
 
     Object.keys(pages).map(key => {
@@ -173,18 +178,22 @@ class SurveyPage extends React.Component {
   };
 
   saveSurvey = () => {
-    this.props.saveSurveyAsync({
-      user: this.props.userData.id,
-      surveyName: this.state.surveyName.body,
-      pages: this.state.pages,
-      setting: this.state.fields,
-      url: this.state.surveyName.body
-        .split(' ')
-        .map(str => str.toLowerCase())
-        .join('_')
-        .concat('_', shortid.generate())
-    });
-    this.setState({ ...defaultState });
+    if (!this.countAllQuests()) {
+      this.props.addToast('pealse, add at least one question', 'is-info');
+    } else {
+      this.props.saveSurveyAsync({
+        user: this.props.userData.id,
+        surveyName: this.state.surveyName.body,
+        pages: this.state.pages,
+        setting: this.state.fields,
+        url: this.state.surveyName.body
+          .split(' ')
+          .map(str => str.toLowerCase())
+          .join('_')
+          .concat('_', shortid.generate())
+      });
+      this.setState({ ...defaultState });
+    }
   };
 
   getTabNames = () => {
@@ -358,10 +367,14 @@ class SurveyPage extends React.Component {
                   </div>
                 </div>
               </div>
-              <div className="column is-full ">
-                <p className="is-pulled-left margin-10">
-                  Questions: {this.countAllQuests()} , Pages:
-                  {Object.keys(pages).length}
+              <div className="column is-full">
+                <p className="is-pulled-left  margin-t-10">
+                  <span className="notification margin-10">
+                    Questions: {this.countAllQuests()}
+                  </span>
+                  <span className="notification">
+                    Pages: {Object.keys(pages).length}
+                  </span>
                 </p>
                 <div className="is-pulled-right ">
                   <button

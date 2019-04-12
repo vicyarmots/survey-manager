@@ -5,7 +5,7 @@ export const initialState = {
   error: null,
   surveys: [],
   currentSurvey: null,
-  currentSurveyResults: null,
+  currentSurveyResults: [],
   passingSurvey: null,
   pages: null,
   page: null,

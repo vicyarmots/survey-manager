@@ -4,12 +4,16 @@
   align-items: center;
 }
 
-.margin-b-40 {
-  margin-bottom: 40px;
+.margin-top-20 {
+  margin-top: 20px;
 }
 
 .margin-r-20 {
   margin-right: 20px;
+}
+
+.survey-link-wrapp {
+  position: relative;
 }
 
 .top-button {
@@ -17,14 +21,17 @@
   top: 20%;
 }
 
-.result-button {
-  right: 13%;
-}
-
 .copy-button {
   right: 1%;
 }
 
-.survey-link-wrapp {
-  position: relative;
+.survey-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.survey-link__name {
+  max-width: 70%;
+  color: black;
 }

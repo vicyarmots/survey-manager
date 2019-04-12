@@ -15,7 +15,7 @@ export const SeveralAnswer = props => {
       {variants.map((input, index) => (
         <div key={input.key} className="flex-row input-wrapp quest-input-title">
           <input
-            className={`input margin-b ${!input.body ? 'is-danger' : ''} `}
+            className={`input margin-t-10 ${!input.body ? 'is-danger' : ''} `}
             type="text"
             placeholder="enter answer"
             onChange={onChange(index)}
@@ -35,7 +35,7 @@ export const SeveralAnswer = props => {
           </a>
         </div>
       ))}
-      <div className="modal-panel-button margin-b">
+      <div className="modal-panel-button margin-t-10">
         <button onClick={decCounterInput} className="button is-primary">
           -
         </button>

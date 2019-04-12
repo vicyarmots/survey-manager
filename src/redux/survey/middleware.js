@@ -103,12 +103,12 @@ export const saveSurveyResultAsync = result => dispatch => {
 
 export const getSurveyResults = surveyId => dispatch => {
   _getSurveyResults(surveyId)
-    .then(res =>
+    .then(res => {
       dispatch({
         type: GET_SURVEY_RESULT_SECCESS,
         payload: res.data.results
-      })
-    )
+      });
+    })
     .catch(error => {
       console.log(error);
       dispatch({

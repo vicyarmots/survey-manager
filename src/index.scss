@@ -39,3 +39,21 @@ code {
 .message {
   background: none;
 }
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.margin-t-10 {
+  margin-top: 10px;
+}
+.margin-10 {
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.wrapp-text {
+  overflow-wrap: break-word;
+}

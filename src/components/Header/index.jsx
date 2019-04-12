@@ -10,8 +10,6 @@ const Header = props => {
     localStorage.removeItem('token');
   };
 
-  console.log(props);
-
   const getDataForHeader = () => {
     if (!!props.userData) {
       return (
@@ -20,7 +18,9 @@ const Header = props => {
             Sign Out
           </a>
           <li className="navbar-item">
-            <span className="notification username-wrapp">{props.userData.username}</span>
+            <span className="notification username-wrapp">
+              {props.userData.username}
+            </span>
           </li>
         </React.Fragment>
       );

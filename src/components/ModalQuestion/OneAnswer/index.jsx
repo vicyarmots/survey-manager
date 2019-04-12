@@ -7,7 +7,7 @@ export const OneAnswer = props => {
       {props.variants.map((input, index) => (
         <div key={input.key} className="flex-row input-wrapp quest-input-title">
           <input
-            className={`input margin-b ${
+            className={`input margin-t-10 ${
               !input.body.length ? 'is-danger' : ''
             } `}
             type="text"
