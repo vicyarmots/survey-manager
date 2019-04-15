@@ -85,16 +85,22 @@ export default class PassingPage extends Component {
     );
 
     if (!!isValid) {
-      !!this.props.userData
-        ? this.props.saveSurveyResultAsync({
-            answers: pages,
-            userId: this.props.userData.id,
-            surveyId: this.props.survey._id
-          })
-        : this.props.saveSurveyResultAsync({
-            answers: allAnswers,
-            surveyId: this.props.survey._id
-          });
+      if (!!this.props.userData) {
+        this.props.saveSurveyResultAsync({
+          answers: pages,
+          userId: this.props.userData.id,
+          surveyId: this.props.survey._id
+        });
+        this.props.addToast('The result of the survey saved', 'is-success');
+      } else {
+        this.props.saveSurveyResultAsync({
+          answers: allAnswers,
+          surveyId: this.props.survey._id
+        });
+        this.props.addToast('The result of the survey saved', 'is-success');
+      }
+    } else {
+      this.props.addToast('please fill in the required fields', 'is-info');
     }
   };
 
@@ -103,7 +109,7 @@ export default class PassingPage extends Component {
       <div className="has-text-centered passing-header">
         <div className="passing-header">
           <h1 className="title margin-r-10">{this.props.survey.surveyName}</h1>
-          <button onClick={this.sentSurveyRes} className="button">
+          <button onClick={this.sentSurveyRes} className="button margin-10-l">
             Done
           </button>
         </div>

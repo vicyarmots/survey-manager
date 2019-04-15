@@ -3,7 +3,8 @@ import {
   _getSurveys,
   _getSurveyById,
   saveSurveyResult,
-  _getSurveyResults
+  _getSurveyResults,
+  _deleteSurveyAndResults
 } from '../../api/index.js';
 import {
   SAVE_SURVEY_SECCESS,
@@ -15,7 +16,9 @@ import {
   SAVE_SURVEY_RESULT_SECCESS,
   SAVE_SURVEY_RESULT_ERROR,
   GET_SURVEY_RESULT_SECCESS,
-  GET_SURVEY_RESULT_ERROR
+  GET_SURVEY_RESULT_ERROR,
+  CLEAR_SURVEY,
+  CLEAR_SURVEY_RESULT
 } from '../survey/types';
 import { history } from '../../index.jsx';
 
@@ -32,23 +35,6 @@ export const saveSurveyAsync = survey => dispatch => {
         payload: res.data.message
       })
     );
-};
-
-export const getSurveys = (userId, limit, currentPage) => dispatch => {
-  _getSurveys({ user: userId, limit: limit, currentPage: currentPage })
-    .then(res => {
-      dispatch({
-        type: GET_SURVEYS_SECCESS,
-        payload: res.data
-      });
-    })
-    .then(() => history.push('/surveys'))
-    .catch(err => {
-      dispatch({
-        type: GET_SURVEYS_ERROR,
-        payload: err
-      });
-    });
 };
 
 export const setCurrentSurvey = (id, url) => dispatch => {
@@ -114,6 +100,36 @@ export const getSurveyResults = surveyId => dispatch => {
       dispatch({
         type: GET_SURVEY_RESULT_ERROR,
         payload: error
+      });
+    });
+};
+
+export const clearSurveyAndResult = id => dispatch => {
+  dispatch({
+    type: CLEAR_SURVEY_RESULT
+  });
+  dispatch({
+    type: CLEAR_SURVEY
+  });
+  history.push(`/survey-result/${id}`);
+};
+
+export const deleteSurveyAndResults = id => dispatch => {
+  return _deleteSurveyAndResults(id);
+};
+
+export const getSurveys = (userId, limit, currentPage) => dispatch => {
+  _getSurveys({ user: userId, limit: limit, currentPage: currentPage })
+    .then(res => {
+      dispatch({
+        type: GET_SURVEYS_SECCESS,
+        payload: res.data
+      });
+    })
+    .catch(err => {
+      dispatch({
+        type: GET_SURVEYS_ERROR,
+        payload: err
       });
     });
 };

@@ -1,6 +1,11 @@
 import Surveys from '../components/Surveys/index.jsx';
 import { connect } from 'react-redux';
-import { setCurrentSurvey, getSurveys } from '../redux/survey/middleware.js';
+import {
+  setCurrentSurvey,
+  getSurveys,
+  clearSurveyAndResult,
+  deleteSurveyAndResults
+} from '../redux/survey/middleware.js';
 import { bindActionCreators } from 'redux';
 
 const mapStateToProps = store => {
@@ -14,7 +19,12 @@ const mapStateToProps = store => {
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
-    { setCurrentSurvey: setCurrentSurvey, getSurveys: getSurveys },
+    {
+      setCurrentSurvey: setCurrentSurvey,
+      getSurveys,
+      clearSurveyAndResult,
+      deleteSurveyAndResults
+    },
     dispatch
   );
 };

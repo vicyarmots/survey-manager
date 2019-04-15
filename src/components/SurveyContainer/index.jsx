@@ -57,6 +57,25 @@ export default class SurveyContainer extends Component {
                   {
                     oneAnswer: (
                       <React.Fragment>
+                        {item.variants.map((quest, index) => {
+                          return (
+                            <label
+                              key={shortid.generate()}
+                              className="checkbox"
+                            >
+                              <input
+                                className="margin-10 ask-checkbox"
+                                type="radio"
+                                name={item.title.key}
+                              />
+                              {quest.body}
+                            </label>
+                          );
+                        })}
+                      </React.Fragment>
+                    ),
+                    severalAnswer: (
+                      <React.Fragment>
                         {item.variants.map(quest => {
                           return (
                             <label

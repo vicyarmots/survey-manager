@@ -3,7 +3,7 @@ header {
 }
 
 .header__wrap-logo__logo img {
-  max-height: 4.5rem;
+  max-height: 3.5rem;
 }
 
 .username-wrapp {
@@ -11,4 +11,5 @@ header {
   background: #aeaeae;
   color: aliceblue;
   border-radius: 15px;
+  margin-right: 20px;
 }

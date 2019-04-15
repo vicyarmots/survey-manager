@@ -9,7 +9,8 @@ export const initialState = {
   passingSurvey: null,
   pages: null,
   page: null,
-  surveyResultIsSaved: null
+  surveyResultIsSaved: null,
+  surveyAndResultIsDelete: null
 };
 
 export function surveyReducer(state = initialState, action) {
@@ -71,6 +72,16 @@ export function surveyReducer(state = initialState, action) {
         ...state,
         currentSurveyResults: null,
         error: action.payload
+      };
+    case types.CLEAR_SURVEY:
+      return {
+        ...state,
+        currentSurvey: null
+      };
+    case types.CLEAR_SURVEY_RESULT:
+      return {
+        ...state,
+        currentSurveyResults: []
       };
     default:
       return state;

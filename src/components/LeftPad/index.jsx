@@ -6,9 +6,6 @@ class LeftPad extends React.Component {
   constructor(props) {
     super(props);
   }
-  _getSurveys = () => {
-    this.props.getSurveys(this.props.userId, 5, 1);
-  };
 
   render() {
     return (
@@ -17,13 +14,9 @@ class LeftPad extends React.Component {
           <Link className="panel-block" to="/survey-page">
             New survey
           </Link>
-          <a
-            className="panel-block"
-            onClick={this._getSurveys}
-            className="panel-block"
-          >
+          <Link className="panel-block" to="/surveys">
             My surveys
-          </a>
+          </Link>
           <a className="panel-block">Survey templates</a>
         </nav>
       </div>

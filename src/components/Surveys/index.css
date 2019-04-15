@@ -34,4 +34,5 @@
 .survey-link__name {
   max-width: 70%;
   color: black;
+  text-decoration: underline;
 }

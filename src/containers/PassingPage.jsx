@@ -6,6 +6,7 @@ import {
   setPassingSurvey,
   saveSurveyResultAsync
 } from '../redux/survey/middleware.js';
+import { addToast } from '../redux/toast/middleware.js';
 
 const mapStateToProps = store => {
   return {
@@ -16,7 +17,7 @@ const mapStateToProps = store => {
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
-    { setPassingSurvey, saveSurveyResultAsync },
+    { setPassingSurvey, saveSurveyResultAsync, addToast },
     dispatch
   );
 };

@@ -3,8 +3,6 @@ import shortid from 'shortid';
 import './index.css';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
-import { history } from '../../index.jsx';
-
 export default class Surveys extends Component {
   constructor(props) {
     super(props);
@@ -26,6 +24,12 @@ export default class Surveys extends Component {
 
   getPrevPage = () => {
     this.props.getSurveys(this.props.userId, 5, this.props.page - 1);
+  };
+
+  deleteSurvey = id => {
+    this.props.deleteSurveyAndResults(id).then(() => {
+      this.props.getSurveys(this.props.userId, 5, 1);
+    });
   };
 
   render() {
@@ -85,7 +89,13 @@ export default class Surveys extends Component {
                 <div className="button-wrapp">
                   <button
                     className="button margin-r-20"
-                    onClick={() => history.push(`/survey-result/${item._id}`)}
+                    onClick={() => this.deleteSurvey(item._id)}
+                  >
+                    delete
+                  </button>
+                  <button
+                    className="button margin-r-20"
+                    onClick={() => this.props.clearSurveyAndResult(item._id)}
                   >
                     results
                   </button>

@@ -52,3 +52,11 @@ export const _getSurveyResults = id => {
     }
   });
 };
+
+export const _deleteSurveyAndResults = id => {
+  return axios.delete(`${API_URL}/delete-survey`, {
+    params: {
+      id: id
+    }
+  });
+};

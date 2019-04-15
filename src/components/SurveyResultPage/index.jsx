@@ -349,13 +349,7 @@ export default class SurveyResultPage extends Component {
   getSurveyName = () => !!this.props.survey && this.props.survey.surveyName;
 
   getMain = () => {
-    if (!this.props.results.length) {
-      return (
-        <div className="hero-body">
-          <h1 className="subtitle">Suck</h1>
-        </div>
-      );
-    } else {
+    if (this.props.results.length > 0 && !!this.props.survey) {
       return (
         <Tabs
           selectedIndex={this.state.tabIndex}
@@ -366,6 +360,14 @@ export default class SurveyResultPage extends Component {
           <TabList> {this.getTabNames()} </TabList>
           {this.getTabContent()}
         </Tabs>
+      );
+    } else {
+      return (
+        <div className="hero-body notification">
+          <div className="notification">
+            <h1 className="title">While no one has passed your survey</h1>
+          </div>
+        </div>
       );
     }
   };
