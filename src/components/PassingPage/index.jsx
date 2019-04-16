@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import shortid from 'shortid';
 import StarRatings from 'react-star-ratings';
+import { Link } from 'react-router-dom';
 
 import './index.css';
 
@@ -11,7 +12,8 @@ export default class PassingPage extends Component {
 
     this.state = {
       tabIndex: 0,
-      pages: null
+      pages: null,
+      resultIsSent: false
     };
   }
 
@@ -91,13 +93,13 @@ export default class PassingPage extends Component {
           userId: this.props.userData.id,
           surveyId: this.props.survey._id
         });
-        this.props.addToast('The result of the survey saved', 'is-success');
+        this.setState({ resultIsSent: true });
       } else {
         this.props.saveSurveyResultAsync({
-          answers: allAnswers,
+          answers: pages,
           surveyId: this.props.survey._id
         });
-        this.props.addToast('The result of the survey saved', 'is-success');
+        this.setState({ resultIsSent: true });
       }
     } else {
       this.props.addToast('please fill in the required fields', 'is-info');
@@ -248,23 +250,53 @@ export default class PassingPage extends Component {
     }
   };
 
+  getMain = () => {
+    return (
+      <div className="passing-page-wrapp">
+        {this.showTitle()}
+        <div className="passing-page-content-wrapp">
+          <Tabs
+            selectedIndex={this.state.tabIndex}
+            onSelect={tabIndex => {
+              this.setState({ tabIndex });
+            }}
+          >
+            <TabList> {this.getTabNames()} </TabList>
+            {this.getTabContent()}
+          </Tabs>
+        </div>
+      </div>
+    );
+  };
+
   render() {
     return (
       <div className="hero-body">
-        <div className="passing-page-wrapp">
-          {this.showTitle()}
-          <div className="passing-page-content-wrapp">
-            <Tabs
-              selectedIndex={this.state.tabIndex}
-              onSelect={tabIndex => {
-                this.setState({ tabIndex });
-              }}
-            >
-              <TabList> {this.getTabNames()} </TabList>
-              {this.getTabContent()}
-            </Tabs>
+        {!this.state.resultIsSent ? (
+          this.getMain()
+        ) : (
+          <div className="center notification">
+            <div className="center">
+              <p className="notification is-success">
+                The result of the survey saved!
+              </p>
+              <div>
+                <Link to="/about-us" className="is-link margin-10">
+                  About Us
+                </Link>
+                {!!this.props.userData ? (
+                  <Link to="/survey-page" className="is-link margin-10">
+                    New Survey
+                  </Link>
+                ) : (
+                  <Link to="/sign-up" className="is-link margin-10">
+                    Sign Up
+                  </Link>
+                )}
+              </div>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     );
   }

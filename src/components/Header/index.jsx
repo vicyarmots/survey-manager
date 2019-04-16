@@ -12,7 +12,7 @@ export default class Header extends Component {
   }
 
   singOut = () => {
-    props.signOut();
+    this.props.signOut();
     localStorage.removeItem('token');
   };
 
@@ -71,10 +71,9 @@ export default class Header extends Component {
               !!this.state.dropdownIsOpen ? 'is-active' : ''
             }`}
           >
-            <div className="navbar-end">
-              {' '}
-              <NavLink to="/" className="navbar-item">
-                Sign In
+            <div className="navbar-end margin-10-r">
+              <NavLink className="navbar-item" to="/about-us">
+                About Us
               </NavLink>
               {this.getDataForHeader()}
             </div>

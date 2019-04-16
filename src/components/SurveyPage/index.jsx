@@ -193,6 +193,7 @@ class SurveyPage extends React.Component {
           .concat('_', shortid.generate())
       });
       this.setState({ ...defaultState });
+      this.props.addToast('The survey is saved!', 'is-success');
     }
   };
 

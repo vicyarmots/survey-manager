@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { schemaUser, Validation } from '../../helpers/validation.js';
+import { history } from '../../index.jsx';
 import './index.css';
 
 class RegistrForm extends React.Component {
@@ -25,15 +26,17 @@ class RegistrForm extends React.Component {
 
     if (!!isEmpty) {
       !this.props.toastText &&
-        this.props.addToast('Please enter your data', 'is-warning');
+        this.props.addToast('Please enter your data!', 'is-warning');
     }
 
     if (!!isValid) {
       this.props.signUpUserAsync({
         username: this.state.firstName.body,
-        email: this.state.login.body,
+        email: this.state.login.body.toLowerCase(),
         password: this.state.password.body
       });
+      history.push('/');
+      this.props.addToast('Please enter your data!', 'is-success');
     }
   };
 

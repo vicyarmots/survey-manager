@@ -32,7 +32,6 @@ export const signUpUserAsync = user => dispatch => {
   signUp(user)
     .then(res => {
       dispatch(signUpUserSuccess(res.data));
-      history.push('/home');
     })
     .catch(err => dispatch(signUpUserUnSuccess(err.response.data.message)));
 };
