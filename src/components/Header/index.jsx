@@ -26,6 +26,9 @@ export default class Header extends Component {
           <li className="navbar-item">
             <span className="notification username-wrapp">
               {this.props.userData.username}
+              {this.props.userData.role === 'admin' ? (
+                <span> [Admin] </span>
+              ) : null}
             </span>
           </li>
         </React.Fragment>

@@ -7,10 +7,12 @@ export const signIn = ({ email, password }) => {
 };
 
 export const signUp = ({ username, email, password }) => {
+  const userRole = '5cb87249e738b3200ce585f8';
   return axios.post(`${API_URL}/sign-up`, {
     username,
     email,
-    password
+    password,
+    role: userRole
   });
 };
 

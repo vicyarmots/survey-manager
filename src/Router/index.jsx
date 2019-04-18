@@ -12,6 +12,7 @@ import { AboutUs } from 'components/AboutUs/index.jsx';
 import './index.css';
 import PassingPage from 'containers/PassingPage.jsx';
 import SurveyResultPage from 'containers/SurveyResultPage.jsx';
+import UsersPage from '../containers/UsersPage.jsx';
 
 const SiteRouter = () => {
   return (
@@ -30,6 +31,7 @@ const SiteRouter = () => {
         path="/survey-result/:path"
         component={checkAuth(SurveyResultPage)}
       />
+      <Route exact path="/users" component={UsersPage} />
       <Route component={NoMatch} />
     </Switch>
   );

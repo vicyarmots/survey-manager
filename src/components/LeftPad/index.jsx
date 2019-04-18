@@ -18,6 +18,11 @@ class LeftPad extends React.Component {
             My surveys
           </Link>
           <a className="panel-block">Survey templates</a>
+          {this.props.userRole === 'admin' && (
+            <Link className="panel-block" to="/users">
+              Users
+            </Link>
+          )}
         </nav>
       </div>
     );

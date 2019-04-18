@@ -5,7 +5,8 @@ import { bindActionCreators } from 'redux';
 
 const mapStateToProps = store => {
   return {
-    userId: store.userReducer.userData.id
+    userId: store.userReducer.userData.id,
+    userRole: store.userReducer.userData.role
   };
 };
 
