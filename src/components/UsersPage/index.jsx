@@ -8,6 +8,6 @@ export default class UsersPage extends Component {
   }
 
   render() {
-    return <div>users</div>;
+    return <div className="hero-body">users</div>;
   }
 }
