@@ -1,7 +1,6 @@
 import Modal from 'react-modal';
 import React from 'react';
 import './index.css';
-import { OneAnswer } from './OneAnswer/index.jsx';
 import { SeveralAnswer } from './SeveralAnswer/index.jsx';
 import { customStyles } from './customStylesModal.js';
 import shortid from 'shortid';

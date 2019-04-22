@@ -83,3 +83,59 @@ export const _deleteSurveyAndResults = id => {
     }
   });
 };
+
+export const _getUsersData = (limit, currentPage) => {
+  return axios.get(`${API_URL}/get-users-data`, {
+    params: {
+      limit,
+      currentPage
+    },
+    headers: {
+      token: getToken()
+    }
+  });
+};
+
+export const _changeUserName = (id, newName) => {
+  return axios.post(
+    `${API_URL}/change-user-name`,
+    {
+      id,
+      newName
+    },
+    {
+      headers: {
+        token: getToken()
+      }
+    }
+  );
+};
+
+export const _changeUserEmail = (id, newEmail) => {
+  return axios.post(
+    `${API_URL}/change-user-email`,
+    {
+      id,
+      newEmail
+    },
+    {
+      headers: {
+        token: getToken()
+      }
+    }
+  );
+};
+
+export const _deleteUser = id => {
+  return axios.post(
+    `${API_URL}/delete-user`,
+    {
+      id
+    },
+    {
+      headers: {
+        token: getToken()
+      }
+    }
+  );
+};

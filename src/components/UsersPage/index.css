@@ -1,0 +1,13 @@
+.users-main-wrapp {
+  max-width: 1200px;
+}
+.users-wrapp__h_item {
+  border: 1px solid black;
+  width: 100%;
+  display: inline-block;
+}
+
+.users-h-paginate {
+  overflow: hidden;
+  margin: 10px 0;
+}
