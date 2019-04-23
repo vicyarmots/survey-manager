@@ -57,6 +57,18 @@ export function adminReducer(state = initialState, action) {
         isDeleted: false,
         error: action.payload
       };
+    case types.CHANGE_USER_ROLE_SUCCESS:
+      return {
+        ...state,
+        isChnaged: true,
+        error: null
+      };
+    case types.CHANGE_USER_ROLE_ERROR:
+      return {
+        ...state,
+        isChnaged: false,
+        error: action.payload
+      };
     default:
       return state;
   }

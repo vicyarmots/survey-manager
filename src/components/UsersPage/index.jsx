@@ -3,6 +3,8 @@ import './index.css';
 import Modal from 'react-modal';
 import { customStyles } from '../ModalQuestion/customStylesModal.js';
 import { schemaUser, getErrorMessage } from '../../helpers/validation.js';
+import { ModalEditNameOrEmail } from './ModalEditNameOrEmail.jsx';
+import { ModalEditRole } from './ModalEditRole.jsx';
 
 export default class UsersPage extends Component {
   constructor(props) {
@@ -10,15 +12,23 @@ export default class UsersPage extends Component {
     this.state = {
       currentDropdown: null,
       modalIsOpen: false,
-      modalTitle: '',
+      type: null,
       valueForChange: { body: '', error: null },
-      currentUserID: null
+      currentUserID: null,
+      currentRole: 'user'
     };
   }
 
   componentDidMount() {
     this.props.getUsersData(5, 1);
+    document.addEventListener('keyup', e => {
+      if (e.keyCode === 27 && !!this.state.modalIsOpen) {
+        this.triggerModal();
+      }
+    });
   }
+
+  handleSelectChange = e => this.setState({ currentRole: e.target.value });
 
   getNextPage = () => {
     this.props.getUsersData(5, this.props.usersData.page + 1);
@@ -44,10 +54,10 @@ export default class UsersPage extends Component {
 
   handleValiadate = ({ target }) => {
     let ErrorMessage;
-    if (this.state.modalTitle === 'Name') {
+    if (this.state.type === 'name') {
       ErrorMessage = getErrorMessage(target.value, schemaUser, 'firstName');
     }
-    if (this.state.modalTitle === 'Email') {
+    if (this.state.type === 'email') {
       ErrorMessage = getErrorMessage(target.value, schemaUser, 'login');
     }
 
@@ -77,24 +87,70 @@ export default class UsersPage extends Component {
       this.props.addToast('Please enter data', 'is-info');
     }
     if (!!valueForChange.body && !valueForChange.error) {
-      if (this.state.modalTitle === 'Name') {
+      if (this.state.type === 'name') {
         this.props.changeUserName(currentUserID, valueForChange.body, page);
       }
-      if (this.state.modalTitle === 'Email') {
+      if (this.state.type === 'email') {
         this.props.changeUserEmail(currentUserID, valueForChange.body, page);
       }
-
       this.setState({
         modalIsOpen: false,
-        modalTitle: '',
+        type: null,
         valueForChange: { ...this.state.valueForChange, body: '', error: null }
       });
     }
   };
 
+  changeUserRole = () => {
+    const { currentRole, currentUserID } = this.state;
+    const { page } = this.props.usersData;
+    this.props.changeUserRole(currentRole, currentUserID, page);
+    this.state({
+      modalIsOpen: false
+    });
+  };
+
   deleteUser = userId => {
     const { page } = this.props.usersData;
     this.props.deleteUser(userId, page);
+  };
+
+  choose(type) {
+    return (
+      {
+        name: (
+          <ModalEditNameOrEmail
+            valueForChange={this.state.valueForChange}
+            modalTitle="Name"
+            handleChange={this.handleChange}
+            handleValiadate={this.handleValiadate}
+            sentEditing={this.sentEditing}
+          />
+        ),
+        email: (
+          <ModalEditNameOrEmail
+            valueForChange={this.state.valueForChange}
+            modalTitle="Email"
+            handleChange={this.handleChange}
+            handleValiadate={this.handleValiadate}
+            sentEditing={this.sentEditing}
+          />
+        ),
+        Role: (
+          <ModalEditRole
+            currentRole={this.state.currentRole}
+            handleSelectChange={this.handleSelectChange}
+            changeUserRole={this.changeUserRole}
+          />
+        )
+      }[type] || null
+    );
+  }
+
+  onEscPress = e => {
+    if (e.keyCode === 27 && !!this.state.modalIsOpen) {
+      this.triggerModal();
+    }
   };
 
   getMain = () => {
@@ -202,7 +258,7 @@ export default class UsersPage extends Component {
                               className="dropdown-item"
                               onClick={() =>
                                 this.setState({
-                                  modalTitle: 'Name',
+                                  type: 'name',
                                   modalIsOpen: true,
                                   currentDropdown: null,
                                   currentUserID: user._id
@@ -215,7 +271,7 @@ export default class UsersPage extends Component {
                               className="dropdown-item"
                               onClick={() =>
                                 this.setState({
-                                  modalTitle: 'Email',
+                                  type: 'email',
                                   modalIsOpen: true,
                                   currentDropdown: null,
                                   currentUserID: user._id
@@ -223,6 +279,19 @@ export default class UsersPage extends Component {
                               }
                             >
                               Email
+                            </a>
+                            <a
+                              className="dropdown-item"
+                              onClick={() =>
+                                this.setState({
+                                  type: 'Role',
+                                  modalIsOpen: true,
+                                  currentDropdown: null,
+                                  currentUserID: user._id
+                                })
+                              }
+                            >
+                              Role
                             </a>
                             <a
                               className="delete delete-button"
@@ -254,30 +323,19 @@ export default class UsersPage extends Component {
             ariaHideApp={false}
           >
             <div className="modal-quest center">
-              {!!this.state.valueForChange.error && (
-                <p className="help is-danger input-help ">
-                  {this.state.valueForChange.error}
-                </p>
-              )}
-              <h1 className="subtitle margin-20-t">{this.state.modalTitle}</h1>
-              <input
-                type="text"
-                onChange={this.handleChange}
-                className="input"
-                name="valueForChange"
-                onBlur={this.handleValiadate}
-                placeholder={`enter new ${this.state.modalTitle.toLowerCase()}`}
-              />
-
-              <button
-                className="button is-success margin-t-10"
-                onClick={this.sentEditing}
-              >
-                Edit
-              </button>
+              {this.choose(this.state.type)}
               <button
                 className="delete is-medium delete-button"
-                onClick={this.triggerModal}
+                onClick={() => {
+                  this.triggerModal();
+                  this.setState({
+                    valueForChange: {
+                      ...this.state.valueForChange,
+                      body: '',
+                      error: null
+                    }
+                  });
+                }}
               >
                 Close Modal
               </button>

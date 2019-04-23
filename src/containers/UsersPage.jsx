@@ -5,7 +5,8 @@ import {
   getUsersData,
   changeUserName,
   changeUserEmail,
-  deleteUser
+  deleteUser,
+  changeUserRole
 } from '../redux/admin/middleware.js';
 import { addToast } from '../redux/toast/middleware.js';
 
@@ -17,7 +18,14 @@ const mapStateToProps = store => {
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
-    { getUsersData, addToast, changeUserName, changeUserEmail, deleteUser },
+    {
+      getUsersData,
+      addToast,
+      changeUserName,
+      changeUserEmail,
+      deleteUser,
+      changeUserRole
+    },
     dispatch
   );
 };

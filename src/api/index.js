@@ -139,3 +139,18 @@ export const _deleteUser = id => {
     }
   );
 };
+
+export const _changeUserRole = (newRole, userId) => {
+  return axios.post(
+    `${API_URL}/change-user-role`,
+    {
+      newRole,
+      userId
+    },
+    {
+      headers: {
+        token: getToken()
+      }
+    }
+  );
+};
