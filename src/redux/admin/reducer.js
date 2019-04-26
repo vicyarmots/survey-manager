@@ -2,6 +2,7 @@ import * as types from './types.js';
 
 export const initialState = {
   usersData: null,
+  currentUserId: null,
   error: null,
   isChnaged: null,
   isDeleted: null
@@ -68,6 +69,11 @@ export function adminReducer(state = initialState, action) {
         ...state,
         isChnaged: false,
         error: action.payload
+      };
+    case types.CHANGE_CURRENT_USER_ID:
+      return {
+        ...state,
+        currentUserId: action.payload
       };
     default:
       return state;

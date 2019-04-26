@@ -5,6 +5,7 @@ import { customStyles } from '../ModalQuestion/customStylesModal.js';
 import { schemaUser, getErrorMessage } from '../../helpers/validation.js';
 import { ModalEditNameOrEmail } from './ModalEditNameOrEmail.jsx';
 import { ModalEditRole } from './ModalEditRole.jsx';
+import { history } from '../../index.jsx';
 
 export default class UsersPage extends Component {
   constructor(props) {
@@ -15,7 +16,8 @@ export default class UsersPage extends Component {
       type: null,
       valueForChange: { body: '', error: null },
       currentUserID: null,
-      currentRole: 'user'
+      currentRole: 'user',
+      currentSort: 'default'
     };
   }
 
@@ -28,14 +30,25 @@ export default class UsersPage extends Component {
     });
   }
 
-  handleSelectChange = e => this.setState({ currentRole: e.target.value });
+  singOut = () => {
+    this.props.signOut();
+    localStorage.removeItem('token');
+  };
 
   getNextPage = () => {
-    this.props.getUsersData(5, this.props.usersData.page + 1);
+    this.props.getUsersData(
+      5,
+      this.props.usersData.page + 1,
+      this.state.currentSort
+    );
   };
 
   getPrevPage = () => {
-    this.props.getUsersData(5, this.props.usersData.page - 1);
+    this.props.getUsersData(
+      5,
+      this.props.usersData.page - 1,
+      this.state.currentSort
+    );
   };
 
   triggerModal = () => {
@@ -50,6 +63,18 @@ export default class UsersPage extends Component {
         body: target.value
       }
     });
+  };
+
+  handleSelect = ({ target }) => {
+    this.setState({
+      ...this.state,
+      [target.name]: target.value
+    });
+    this.getSortUsers(target.value);
+  };
+
+  getSortUsers = sortType => {
+    this.props.getUsersData(5, 1, sortType);
   };
 
   handleValiadate = ({ target }) => {
@@ -105,9 +130,10 @@ export default class UsersPage extends Component {
     const { currentRole, currentUserID } = this.state;
     const { page } = this.props.usersData;
     this.props.changeUserRole(currentRole, currentUserID, page);
-    this.state({
-      modalIsOpen: false
-    });
+    this.triggerModal();
+    if (this.props.currentUserId === currentUserID) {
+      this.singOut();
+    }
   };
 
   deleteUser = userId => {
@@ -139,7 +165,7 @@ export default class UsersPage extends Component {
         Role: (
           <ModalEditRole
             currentRole={this.state.currentRole}
-            handleSelectChange={this.handleSelectChange}
+            handleSelectChange={this.handleSelect}
             changeUserRole={this.changeUserRole}
           />
         )
@@ -179,6 +205,19 @@ export default class UsersPage extends Component {
                 <span className="notification margin-r-20">
                   Total users: {total}
                 </span>
+                <span className="notification">Sort:</span>
+                <div className="select">
+                  <select
+                    value={this.state.currentSort}
+                    onChange={this.handleSelect}
+                    name="currentSort"
+                  >
+                    <option value="default">Data: New to old</option>
+                    <option value="old-to-new">Data: Old to new</option>
+                    <option value="A-Z">Alphabetically: A-Z</option>
+                    <option value="Z-A">Alphabetically: Z-A</option>
+                  </select>
+                </div>
               </div>
               <div className="paginationWrapp">
                 {page !== 1 && (
@@ -204,7 +243,7 @@ export default class UsersPage extends Component {
               <tr className="notification">
                 <th>Name</th>
                 <th>Role</th>
-                <th>email</th>
+                <th>Email</th>
                 <th>Date of registration</th>
                 <th>Total surveys</th>
                 <th>Actions</th>
@@ -218,11 +257,23 @@ export default class UsersPage extends Component {
                     <td>{user.role.role}</td>
                     <td>{user.email}</td>
                     <td>{user.registrationDate}</td>
-                    <td>
+                    <td
+                      style={{
+                        textAlign: 'center'
+                      }}
+                    >
                       {totalUsersSurveys[index] === 0 ? (
                         <span>{totalUsersSurveys[index]}</span>
                       ) : (
-                        <a>{totalUsersSurveys[index]}</a>
+                        <a
+                          className="button is-link"
+                          onClick={() => {
+                            this.props.setUserId(user._id);
+                            history.push('/surveys-admin');
+                          }}
+                        >
+                          {totalUsersSurveys[index]}
+                        </a>
                       )}
                     </td>
                     <td>

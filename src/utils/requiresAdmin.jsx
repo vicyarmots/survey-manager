@@ -1,14 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import LeftPad from '../containers/LeftPad.jsx';
 
-export const checkAuth = ComposedComponent => {
-  class Authenticate extends React.Component {
+export const checkAdmin = ComposedComponent => {
+  class AuthenticateAdmmin extends React.Component {
     _checkAndRedirect = () => {
-      const { isLoggedIn, history } = this.props;
-      if (!isLoggedIn) {
-        history.push('/');
+      const { userData, history } = this.props;
+      if (userData.role !== 'admin') {
+        console.log('ты не админ');
+        history.push('/home');
       }
     };
 
@@ -23,11 +23,8 @@ export const checkAuth = ComposedComponent => {
     render() {
       return (
         <React.Fragment>
-          {!!this.props.isLoggedIn ? (
-            <div className="columns is-multiline main-wrap">
-              <LeftPad />
-              <ComposedComponent {...this.props} />
-            </div>
+          {this.props.userData.role === 'admin' ? (
+            <ComposedComponent {...this.props} />
           ) : null}
         </React.Fragment>
       );
@@ -36,7 +33,7 @@ export const checkAuth = ComposedComponent => {
 
   const mapStateToProps = state => {
     return {
-      isLoggedIn: state.userReducer.isLoggedIn
+      userData: state.userReducer.userData
     };
   };
 
@@ -44,6 +41,6 @@ export const checkAuth = ComposedComponent => {
     connect(
       mapStateToProps,
       null
-    )(Authenticate)
+    )(AuthenticateAdmmin)
   );
 };

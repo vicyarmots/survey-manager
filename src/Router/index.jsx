@@ -6,6 +6,7 @@ import SurveyPage from 'containers/SurveyPage.jsx';
 import { NoMatch } from 'components/NoMatch/index.jsx';
 import { HomePage } from 'components/HomePage/index.jsx';
 import { checkAuth } from 'utils/requiresLog.jsx';
+import { checkAdmin } from '../utils/requiresAdmin.jsx';
 import Surveys from 'containers/Surveys.jsx';
 import SurveyContainer from 'containers/SurveyContainer.jsx';
 import { AboutUs } from 'components/AboutUs/index.jsx';
@@ -13,6 +14,7 @@ import './index.css';
 import PassingPage from 'containers/PassingPage.jsx';
 import SurveyResultPage from 'containers/SurveyResultPage.jsx';
 import UsersPage from '../containers/UsersPage.jsx';
+import SurveysAdmin from '../containers/SurveysAdmin.jsx';
 
 const SiteRouter = () => {
   return (
@@ -31,7 +33,14 @@ const SiteRouter = () => {
         path="/survey-result/:path"
         component={checkAuth(SurveyResultPage)}
       />
-      <Route exact path="/users" component={checkAuth(UsersPage)} />
+      <Route exact path="/users" component={checkAuth(checkAdmin(UsersPage))} />
+
+      <Route
+        exact
+        path="/surveys-admin"
+        component={checkAuth(checkAdmin(SurveysAdmin))}
+      />
+
       <Route component={NoMatch} />
     </Switch>
   );

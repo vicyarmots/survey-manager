@@ -9,9 +9,7 @@ export default class Surveys extends Component {
   }
 
   componentDidMount() {
-    if (!this.props.countPages) {
-      this.props.getSurveys(this.props.userId, 5, 1);
-    }
+    this.props.getSurveys(this.props.userId, 5, 1);
   }
 
   setCurrent = (id, url) => {

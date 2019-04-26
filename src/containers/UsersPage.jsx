@@ -6,13 +6,16 @@ import {
   changeUserName,
   changeUserEmail,
   deleteUser,
-  changeUserRole
+  changeUserRole,
+  setUserId
 } from '../redux/admin/middleware.js';
+import { signOut } from '../redux/user/middleware.js';
 import { addToast } from '../redux/toast/middleware.js';
 
 const mapStateToProps = store => {
   return {
-    usersData: store.adminReducer.usersData
+    usersData: store.adminReducer.usersData,
+    currentUserId: store.userReducer.userData.id
   };
 };
 
@@ -24,7 +27,9 @@ const mapDispatchToProps = dispatch => {
       changeUserName,
       changeUserEmail,
       deleteUser,
-      changeUserRole
+      changeUserRole,
+      setUserId,
+      signOut
     },
     dispatch
   );

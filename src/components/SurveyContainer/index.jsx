@@ -128,7 +128,7 @@ export default class SurveyContainer extends Component {
 
   render() {
     return (
-      <div className="hero-body">
+      <div className="hero-body wrapp-main-content">
         <div className="has-text-centered">
           <h1 className="title margin-r-10">{this.getSurveyName()}</h1>
         </div>

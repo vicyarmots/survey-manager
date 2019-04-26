@@ -15,11 +15,12 @@ import {
   DELETE_USER_ERROR,
   DELETE_USER_SUCCESS,
   CHANGE_USER_ROLE_SUCCESS,
-  CHANGE_USER_ROLE_ERROR
+  CHANGE_USER_ROLE_ERROR,
+  CHANGE_CURRENT_USER_ID
 } from '../admin/types.js';
 
-export const getUsersData = (limit, currentPage) => dispatch => {
-  _getUsersData(limit, currentPage)
+export const getUsersData = (limit, currentPage, sort) => dispatch => {
+  _getUsersData(limit, currentPage, sort)
     .then(res => {
       dispatch({
         type: GET_USERS_DATA_SUCCESS,
@@ -129,4 +130,11 @@ export const changeUserRole = (newRole, userId, page) => dispatch => {
       });
       console.log(error);
     });
+};
+
+export const setUserId = userId => dispatch => {
+  dispatch({
+    type: CHANGE_CURRENT_USER_ID,
+    payload: userId
+  });
 };

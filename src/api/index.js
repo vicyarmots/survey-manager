@@ -84,11 +84,12 @@ export const _deleteSurveyAndResults = id => {
   });
 };
 
-export const _getUsersData = (limit, currentPage) => {
+export const _getUsersData = (limit, currentPage, sort) => {
   return axios.get(`${API_URL}/get-users-data`, {
     params: {
       limit,
-      currentPage
+      currentPage,
+      sort
     },
     headers: {
       token: getToken()

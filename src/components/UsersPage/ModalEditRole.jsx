@@ -9,7 +9,11 @@ export const ModalEditRole = props => {
         Choose role
       </h1>
       <div className="select margin-20-t">
-        <select value={currentRole} onChange={handleSelectChange}>
+        <select
+          value={currentRole}
+          onChange={handleSelectChange}
+          name="currentRole"
+        >
           <option value="user">User</option>
           <option value="admin">Admin</option>
         </select>
