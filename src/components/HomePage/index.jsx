@@ -1,21 +1,11 @@
 import React from 'react';
-import { getDataJson, getDataDocx } from '../../api/index.js';
+import './index.css';
 
 export const HomePage = () => {
   return (
-    <section className="hero-body">
+    <section className="hero-body text-center">
       <h1 className="title">Home Page</h1>
-      <div className="container notification">
-        <button
-          onClick={() => getDataJson()}
-          className="button is-info margin-10-r"
-        >
-          Get Data Json
-        </button>
-        <button onClick={() => getDataDocx()} className="button is-info">
-          Get Data Docx
-        </button>
-      </div>
+      <div className="container notification" />
     </section>
   );
 };

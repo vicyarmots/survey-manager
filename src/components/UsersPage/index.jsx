@@ -6,6 +6,7 @@ import { schemaUser, getErrorMessage } from '../../helpers/validation.js';
 import { ModalEditNameOrEmail } from './ModalEditNameOrEmail.jsx';
 import { ModalEditRole } from './ModalEditRole.jsx';
 import { history } from '../../index.jsx';
+import { getDataDocx, getDataJson } from '../../api/index.js';
 
 export default class UsersPage extends Component {
   constructor(props) {
@@ -191,6 +192,17 @@ export default class UsersPage extends Component {
       return (
         <React.Fragment>
           <div className="users-h-paginate">
+            <nav className="margin-30-b">
+              <button onClick={() => getDataJson()} className="button is-info">
+                Get Data Json
+              </button>
+              <button
+                onClick={() => getDataDocx()}
+                className="button is-info margin-10-l"
+              >
+                Get Data Docx
+              </button>
+            </nav>
             <nav
               className="pagination margin-b-40"
               role="navigation"
@@ -206,7 +218,7 @@ export default class UsersPage extends Component {
                   Total users: {total}
                 </span>
                 <span className="notification">Sort:</span>
-                <div className="select">
+                <div className="select margin-5-l ">
                   <select
                     value={this.state.currentSort}
                     onChange={this.handleSelect}
