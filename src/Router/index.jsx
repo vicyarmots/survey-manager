@@ -34,13 +34,11 @@ const SiteRouter = () => {
         component={checkAuth(SurveyResultPage)}
       />
       <Route exact path="/users" component={checkAuth(checkAdmin(UsersPage))} />
-
       <Route
         exact
         path="/surveys-admin"
         component={checkAuth(checkAdmin(SurveysAdmin))}
       />
-
       <Route component={NoMatch} />
     </Switch>
   );

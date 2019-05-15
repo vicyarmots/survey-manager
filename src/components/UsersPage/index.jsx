@@ -204,7 +204,7 @@ export default class UsersPage extends Component {
               </button>
             </nav>
             <nav
-              className="pagination margin-b-40"
+              className="pagination margin-b-40 overflow-webkit-paged-x"
               role="navigation"
               aria-label="pagination"
             >

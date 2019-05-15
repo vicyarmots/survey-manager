@@ -40,7 +40,6 @@ export const setUserUseToken = () => dispatch => {
   const token = getToken();
   if (!!token) {
     const userData = jwt.decode(token, { complete: true });
-    console.log(userData);
     dispatch(setUser(userData.payload));
     history.push('/home');
   }

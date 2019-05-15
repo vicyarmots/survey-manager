@@ -8,6 +8,10 @@
 }
 
 .users-h-paginate {
-  overflow: hidden;
+  overflow: -webkit-paged-x;
   margin: 10px 0;
+}
+
+.overflow-webkit-paged-x {
+  overflow: -webkit-paged-x;
 }

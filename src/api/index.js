@@ -65,7 +65,7 @@ export const saveSurveyResult = result => {
 export const _getSurveyResults = id => {
   return axios.get(`${API_URL}/get-survey-results`, {
     params: {
-      surveyId: id
+      id
     },
     headers: {
       token: getToken()
