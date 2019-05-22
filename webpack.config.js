@@ -1,6 +1,9 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MinifyPlugin = require('babel-minify-webpack-plugin');
+const webpack = require('webpack');
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
   entry: './src/index.jsx',
@@ -8,6 +11,9 @@ module.exports = {
     path: path.join(__dirname, '/dist'),
     publicPath: '/',
     filename: 'bundle.js'
+  },
+  optimization: {
+    minimizer: [new TerserPlugin()]
   },
   module: {
     rules: [
@@ -56,6 +62,15 @@ module.exports = {
       errors: true
     }
   },
-  devtool: 'eval-cheap-module-source-map',
-  plugins: [new HtmlWebpackPlugin(), new ExtractTextPlugin('./src/index.css')]
+  plugins: [
+    new HtmlWebpackPlugin(),
+    new webpack.HashedModuleIdsPlugin(),
+    new ExtractTextPlugin('./src/index.css'),
+    new MinifyPlugin(),
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: 'production'
+      }
+    })
+  ]
 };

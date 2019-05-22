@@ -155,15 +155,4 @@ export const _changeUserRole = (newRole, userId) => {
     }
   );
 };
-
-export const getDataJson = () => {
-  return axios.get(`${API_URL}/get-data-json`, {
-    params: {}
-  });
-};
-
-export const getDataDocx = () => {
-  return axios.get(`${API_URL}/get-data-docx`, {
-    params: {}
-  });
-};
+``

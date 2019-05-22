@@ -188,7 +188,7 @@ export default class SurveyResultPage extends Component {
                 {!!item.mandatoryQuest && <i className="fas fa-asterisk" />}
                 {item.title.body}
               </h1>
-              <div>
+              <div className="margin-30-b">
                 <span className="notification margin-r-20 ">
                   Responded:
                   {this.getCountResponded(page, indexQuest)}
@@ -204,6 +204,7 @@ export default class SurveyResultPage extends Component {
                     <React.Fragment>
                       <div className="chart-wrapp">
                         <BarChart
+                          className="margin-30-b"
                           data={this.getDataForChart(
                             page,
                             indexQuest,
