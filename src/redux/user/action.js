@@ -1,10 +1,11 @@
-export function setUser({ username, id, role }) {
+export function setUser({ username, id, role, email }) {
   return {
     type: 'SIGN_IN_SUCCESS',
     userData: {
-      username: username,
-      id: id,
-      role: role
+      username,
+      id,
+      role,
+      email
     }
   };
 }

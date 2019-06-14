@@ -49,6 +49,19 @@ code {
 .margin-t-10 {
   margin-top: 10px;
 }
+
+.margin-t-20 {
+  margin-top: 20px;
+}
+
+.margin-b-10 {
+  margin-bottom: 10px;
+}
+
+.margin-b-20 {
+  margin-bottom: 20px;
+}
+
 .margin-10 {
   margin-right: 10px;
   margin-left: 10px;
@@ -84,4 +97,44 @@ code {
 
 .notification {
   background-color: rgba(209, 209, 209, 0.514);
+}
+
+.text-center {
+  text-align: center;
+}
+
+.red {
+  background: red;
+}
+
+.blue {
+  background: blue;
+}
+
+.flex-sb-center {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.border-top-2-g {
+  border-top: 2px #00000052 solid;
+}
+
+.flex-col-sb {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.h-100p {
+  height: 100%;
+}
+
+.w-100p {
+  width: 100%;
+}
+
+.f-ai-fs {
+  align-items: flex-start;
 }

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
+import Dropdown from '../../common/Dropdown/index.jsx';
 import './index.css';
 
 export default class Header extends Component {
@@ -7,7 +8,8 @@ export default class Header extends Component {
     super(props);
 
     this.state = {
-      dropdownIsOpen: false
+      dropdownIsOpen: false,
+      usernameDropdownIsOpen: false
     };
   }
 
@@ -16,20 +18,59 @@ export default class Header extends Component {
     localStorage.removeItem('token');
   };
 
+  setDropdownTrigger = () => {
+    return (
+      <span className="notification username-wrapp">
+        <span>{this.props.userData.username}</span>
+        {this.props.userData.role === 'admin' ? <span> [Admin] </span> : null}
+        <span class="icon is-small">
+          <i class="fas fa-angle-down" aria-hidden="true" />
+        </span>
+      </span>
+    );
+  };
+
+  setDropdownContent = () => {
+    return (
+      <React.Fragment>
+        <div class="dropdown-item">
+          <span>Signed is as</span>
+          <br />
+          <strong>{this.props.userData.username}</strong>
+        </div>
+        <hr class="dropdown-divider" />
+        <NavLink className="dropdown-item" to="/setting">
+          Profile settings
+        </NavLink>
+        <hr class="dropdown-divider" />
+        <a className="dropdown-item" onClick={this.singOut}>
+          Sign Out
+        </a>
+      </React.Fragment>
+    );
+  };
+
   getDataForHeader = () => {
+    const { usernameDropdownIsOpen } = this.state;
     if (!!this.props.userData) {
       return (
         <React.Fragment>
-          <a className="navbar-item" onClick={this.singOut}>
-            Sign Out
-          </a>
-          <li className="navbar-item">
-            <span className="notification username-wrapp">
-              {this.props.userData.username}
-              {this.props.userData.role === 'admin' ? (
-                <span> [Admin] </span>
-              ) : null}
-            </span>
+          <NavLink className="navbar-item" to="/home">
+            Home
+          </NavLink>
+          <li
+            className="navbar-item"
+            onClick={() =>
+              this.setState({
+                usernameDropdownIsOpen: !this.state.usernameDropdownIsOpen
+              })
+            }
+          >
+            <Dropdown
+              setDropdownTrigger={this.setDropdownTrigger}
+              dropdownIsOpen={usernameDropdownIsOpen}
+              setDropdownContent={this.setDropdownContent}
+            />
           </li>
         </React.Fragment>
       );

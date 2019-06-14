@@ -54,22 +54,24 @@ module.exports = {
     }
   },
   devServer: {
-    historyApiFallback: true,
-    contentBase: path.join(__dirname, 'dist'),
+    contentBase: path.join(__dirname, '/dist'),
+    watchContentBase: true,
     publicPath: '/',
+    historyApiFallback: true,
     overlay: {
       warnings: true,
       errors: true
     }
   },
   plugins: [
+    new webpack.optimize.ModuleConcatenationPlugin(),
     new HtmlWebpackPlugin(),
     new webpack.HashedModuleIdsPlugin(),
     new ExtractTextPlugin('./src/index.css'),
     new MinifyPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV: 'production'
+        NODE_ENV: JSON.stringify('production')
       }
     })
   ]

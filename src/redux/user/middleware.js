@@ -16,6 +16,7 @@ export const setUserAsync = user => dispatch => {
   signIn(user)
     .then(res => {
       const userData = jwt.decode(res.data.token, { complete: true });
+      console.log(userData);
       dispatch(setUser(userData.payload));
       history.push('/home');
       return res.data.token;

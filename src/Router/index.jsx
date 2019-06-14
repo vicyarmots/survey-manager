@@ -15,6 +15,7 @@ import PassingPage from 'containers/PassingPage.jsx';
 import SurveyResultPage from 'containers/SurveyResultPage.jsx';
 import UsersPage from '../containers/UsersPage.jsx';
 import SurveysAdmin from '../containers/SurveysAdmin.jsx';
+import SettingPage from '../containers/SettinPage.jsx';
 
 const SiteRouter = () => {
   return (
@@ -39,6 +40,7 @@ const SiteRouter = () => {
         path="/surveys-admin"
         component={checkAuth(checkAdmin(SurveysAdmin))}
       />
+      <Route path="/setting" component={checkAuth(SettingPage)} />
       <Route component={NoMatch} />
     </Switch>
   );

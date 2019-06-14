@@ -1,0 +1,35 @@
+.user-profile-img-wrapp {
+  padding-left: 0;
+  padding-top: 0;
+}
+
+.user-profile-img-wrapp__box {
+  width: fit-content;
+}
+
+.bottom-11-p {
+  bottom: 11%;
+  top: unset;
+}
+
+.edit-profile-img-toast {
+  width: 283px;
+  padding-top: 5px;
+  background: #00000099;
+  text-align: center;
+  color: white;
+  cursor: pointer;
+}
+
+.setting-fields-wrapp {
+  width: -webkit-fill-available;
+  height: 100%;
+}
+
+.width-300 {
+  width: 300px;
+}
+
+.w-80px {
+  width: 80px;
+}

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import './index.css';
 import Modal from 'react-modal';
 import { customStyles } from '../ModalQuestion/customStylesModal.js';
 import { schemaUser, getErrorMessage } from '../../helpers/validation.js';
 import { ModalEditNameOrEmail } from './ModalEditNameOrEmail.jsx';
 import { ModalEditRole } from './ModalEditRole.jsx';
 import { history } from '../../index.jsx';
+import './index.css';
 
 export default class UsersPage extends Component {
   constructor(props) {

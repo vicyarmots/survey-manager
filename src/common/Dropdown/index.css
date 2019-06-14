@@ -1,0 +1,4 @@
+.dropdown-trigger {
+  cursor: pointer;
+  user-select: none;
+}
