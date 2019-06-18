@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import Modal from 'react-modal';
+import EditImageModal from './EditImageModal.jsx';
+import { customStyles } from '../ModalQuestion/customStylesModal.js';
 import './index.css';
 
 export default class SettingPage extends Component {
@@ -6,9 +9,35 @@ export default class SettingPage extends Component {
     super(props);
 
     this.state = {
-      currDrobfield: ''
+      currDrobfield: '',
+      modalIsOpen: false,
+      modalType: ''
     };
   }
+
+  uploadUserImage = (image, top, left, width, height) => {
+    const files = new FormData();
+    files.append('image', image);
+    files.append(
+      'userData',
+      JSON.stringify({ id: this.props.userData.id, top, left, width, height })
+    );
+    this.props.uploadUserImage(files);
+    this.triggerModal();
+  };
+
+  getModalContent = () => {
+    return (
+      <EditImageModal
+        triggerModal={this.triggerModal}
+        uploadUserImage={this.uploadUserImage}
+      />
+    );
+  };
+
+  triggerModal = () => {
+    this.setState({ modalIsOpen: !this.state.modalIsOpen });
+  };
 
   setCurrDrobfield = ({ target }) => {
     this.setState({ currDrobfield: target.name });
@@ -128,7 +157,6 @@ export default class SettingPage extends Component {
   };
 
   render() {
-    console.log(this.props);
     return (
       <div className="hero-body wrapp-main-content">
         <div className="columns is-multiline">
@@ -142,12 +170,16 @@ export default class SettingPage extends Component {
                   <figure className="image is-3 ">
                     <img
                       class="is-rounded is-256x256 dropdown-trigger"
-                      src="https://bulma.io/images/placeholders/256x256.png"
+                      src={`${this.props.userData.profileImage}`}
+                      onClick={() => console.log('image')}
                     />
                   </figure>
                 </div>
-                <div class="dropdown-menu bottom-11-p edit-profile-img-toast">
-                  <span>Edit</span>
+                <div
+                  class="dropdown-menu bottom-11-p edit-profile-img-toast"
+                  onClick={() => this.triggerModal()}
+                >
+                  <span className="edit-profile-image">Edit</span>
                 </div>
               </div>
               <div className="column">
@@ -178,6 +210,13 @@ export default class SettingPage extends Component {
             </div>
           </div>
         </div>
+        <Modal
+          isOpen={this.state.modalIsOpen}
+          style={customStyles}
+          ariaHideApp={false}
+        >
+          {this.getModalContent()}
+        </Modal>
       </div>
     );
   }

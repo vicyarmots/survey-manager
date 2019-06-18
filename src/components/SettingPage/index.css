@@ -17,8 +17,12 @@
   padding-top: 5px;
   background: #00000099;
   text-align: center;
-  color: white;
+  color: rgb(141, 141, 141);
   cursor: pointer;
+}
+
+.edit-profile-img-toast:hover {
+  color: rgba(255, 255, 255, 0.993);
 }
 
 .setting-fields-wrapp {
@@ -32,4 +36,8 @@
 
 .w-80px {
   width: 80px;
+}
+
+.crop-image {
+  margin: 10px;
 }

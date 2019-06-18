@@ -2,6 +2,15 @@ import axios from 'axios';
 import { API_URL } from '../../config.js';
 import { getToken } from '../helpers/tokenHelpers.js';
 
+export const _uploadUserImage = formData => {
+  console.log(formData);
+  return axios.post(`${API_URL}/set-profile-image`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  });
+};
+
 export const signIn = ({ email, password }) => {
   return axios.post(`${API_URL}/sign-in`, { email, password });
 };
@@ -155,4 +164,4 @@ export const _changeUserRole = (newRole, userId) => {
     }
   );
 };
-``
+``;
